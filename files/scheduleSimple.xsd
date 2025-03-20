@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.dei.isep.ipp.pt/tap-2025"  elementFormDefault="qualified">
+    <simpleType name="STPhysicalId">
+    	<restriction base="ID">
+			<pattern value="PRS_.*"/>
+    	</restriction>
+    </simpleType> 
+    <simpleType name="STHumanId">
+    	<restriction base="ID">
+    		<pattern value="HRS_.*"/>
+    	</restriction>
+    </simpleType>
+    <simpleType name="STTaskId">
+    	<restriction base="ID">
+    		<pattern value="TSK_.*"/>
+    	</restriction>
+    </simpleType>    
+    <simpleType name="STProductId">
+    	<restriction base="ID">
+    		<pattern value="PRD_.*"/>
+    	</restriction>
+    </simpleType>    
+    <simpleType name="STOrderId">
+    	<restriction base="ID">
+    		<pattern value="ORD_.*"/>
+    	</restriction>
+    </simpleType>    
+    
+    
+    <simpleType name="STTaskIdRef">
+    	<restriction base="IDREF">
+    		<pattern value="TSK_.*"/>
+    	</restriction>
+    </simpleType>
+    <simpleType name="STProductIdRef">
+    	<restriction base="IDREF">
+    		<pattern value="PRD_.*"/>
+    	</restriction>
+    </simpleType>            
+
+</schema>

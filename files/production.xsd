@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.dei.isep.ipp.pt/tap-2025" xmlns:tns="http://www.dei.isep.ipp.pt/tap-2025" elementFormDefault="qualified">
+	<include schemaLocation="scheduleSimple.xsd"/>
+
+    <element name="Production" type="tns:TProduction"/>
+
+    <complexType name="TProduction">
+    	<sequence>
+    		<element name="PhysicalResources">
+    			<complexType>
+    				<sequence>
+    					<element name="Physical" type="tns:TPhysical" maxOccurs="unbounded"/>
+    				</sequence>
+    			</complexType>
+    		</element>
+    		<element name="Tasks">
+    			<complexType>
+    				<sequence>
+    					<element name="Task" type="tns:TTask" maxOccurs="unbounded"/>
+    				</sequence>    				    				
+    			</complexType>    			
+    		</element>
+    		<element name="HumanResources">
+    			<complexType>
+    				<sequence>
+    					<element name="Human" type="tns:THuman" maxOccurs="unbounded"/>
+    				</sequence>
+    			</complexType>
+    		</element>    		    	    		
+    		<element name="Products">
+    			<complexType>
+    				<sequence>
+    					<element name="Product" type="tns:TProduct" maxOccurs="unbounded"/>
+    				</sequence>
+    			</complexType>
+    		</element>    		
+    		<element name="Orders">
+    			<complexType>
+    				<sequence>
+    					<element name="Order" type="tns:TOrder" maxOccurs="unbounded"/>
+    				</sequence>
+    			</complexType>
+    		</element>    		
+    	</sequence>
+    </complexType>
+
+	<complexType name="TPhysical">
+    	<attribute name="id" type="tns:STPhysicalId" use="required"/>
+    	<attribute name="type" type="string"/>
+    </complexType> 
+	<complexType name="TTask">
+    	<sequence>
+    		<element name="PhysicalResource" maxOccurs="unbounded">
+	    		<complexType>
+	    			<attribute name="type" type="string" use="required"/>
+	    		</complexType>
+	    	</element>
+    	</sequence>
+    	<attribute name="id" type="tns:STTaskId" use="required"/>
+		<attribute name="time" type="positiveInteger" use="required"/>    	
+    </complexType>    
+	<complexType name="THuman">
+		<sequence>
+    		<element name="Handles" maxOccurs="unbounded">
+    			<complexType>
+					<attribute name="type" type="string" use="required"/>
+    			</complexType>
+    		</element>    		
+    	</sequence>	
+    	<attribute name="id" type="tns:STHumanId" use="required"/>
+    	<attribute name="name" type="string"/>
+    </complexType>    
+    <complexType name="TProduct">
+    	<sequence>
+    		<element name="Process" maxOccurs="unbounded">
+    			<complexType>
+					<attribute name="tskref" type="tns:STTaskIdRef" use="required"/>
+    			</complexType>
+    		</element>    		
+    	</sequence>
+		<attribute name="id" type="tns:STProductId" use="required"/>
+    	<attribute name="name" type="string"/>    	
+    </complexType>
+	<complexType name="TOrder">
+    	<attribute name="id" type="tns:STOrderId" use="required"/>
+    	<attribute name="prdref" type="tns:STProductIdRef" use="required"/>
+    	<attribute name="quantity" type="positiveInteger" use="required"/>
+    </complexType>     
+</schema>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Production xmlns="http://www.dei.isep.ipp.pt/tap-2025" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../production.xsd ">
+  <PhysicalResources>
+    <Physical id="PRS_1" type="PRST 1"/>
+    <Physical id="PRS_2" type="PRST 1"/>
+	<Physical id="PRS_3" type="PRST 2"/>
+    <Physical id="PRS_4" type="PRST 3"/>
+  	<Physical id="PRS_5" type="PRST 4"/>
+    <Physical id="PRS_6" type="PRST 4"/>
+    <Physical id="PRS_7" type="PRST 5"/>
+	<Physical id="PRS_8" type="PRST 5"/>
+    <Physical id="PRS_9" type="PRST 5"/>
+  </PhysicalResources>
+  <Tasks>
+    <Task id="TSK_1" time="100">
+      <PhysicalResource type="PRST 1"/>
+      <PhysicalResource type="PRST 2"/>
+      <PhysicalResource type="PRST 3"/>
+    </Task>
+    <Task id="TSK_2" time="80">
+      <PhysicalResource type="PRST 4"/>
+      <PhysicalResource type="PRST 4"/>
+    </Task>    
+    <Task id="TSK_3" time="160">
+      <PhysicalResource type="PRST 1"/>
+      <PhysicalResource type="PRST 3"/>
+      <PhysicalResource type="PRST 5"/>
+    </Task>
+    <Task id="TSK_4" time="90">
+      <PhysicalResource type="PRST 2"/>
+      <PhysicalResource type="PRST 4"/>
+    </Task>   
+    <Task id="TSK_5" time="60">
+      <PhysicalResource type="PRST 1"/>
+      <PhysicalResource type="PRST 2"/>
+	  <PhysicalResource type="PRST 5"/>
+    </Task>    
+    <Task id="TSK_6" time="85">
+      <PhysicalResource type="PRST 3"/>
+      <PhysicalResource type="PRST 4"/>
+    </Task>    
+    <Task id="TSK_7" time="145">
+      <PhysicalResource type="PRST 2"/>
+      <PhysicalResource type="PRST 1"/>
+      <PhysicalResource type="PRST 3"/>
+    </Task>
+    <Task id="TSK_8" time="35">
+      <PhysicalResource type="PRST 5"/>
+      <PhysicalResource type="PRST 5"/>
+      <PhysicalResource type="PRST 5"/>
+    </Task>
+    <Task id="TSK_9" time="140">
+      <PhysicalResource type="PRST 5"/>
+      <PhysicalResource type="PRST 1"/>
+      <PhysicalResource type="PRST 3"/>
+    </Task>
+    <Task id="TSK_10" time="45">
+      <PhysicalResource type="PRST 1"/>
+      <PhysicalResource type="PRST 5"/>
+	  <PhysicalResource type="PRST 2"/>
+    </Task>        
+  </Tasks>    
+  <HumanResources>
+    <Human id="HRS_1" name="Antonio">
+      <Handles type="PRST 1"/>
+      <Handles type="PRST 2"/>
+    </Human>
+    <Human id="HRS_2" name="Maria">
+      <Handles type="PRST 1"/>
+      <Handles type="PRST 3"/>
+      <Handles type="PRST 5"/>            
+    </Human>
+    <Human id="HRS_3" name="Manuel">
+      <Handles type="PRST 3"/>
+      <Handles type="PRST 5"/>        
+    </Human>    
+    <Human id="HRS_4" name="Susana">
+      <Handles type="PRST 2"/>
+      <Handles type="PRST 4"/>          
+    </Human>    
+    <Human id="HRS_5" name="Joao">
+      <Handles type="PRST 1"/>
+      <Handles type="PRST 3"/>
+    </Human>    
+    <Human id="HRS_6" name="Laura">
+      <Handles type="PRST 2"/>
+      <Handles type="PRST 3"/>
+    </Human>        
+  </HumanResources>
+  <Products>
+    <Product id="PRD_1" name="Product 1">
+      <Process tskref="TSK_1"/>
+      <Process tskref="TSK_3"/>
+      <Process tskref="TSK_5"/>
+      <Process tskref="TSK_10"/>
+    </Product>
+    <Product id="PRD_2" name="Product 2">
+      <Process tskref="TSK_1"/>
+      <Process tskref="TSK_2"/>
+      <Process tskref="TSK_3"/>
+      <Process tskref="TSK_4"/>
+      <Process tskref="TSK_5"/>
+      <Process tskref="TSK_10"/>
+    </Product>
+    <Product id="PRD_3" name="Product 3">
+      <Process tskref="TSK_2"/>
+      <Process tskref="TSK_3"/>
+      <Process tskref="TSK_6"/>
+      <Process tskref="TSK_7"/>
+      <Process tskref="TSK_9"/>
+    </Product>    
+    <Product id="PRD_4" name="Product 4">
+      <Process tskref="TSK_8"/>
+      <Process tskref="TSK_7"/>
+      <Process tskref="TSK_6"/>
+      <Process tskref="TSK_5"/>
+      <Process tskref="TSK_10"/>
+    </Product>    
+  </Products>
+  <Orders>
+  	<Order id="ORD_1" prdref="PRD_1" quantity="1"/>
+  	<Order id="ORD_2" prdref="PRD_2" quantity="2"/>
+  	<Order id="ORD_3" prdref="PRD_3" quantity="3"/>
+  	<Order id="ORD_4" prdref="PRD_4" quantity="1"/>
+  </Orders>
+</Production>

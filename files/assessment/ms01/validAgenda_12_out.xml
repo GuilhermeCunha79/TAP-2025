@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schedule xmlns="http://www.dei.isep.ipp.pt/tap-2025" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd ">
+	<TaskSchedule order="ORD_1" productNumber="1" task="TSK_1"
+		start="0" end="100">
+		<PhysicalResources>
+			<Physical id="PRS_1" />
+			<Physical id="PRS_2" />
+			<Physical id="PRS_4" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Antonio" />
+			<Human name="Maria" />
+			<Human name="Manuel" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_1" productNumber="1" task="TSK_3"
+		start="100" end="260">
+		<PhysicalResources>
+			<Physical id="PRS_1" />
+			<Physical id="PRS_4" />
+			<Physical id="PRS_7" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Antonio" />
+			<Human name="Maria" />
+			<Human name="Manuel" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_1" productNumber="1" task="TSK_5"
+		start="260" end="320">
+		<PhysicalResources>
+			<Physical id="PRS_1" />
+			<Physical id="PRS_3" />
+			<Physical id="PRS_7" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Antonio" />
+			<Human name="Susana" />
+			<Human name="Maria" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_1" productNumber="1" task="TSK_10"
+		start="320" end="365">
+		<PhysicalResources>
+			<Physical id="PRS_1" />
+			<Physical id="PRS_7" />
+			<Physical id="PRS_3" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Antonio" />
+			<Human name="Maria" />
+			<Human name="Susana" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_2" productNumber="1" task="TSK_1"
+		start="365" end="465">
+		<PhysicalResources>
+			<Physical id="PRS_1" />
+			<Physical id="PRS_2" />
+			<Physical id="PRS_4" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Antonio" />
+			<Human name="Maria" />
+			<Human name="Manuel" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_2" productNumber="1" task="TSK_2"
+		start="465" end="545">
+		<PhysicalResources>
+			<Physical id="PRS_5" />
+			<Physical id="PRS_7" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Maria" />
+			<Human name="Manuel" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_2" productNumber="1" task="TSK_3"
+		start="545" end="705">
+		<PhysicalResources>
+			<Physical id="PRS_1" />
+			<Physical id="PRS_4" />
+			<Physical id="PRS_7" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Antonio" />
+			<Human name="Maria" />
+			<Human name="Manuel" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_2" productNumber="1" task="TSK_4"
+		start="705" end="795">
+		<PhysicalResources>
+			<Physical id="PRS_3" />
+			<Physical id="PRS_5" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Antonio" />
+			<Human name="Maria" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_2" productNumber="1" task="TSK_5"
+		start="795" end="855">
+		<PhysicalResources>
+			<Physical id="PRS_1" />
+			<Physical id="PRS_3" />
+			<Physical id="PRS_7" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Antonio" />
+			<Human name="Susana" />
+			<Human name="Maria" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_2" productNumber="1" task="TSK_10"
+		start="855" end="900">
+		<PhysicalResources>
+			<Physical id="PRS_1" />
+			<Physical id="PRS_7" />
+			<Physical id="PRS_3" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Antonio" />
+			<Human name="Maria" />
+			<Human name="Susana" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_2" productNumber="2" task="TSK_1"
+		start="900" end="1000">
+		<PhysicalResources>
+			<Physical id="PRS_1" />
+			<Physical id="PRS_2" />
+			<Physical id="PRS_4" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Antonio" />
+			<Human name="Maria" />
+			<Human name="Manuel" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_2" productNumber="2" task="TSK_2"
+		start="1000" end="1080">
+		<PhysicalResources>
+			<Physical id="PRS_5" />
+			<Physical id="PRS_7" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Maria" />
+			<Human name="Manuel" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_2" productNumber="2" task="TSK_3"
+		start="1080" end="1240">
+		<PhysicalResources>
+			<Physical id="PRS_1" />
+			<Physical id="PRS_4" />
+			<Physical id="PRS_7" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Antonio" />
+			<Human name="Maria" />
+			<Human name="Manuel" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_2" productNumber="2" task="TSK_4"
+		start="1240" end="1330">
+		<PhysicalResources>
+			<Physical id="PRS_3" />
+			<Physical id="PRS_5" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Antonio" />
+			<Human name="Maria" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_2" productNumber="2" task="TSK_5"
+		start="1330" end="1390">
+		<PhysicalResources>
+			<Physical id="PRS_1" />
+			<Physical id="PRS_3" />
+			<Physical id="PRS_7" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Antonio" />
+			<Human name="Susana" />
+			<Human name="Maria" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_2" productNumber="2" task="TSK_10"
+		start="1390" end="1435">
+		<PhysicalResources>
+			<Physical id="PRS_1" />
+			<Physical id="PRS_7" />
+			<Physical id="PRS_3" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Antonio" />
+			<Human name="Maria" />
+			<Human name="Susana" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_3" productNumber="1" task="TSK_2"
+		start="1435" end="1515">
+		<PhysicalResources>
+			<Physical id="PRS_5" />
+			<Physical id="PRS_7" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Maria" />
+			<Human name="Manuel" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_3" productNumber="1" task="TSK_3"
+		start="1515" end="1675">
+		<PhysicalResources>
+			<Physical id="PRS_1" />
+			<Physical id="PRS_4" />
+			<Physical id="PRS_7" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Antonio" />
+			<Human name="Maria" />
+			<Human name="Manuel" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_3" productNumber="1" task="TSK_6"
+		start="1675" end="1760">
+		<PhysicalResources>
+			<Physical id="PRS_4" />
+			<Physical id="PRS_5" />
+			<Physical id="PRS_6" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Maria" />
+			<Human name="Susana" />
+			<Human name="Laura" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_3" productNumber="1" task="TSK_7"
+		start="1760" end="1905">
+		<PhysicalResources>
+			<Physical id="PRS_3" />
+			<Physical id="PRS_1" />
+			<Physical id="PRS_4" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Antonio" />
+			<Human name="Maria" />
+			<Human name="Manuel" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_3" productNumber="1" task="TSK_9"
+		start="1905" end="2045">
+		<PhysicalResources>
+			<Physical id="PRS_7" />
+			<Physical id="PRS_1" />
+			<Physical id="PRS_4" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Maria" />
+			<Human name="Antonio" />
+			<Human name="Manuel" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_3" productNumber="2" task="TSK_2"
+		start="2045" end="2125">
+		<PhysicalResources>
+			<Physical id="PRS_5" />
+			<Physical id="PRS_7" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Maria" />
+			<Human name="Manuel" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_3" productNumber="2" task="TSK_3"
+		start="2125" end="2285">
+		<PhysicalResources>
+			<Physical id="PRS_1" />
+			<Physical id="PRS_4" />
+			<Physical id="PRS_7" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Antonio" />
+			<Human name="Maria" />
+			<Human name="Manuel" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_3" productNumber="2" task="TSK_6"
+		start="2285" end="2370">
+		<PhysicalResources>
+			<Physical id="PRS_4" />
+			<Physical id="PRS_5" />
+			<Physical id="PRS_6" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Maria" />
+			<Human name="Susana" />
+			<Human name="Laura" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_3" productNumber="2" task="TSK_7"
+		start="2370" end="2515">
+		<PhysicalResources>
+			<Physical id="PRS_3" />
+			<Physical id="PRS_1" />
+			<Physical id="PRS_4" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Antonio" />
+			<Human name="Maria" />
+			<Human name="Manuel" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_3" productNumber="2" task="TSK_9"
+		start="2515" end="2655">
+		<PhysicalResources>
+			<Physical id="PRS_7" />
+			<Physical id="PRS_1" />
+			<Physical id="PRS_4" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Maria" />
+			<Human name="Antonio" />
+			<Human name="Manuel" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_3" productNumber="3" task="TSK_2"
+		start="2655" end="2735">
+		<PhysicalResources>
+			<Physical id="PRS_5" />
+			<Physical id="PRS_7" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Maria" />
+			<Human name="Manuel" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_3" productNumber="3" task="TSK_3"
+		start="2735" end="2895">
+		<PhysicalResources>
+			<Physical id="PRS_1" />
+			<Physical id="PRS_4" />
+			<Physical id="PRS_7" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Antonio" />
+			<Human name="Maria" />
+			<Human name="Manuel" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_3" productNumber="3" task="TSK_6"
+		start="2895" end="2980">
+		<PhysicalResources>
+			<Physical id="PRS_4" />
+			<Physical id="PRS_5" />
+			<Physical id="PRS_6" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Maria" />
+			<Human name="Susana" />
+			<Human name="Laura" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_3" productNumber="3" task="TSK_7"
+		start="2980" end="3125">
+		<PhysicalResources>
+			<Physical id="PRS_3" />
+			<Physical id="PRS_1" />
+			<Physical id="PRS_4" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Antonio" />
+			<Human name="Maria" />
+			<Human name="Manuel" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_3" productNumber="3" task="TSK_9"
+		start="3125" end="3265">
+		<PhysicalResources>
+			<Physical id="PRS_7" />
+			<Physical id="PRS_1" />
+			<Physical id="PRS_4" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Maria" />
+			<Human name="Antonio" />
+			<Human name="Manuel" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_4" productNumber="1" task="TSK_8"
+		start="3265" end="3300">
+		<PhysicalResources>
+			<Physical id="PRS_7" />
+			<Physical id="PRS_5" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Maria" />
+			<Human name="Susana" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_4" productNumber="1" task="TSK_7"
+		start="3300" end="3445">
+		<PhysicalResources>
+			<Physical id="PRS_3" />
+			<Physical id="PRS_1" />
+			<Physical id="PRS_4" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Antonio" />
+			<Human name="Maria" />
+			<Human name="Manuel" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_4" productNumber="1" task="TSK_6"
+		start="3445" end="3530">
+		<PhysicalResources>
+			<Physical id="PRS_4" />
+			<Physical id="PRS_5" />
+			<Physical id="PRS_6" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Maria" />
+			<Human name="Susana" />
+			<Human name="Laura" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_4" productNumber="1" task="TSK_5"
+		start="3530" end="3590">
+		<PhysicalResources>
+			<Physical id="PRS_1" />
+			<Physical id="PRS_3" />
+			<Physical id="PRS_7" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Antonio" />
+			<Human name="Susana" />
+			<Human name="Maria" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_4" productNumber="1" task="TSK_10"
+		start="3590" end="3635">
+		<PhysicalResources>
+			<Physical id="PRS_1" />
+			<Physical id="PRS_7" />
+			<Physical id="PRS_3" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Antonio" />
+			<Human name="Maria" />
+			<Human name="Susana" />
+		</HumanResources>
+	</TaskSchedule>
+</Schedule>

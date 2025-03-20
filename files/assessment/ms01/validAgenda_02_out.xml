@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schedule xmlns="http://www.dei.isep.ipp.pt/tap-2025" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd ">
+	<TaskSchedule order="ORD_1" productNumber="1" task="TSK_1"
+		start="0" end="100">
+		<PhysicalResources>
+			<Physical id="PRS_1" />
+			<Physical id="PRS_4" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Antonio" />
+			<Human name="Maria" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_1" productNumber="1" task="TSK_2"
+		start="100" end="120">
+		<PhysicalResources>
+			<Physical id="PRS_3" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Maria" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_1" productNumber="2" task="TSK_1"
+				  start="120" end="220">
+		<PhysicalResources>
+			<Physical id="PRS_1" />
+			<Physical id="PRS_4" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Antonio" />
+			<Human name="Maria" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_1" productNumber="2" task="TSK_2"
+				  start="220" end="240">
+		<PhysicalResources>
+			<Physical id="PRS_3" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Maria" />
+		</HumanResources>
+	</TaskSchedule>
+	<TaskSchedule order="ORD_2" productNumber="1" task="TSK_2"
+		start="240" end="260">
+		<PhysicalResources>
+			<Physical id="PRS_3" />
+		</PhysicalResources>
+		<HumanResources>
+			<Human name="Maria" />
+		</HumanResources>
+	</TaskSchedule>
+</Schedule>

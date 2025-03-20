@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.dei.isep.ipp.pt/tap-2025" xmlns:tns="http://www.dei.isep.ipp.pt/tap-2025" elementFormDefault="qualified">
+	<include schemaLocation="scheduleSimple.xsd"/>
+
+    <element name="Schedule" type="tns:TSchedule"/>
+
+    <complexType name="TSchedule">
+    	<sequence>
+    		<element name="TaskSchedule" type="tns:TTaskSchedule" maxOccurs="unbounded"/>
+    	</sequence>
+    </complexType>
+
+	<complexType name="TTaskSchedule">
+    	<sequence>
+    		<element name="PhysicalResources">
+    			<complexType>
+    				<sequence>
+    					<element name="Physical" maxOccurs="unbounded">
+    						<complexType>
+    							<attribute name="id" type="string" use="required"/>
+    						</complexType>
+    					</element>
+    				</sequence>
+    			</complexType>    		
+    		</element>
+    		<element name="HumanResources">
+    			<complexType>
+    				<sequence>
+    					<element name="Human" maxOccurs="unbounded">
+    						<complexType>
+    							<attribute name="name" type="string" use="required"/>
+    						</complexType>
+    					</element>
+    				</sequence>
+    			</complexType>    		
+    		</element>    		
+    	</sequence>	
+    	<attribute name="order" type="string" use="required"/>
+    	<attribute name="productNumber" type="int" use="required"/>
+    	<attribute name="task" type="string" use="required"/>
+    	<attribute name="start" type="int" use="required"/>
+    	<attribute name="end" type="int" use="required"/>    	
+    </complexType>      
+</schema>
