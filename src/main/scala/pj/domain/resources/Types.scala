@@ -16,19 +16,19 @@ object Types :
       else Left(InvalidProductId(id))
 
     extension (id: ProductId)
-      @targetName("ProductTo")
+      @targetName("ProductIdTo")
       def to: String = id
 
 
-  opaque type PhysicalId = String
-  object PhysicalId:
-    def from(id: String): Result[PhysicalId] =
+  opaque type PhysicalResourceId = String
+  object PhysicalResourceId:
+    def from(id: String): Result[PhysicalResourceId] =
       val pattern = "^PRS_.*$".r
       if pattern.matches(id) then Right(id)
-      else Left(InvalidPhysicalId(id))
+      else Left(InvalidPhysicalResourceId(id))
 
-    extension (id: PhysicalId)
-      @targetName("PhysicalTo")
+    extension (id: PhysicalResourceId)
+      @targetName("PhysicalResourceIdTo")
       def to: String = id
 
 
@@ -40,19 +40,19 @@ object Types :
       else Left(InvalidOrderId(id))
 
     extension (id: OrderId)
-      @targetName("OrderTo")
+      @targetName("OrderIdTo")
       def to: String = id
 
 
-  opaque type HumanId = String
-  object HumanId:
-    def from(id: String): Result[HumanId] =
+  opaque type HumanResourceId = String
+  object HumanResourceId:
+    def from(id: String): Result[HumanResourceId] =
       val pattern: Regex = "^HRS_.*$".r
       if pattern.matches(id) then Right(id)
-      else Left(InvalidHumanId(id))
+      else Left(InvalidHumanResourceId(id))
 
-    extension (id: HumanId)
-      @targetName("HumanTo")
+    extension (id: HumanResourceId)
+      @targetName("HumanResourceIdTo")
       def to: String = id
 
 
@@ -64,9 +64,53 @@ object Types :
       else Left(InvalidTaskId(id))
 
     extension (id: TaskId)
-      @targetName("TaskTo")
+      @targetName("TaskIdTo")
       def to: String = id
 
+  
+  opaque type PhysicalResourceType = String
+  object PhysicalResourceType:
+    def from(resourceType: String): Result[PhysicalResourceType] =
+      if(resourceType.isEmpty)
+        Left(EmptyPhysicalResourceType(resourceType))
+      else
+        Right(resourceType)
+
+    extension (resourceType: PhysicalResourceType)
+      @targetName("PhysicalResourceTypeTo")
+      def to: String = resourceType
+
+  
+  opaque type OrderQuantity = Int
+  object OrderQuantity:
+    def from(quantity: String): Result[OrderQuantity] =
+      quantity.toIntOption match
+        case None =>
+          Left(InvalidQuantity(quantity))
+        case Some(quantityInt) if quantityInt <= 0 =>
+          Left(InvalidQuantity(quantity))
+        case Some(quantityInt) =>
+          Right(quantityInt)
+  
+    extension (quantityInt: OrderQuantity)
+      @targetName("OrderQuantityTo")
+      def to: Int = quantityInt
+
+  
+  opaque type TaskTime = Int
+  object TaskTime:
+    def from(time: String): Result[TaskTime] =
+      time.toIntOption match
+        case None =>
+          Left(InvalidTime(time))
+        case Some(timeInt) if timeInt <= 0 =>
+          Left(InvalidTime(time))
+        case Some(timeInt) =>
+          Right(timeInt)
+
+    extension (timeInt: TaskTime)
+      @targetName("TaskTimeTo")
+      def to: Int = timeInt
 
 
 
@@ -76,7 +120,7 @@ object Types :
 
 
 
-  // To use Later
+// To use Later
   //opaque type ID = String
   //object ID:
   //
