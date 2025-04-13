@@ -1,33 +1,28 @@
-import pj.domain.Result
-import pj.domain.resources.PhysicalResource
-import pj.xml.{XML, XMLToDomain}
+import pj.domain.*
 import pj.io.FileIO
-import pj.xml.XMLToDomain.getProduct
-import scala.xml.*
+import pj.xml.*
 
-
-//val xml = FileIO.load("C:\\Users\\Utilizador\\Documents\\TAP_Project\\files\\assessment\\ms01\\validAgenda_01_in.xml")
-//val result = XML.traverse( XML.fromNode(xml, "PhysicalResources"))
-
-val filePath = "C:\\Users\\Utilizador\\Documents\\TAP_Project\\files\\assessment\\ms01\\validAgenda_01_in.xml"
+//val filePath = "C:\\Users\\Utilizador\\Documents\\TAP_Project\\files\\assessment\\ms01\\validAgenda_01_in.xml"
+val filePath = "C:\\Users\\migue\\Desktop\\Universidade\\Mestrado GitHub Projects\\2 Ano\\2 Semestre\\TAP\\tap-pj-ncf-12\\files\\assessment\\ms01\\validAgenda_01_in.xml"
 
 val xmlResult = FileIO.load(filePath)
 
 xmlResult match {
   case Right(production) => {
-    val physicalResources = pj.xml.XML.fromNode(production, "PhysicalResources") match {
+    val physicalResources = XML.fromNode(production, "PhysicalResources") match {
       case Right(node) =>
-        pj.xml.XML.traverse((node \ "Physical"), { physical =>
+        XML.traverse((node \ "Physical"), { physical =>
           for {
-            id <- pj.xml.XML.fromAttribute(physical, "id")
-            typ <- pj.xml.XML.fromAttribute(physical, "type")
+            id <- XML.fromAttribute(physical, "id")
+            typ <- XML.fromAttribute(physical, "type")
           } yield (id, typ)
         })
       case Left(error) => Left(error)
     }
-    val products = pj.xml.XML.fromNode(production, "Products") match {
+    
+    val products = XML.fromNode(production, "Products") match {
       case Right(node) =>
-        pj.xml.XML.traverse((node \ "Product"), { product =>
+        XML.traverse((node \ "Product"), { product =>
           XMLToDomain.getProduct(product) match {
             case Right(product) => Right(product)
             case Left(error) => Left(error)
