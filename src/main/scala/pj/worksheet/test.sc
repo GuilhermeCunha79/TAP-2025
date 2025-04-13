@@ -40,25 +40,33 @@ xmlResult match {
       case Left(error) => Left(error)
     }
 
-    val humanResources = XML.fromNode(production, "HumanResources") match {
-      case Right(node) =>
-        XML.traverse((node \ "Human"), { human =>
-          for {
-            id <- XML.fromAttribute(human, "id")
-            name <- XML.fromAttribute(human, "name")
-          } yield (id, name)
-        })
+    val humanResources = physicalResourcesTypes match {
+      case Right(resourceTypes) =>
+        XML.fromNode(production, "HumanResources") match {
+          case Right(node) =>
+            XML.traverse((node \ "Human"), { human =>
+              XMLToDomain.getHumanResource(resourceTypes)(human) match {
+                case Right(human) => Right(human)
+                case Left(error) => Left(error)
+              }
+            })
+          case Left(error) => Left(error)
+        }
       case Left(error) => Left(error)
     }
 
-    val products = XML.fromNode(production, "Products") match {
-      case Right(node) =>
-        XML.traverse((node \ "Product"), { product =>
-          XMLToDomain.getProduct(product) match {
-            case Right(product) => Right(product)
-            case Left(error) => Left(error)
-          }
-        })
+    val products = tasks match {
+      case Right(tasks) =>
+        XML.fromNode(production, "Products") match {
+          case Right(node) =>
+            XML.traverse((node \ "Product"), { product =>
+              XMLToDomain.getProduct(tasks)(product) match {
+                case Right(product) => Right(product)
+                case Left(error) => Left(error)
+              }
+            })
+          case Left(error) => Left(error)
+        }
       case Left(error) => Left(error)
     }
 
