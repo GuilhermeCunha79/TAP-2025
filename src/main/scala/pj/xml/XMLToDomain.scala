@@ -25,14 +25,19 @@ object XMLToDomain :
       })
     yield Product(productId, name, tasksList)
 
-  def getOrder(xml: Node): Result[Order] =
+  def getOrder(products: List[Product])(xml: Node): Result[Order] =
     for
       rawOrderId <- XML.fromAttribute(xml, "id")
       rawProductId <- XML.fromAttribute(xml, "prdref")
       rawQuantity <- XML.fromAttribute(xml, "quantity")
       orderId <- OrderId.from(rawOrderId)
-      productId <- ProductId.from(rawProductId)
       quantity <- OrderQuantity.from(rawQuantity)
+      productId <-
+        val productExists = products.exists(_.id.to == rawProductId)
+        if (productExists)
+          ProductId.from(rawProductId)
+        else
+          Left(ProductDoesNotExist(rawProductId))
     yield Order(orderId, quantity, productId)
 
   def getPhysicalResource(xml: Node): Result[PhysicalResource] =

@@ -70,14 +70,18 @@ xmlResult match {
       case Left(error) => Left(error)
     }
 
-    val orders = XML.fromNode(production, "Orders") match {
-      case Right(node) =>
-        XML.traverse((node \ "Order"), { order =>
-          XMLToDomain.getOrder(order) match {
-            case Right(order) => Right(order)
-            case Left(error) => Left(error)
-          }
-        })
+    val orders = products match {
+      case Right(products) =>
+       XML.fromNode(production, "Orders") match {
+          case Right(node) =>
+            XML.traverse((node \ "Order"), { order =>
+              XMLToDomain.getOrder(products)(order) match {
+                case Right(order) => Right(order)
+                case Left(error) => Left(error)
+              }
+            })
+          case Left(error) => Left(error)
+        }
       case Left(error) => Left(error)
     }
 
