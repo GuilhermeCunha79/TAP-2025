@@ -11,3 +11,7 @@ final case class Task(id: TaskId, time: TaskTime, physicalResources: List[Physic
 final case class HumanResource(id: HumanResourceId, name: String, physicalResources: List[PhysicalResourceType] )
 
 final case class PhysicalResource(id: PhysicalResourceId, name: PhysicalResourceType)
+
+
+final case class TaskSchedule(orderId: OrderId, productNumber: ProductId, taskId:TaskId, start:TaskTime, end:TaskTime,
+                              physicalResourceIds: List[PhysicalResourceId], humanResourceNames: List[String])
