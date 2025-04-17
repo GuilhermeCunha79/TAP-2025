@@ -61,16 +61,20 @@ trait AssessmentBehaviours extends AnyFunSuite:
           case Right((de, dem)) => if de.equals(dem) then 1 else 0
   
   def performAllTests(ms: Elem => Result[Elem], path: String, milestone: String): Unit =
-    val files = new File(path).listFiles.sortBy(_.getName)
-    val validFiles = files.filter(_.getName.endsWith(OUT))
-    val invalidFiles = files.filter(_.getName.endsWith(OUTERROR))
-    val validFileTuple = validFiles.flatMap( f => files.find(_.getName.equals(f.getName.replace(OUT,IN))).map((_, f)) )
-    val invalidFileTuple = invalidFiles.flatMap( f => files.find(_.getName.equals(f.getName.replace(OUTERROR,IN))).map((_, f)) )
-    if ( (validFiles.length > validFileTuple.length) || (invalidFiles.length > invalidFileTuple.length) ) fail("Result File without Input!!!")
-    val numTests = validFiles.length + invalidFiles.length
-    val passedTests = validFileTuple.map(performOneValidTest(ms)).sum + invalidFileTuple.map(performOneInvalidTest(ms)).sum
-    val message: String = if (numTests == 0) s"There were no tests for $milestone!"
+    val filesUnsorted = new File(path).listFiles
+    if (filesUnsorted == null || filesUnsorted.isEmpty) then
+      println(s"There were no files for $milestone!")
     else
-      val ratio: Int = (passedTests * 100) / numTests
-      s"Final score of $milestone: $passedTests / $numTests = $ratio"
-    println(message)
+      val files = filesUnsorted.sortBy(_.getName)
+      val validFiles = files.filter(_.getName.endsWith(OUT))
+      val invalidFiles = files.filter(_.getName.endsWith(OUTERROR))
+      val validFileTuple = validFiles.flatMap( f => files.find(_.getName.equals(f.getName.replace(OUT,IN))).map((_, f)) )
+      val invalidFileTuple = invalidFiles.flatMap( f => files.find(_.getName.equals(f.getName.replace(OUTERROR,IN))).map((_, f)) )
+      if ( (validFiles.length > validFileTuple.length) || (invalidFiles.length > invalidFileTuple.length) ) fail("Result File without Input!!!")
+      val numTests = validFiles.length + invalidFiles.length
+      val passedTests = validFileTuple.map(performOneValidTest(ms)).sum + invalidFileTuple.map(performOneInvalidTest(ms)).sum
+      val message: String = if (numTests == 0) s"There were no tests for $milestone!"
+      else
+        val ratio: Int = (passedTests * 100) / numTests
+        s"Final score of $milestone: $passedTests / $numTests = $ratio"
+      println(message)
