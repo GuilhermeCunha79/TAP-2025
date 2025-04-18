@@ -29,13 +29,13 @@ object ScheduleMS01 extends Schedule:
     yield
       (physicalResources, physicalTypes, tasks, humanResources, products, orders)
 
-  def FullLogic(physicalResources: List[PhysicalResource],
-                 physicalTypes: List[PhysicalResourceType],
-                 tasks: List[Task],
-                 humanResources: List[HumanResource],
-                 products: List[Product],
-                 orders: List[Order]
-               ): Elem =
+  private def FullLogic(physicalResources: List[PhysicalResource],
+                        physicalTypes: List[PhysicalResourceType],
+                        tasks: List[Task],
+                        humanResources: List[HumanResource],
+                        products: List[Product],
+                        orders: List[Order]
+                       ): Elem =
 
     val accumulatedSchedules = orders.flatMap { order =>
       val order_orderId = order.id
@@ -58,13 +58,16 @@ object ScheduleMS01 extends Schedule:
                   val task_taskTime = t.time
                   val task_physicalResourceTypes = t.physicalResources
 
-                  val (updatedPhysicalResourceIds, updatedHumanResourceNames) =
-                    task_physicalResourceTypes.foldLeft((List.empty[PhysicalResourceId], List.empty[String])):
-                      case ((prList, hrList), p_physicalResource) =>
-                        val updatedPrList = physicalResources.find(_.name == p_physicalResource).map(pr => pr.id :: prList).getOrElse(prList)
-                        val updatedHrList = humanResources.filter(_.physicalResources.contains(p_physicalResource)).map(_.name) ++ hrList
-                        (updatedPrList, updatedHrList)
-                  
+                  val updatedPhysicalResourceIds =
+                    task_physicalResourceTypes.flatMap { name =>
+                      physicalResources.find(_.name == name).map(_.id)
+                    }
+
+                  val updatedHumanResourceNames =
+                    task_physicalResourceTypes.flatMap { name =>
+                      humanResources.filter(_.physicalResources.contains(name)).map(_.name)
+                    }
+
                   val start = acc.headOption.map(_._1).getOrElse(0)
                   val end = start + task_taskTime.to
                   val updatedPhysicalResourceIdsReverse = updatedPhysicalResourceIds.reverse
