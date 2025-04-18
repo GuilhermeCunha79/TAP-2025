@@ -29,8 +29,7 @@ object ScheduleMS01 extends Schedule:
     yield
       (physicalResources, physicalTypes, tasks, humanResources, products, orders)
 
-  def FullLogic(
-                 physicalResources: List[PhysicalResource],
+  def FullLogic(physicalResources: List[PhysicalResource],
                  physicalTypes: List[PhysicalResourceType],
                  tasks: List[Task],
                  humanResources: List[HumanResource],
@@ -38,58 +37,55 @@ object ScheduleMS01 extends Schedule:
                  orders: List[Order]
                ): Elem =
 
-    orders.foreach { order =>
+    val accumulatedSchedules = orders.flatMap { order =>
       val order_orderId = order.id
       val order_productId = order.productId
       val order_quantity = order.quantity
 
-      //println(s"Processing Order: $order_orderId, Product ID: $order_productId, Quantity: $order_quantity")
+      (1 to order_quantity.to).foldLeft(List.empty[(Int, List[PhysicalResourceId], List[String], Int)]) { (accumulatedSchedules, productNumber) =>
+        val productOpt = products.find(_.id == order_productId)
 
-      (1 to order_quantity.to).foldLeft((0, List[PhysicalResourceId](), List[String]())):
-        case ((start, physicalResourceIds, humanResourceNames), productNumber) =>
-          val product = products.find(_.id == order_productId)
-
-          product.foreach { p =>
+        productOpt match
+          case Some(p) =>
             val product_tasks = p.tasksList
-            //println(s"Found Product [$productNumber]: ${p.name}, Tasks: ${product_tasks}")
 
-            product_tasks.foreach { taskId =>
-              val task = tasks.find(_.id == taskId)
+            product_tasks.foldLeft(accumulatedSchedules) { (acc, taskId) =>
+              val taskOpt = tasks.find(_.id == taskId)
 
-              task.foreach { t =>
-                val task_taskId = t.id
-                val task_taskTime = t.time
-                val task_physicalResourceTypes = t.physicalResources
+              taskOpt match
+                case Some(t) =>
+                  val task_taskId = t.id
+                  val task_taskTime = t.time
+                  val task_physicalResourceTypes = t.physicalResources
 
-                //println(s"Processing Task [$task_taskId] for Product #$productNumber, Time: $task_taskTime")
+                  val (updatedPhysicalResourceIds, updatedHumanResourceNames) =
+                    task_physicalResourceTypes.foldLeft((List.empty[PhysicalResourceId], List.empty[String])):
+                      case ((prList, hrList), p_physicalResource) =>
+                        val updatedPrList = physicalResources.find(_.name == p_physicalResource).map(pr => pr.id :: prList).getOrElse(prList)
+                        val updatedHrList = humanResources.filter(_.physicalResources.contains(p_physicalResource)).map(_.name) ++ hrList
+                        (updatedPrList, updatedHrList)
+                  
+                  val start = acc.headOption.map(_._1).getOrElse(0)
+                  val end = start + task_taskTime.to
+                  val updatedPhysicalResourceIdsReverse = updatedPhysicalResourceIds.reverse
+                  val updatedHumanResourceNamesReverse = updatedHumanResourceNames.reverse
 
-                val (updatedPhysicalResourceIds, updatedHumanResourceNames) =
-                  task_physicalResourceTypes.foldLeft((physicalResourceIds, humanResourceNames)):
-                    case ((prList, hrList), p_physicalResource) =>
-                      val updatedPrList = physicalResources.find(_.name == p_physicalResource).map(pr => pr.id :: prList).getOrElse(prList)
-                      val updatedHrList = humanResources.filter(_.physicalResources.contains(p_physicalResource)).map(_.name) ++ hrList
+                  println(
+                    s"Task Scheduled: Order ID: $order_orderId, Product Number $productNumber, Task ID: $task_taskId, Start: $start, End: $end, " +
+                      s"Physical Resources: $updatedPhysicalResourceIdsReverse, Human Resources: $updatedHumanResourceNamesReverse"
+                  )
 
-                      //println(s"Physical Resource: $p_physicalResource, Updated PR List: $updatedPrList, Updated HR List: $updatedHrList")
+                  (end, updatedPhysicalResourceIdsReverse, updatedHumanResourceNamesReverse, end) :: acc
 
-                      (updatedPrList, updatedHrList)
-
-                val end = start + task_taskTime.to
-                val updatedPhysicalResourceIdsReverse = updatedPhysicalResourceIds.reverse
-                val updatedHumanResourceNamesReverse = updatedHumanResourceNames.reverse
-
-                println(
-                  s"Task Scheduled: Order ID: $order_orderId, Product Number $productNumber, Task ID: $task_taskId, Start: $start, End: $end, " +
-                    s"Physical Resources: $updatedPhysicalResourceIdsReverse, Human Resources: $updatedHumanResourceNamesReverse"
-                )
-
-                (end, updatedPhysicalResourceIdsReverse, updatedHumanResourceNamesReverse)
-              }
+                case None => acc
             }
-          }
-          (start, physicalResourceIds, humanResourceNames)
+
+          case None => accumulatedSchedules
+      }
     }
 
-    //TODO: Fazer o out para o XML
+    val reversedSchedules = accumulatedSchedules.reverse
+
     <schedules></schedules>
 
 
@@ -100,7 +96,7 @@ object ScheduleMS01 extends Schedule:
     val domain = for
       value <- ScheduleDataRetriever(xml)
     yield value
-  
+
     domain match
       case Right(value) => Right(FullLogic(value._1, value._2, value._3, value._4, value._5, value._6))
       case Left(error) => Left(error)
