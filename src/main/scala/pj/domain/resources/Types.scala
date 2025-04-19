@@ -25,7 +25,7 @@ object Types :
     def from(id: String): Result[PhysicalResourceId] =
       val pattern = "^PRS_.*$".r
       if pattern.matches(id) then Right(id)
-      else Left(InvalidPhysicalId(id))
+      else Left(InvalidPhysicalResourceId(id))
 
     extension (id: PhysicalResourceId)
       @targetName("PhysicalResourceIdTo")
@@ -49,7 +49,7 @@ object Types :
     def from(id: String): Result[HumanResourceId] =
       val pattern: Regex = "^HRS_.*$".r
       if pattern.matches(id) then Right(id)
-      else Left(InvalidHumanId(id))
+      else Left(InvalidHumanResourceId(id))
 
     extension (id: HumanResourceId)
       @targetName("HumanResourceIdTo")
@@ -67,7 +67,7 @@ object Types :
       @targetName("TaskIdTo")
       def to: String = id
 
-  
+
   opaque type PhysicalResourceType = String
   object PhysicalResourceType:
     def from(resourceType: String): Result[PhysicalResourceType] =
@@ -80,7 +80,7 @@ object Types :
       @targetName("PhysicalResourceTypeTo")
       def to: String = resourceType
 
-  
+
   opaque type OrderQuantity = Int
   object OrderQuantity:
     def from(quantity: String): Result[OrderQuantity] =
@@ -91,12 +91,12 @@ object Types :
           Left(InvalidQuantity(quantity))
         case Some(quantityInt) =>
           Right(quantityInt)
-  
+
     extension (quantityInt: OrderQuantity)
       @targetName("OrderQuantityTo")
       def to: Int = quantityInt
 
-  
+
   opaque type TaskTime = Int
   object TaskTime:
     def from(time: String): Result[TaskTime] =
@@ -121,24 +121,24 @@ object Types :
 
 
 // To use Later
-  //opaque type ID = String
-  //object ID:
-  //
-  //  enum IDType(val pattern: Regex):
-  //    case Physical extends IDType("^PRS_.*$".r)
-  //    case Human    extends IDType("^HRS_.*$".r)
-  //    case Task     extends IDType("^TSK_.*$".r)
-  //    case Product  extends IDType("^PRD_.*$".r)
-  //    case Order    extends IDType("^ORD_.*$".r)
-  //
-  //    // For IDREFs (if needed):
-  //    case TaskRef     extends IDType("^TSK_.*$".r)
-  //    case ProductRef  extends IDType("^PRD_.*$".r)
-  //
-  //  def from(id: String, idType: IDType): Result[ID] =
-  //    if idType.pattern.matches(id) then Right(id)
-  //    else Left(InvalidId(s"Invalid ID '$id' for type ${idType.toString}"))
-  //
-  //  // Extension methods for working with ID
-  //  extension (id: ID)
-  //    def value: String = id
+//opaque type ID = String
+//object ID:
+//
+//  enum IDType(val pattern: Regex):
+//    case Physical extends IDType("^PRS_.*$".r)
+//    case Human    extends IDType("^HRS_.*$".r)
+//    case Task     extends IDType("^TSK_.*$".r)
+//    case Product  extends IDType("^PRD_.*$".r)
+//    case Order    extends IDType("^ORD_.*$".r)
+//
+//    // For IDREFs (if needed):
+//    case TaskRef     extends IDType("^TSK_.*$".r)
+//    case ProductRef  extends IDType("^PRD_.*$".r)
+//
+//  def from(id: String, idType: IDType): Result[ID] =
+//    if idType.pattern.matches(id) then Right(id)
+//    else Left(InvalidId(s"Invalid ID '$id' for type ${idType.toString}"))
+//
+//  // Extension methods for working with ID
+//  extension (id: ID)
+//    def value: String = id
