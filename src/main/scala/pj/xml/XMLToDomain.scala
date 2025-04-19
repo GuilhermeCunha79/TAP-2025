@@ -43,12 +43,11 @@ object XMLToDomain :
   def getPhysicalResource(xml: Node): Result[PhysicalResource] =
     for
       rawPhysicalResourceId <- XML.fromAttribute(xml, "id")
-      rawPhysicalResourceType <- XML.fromAttribute(xml, "type")
+      physicalResourceType <- XML.fromAttribute(xml, "type")
       physicalResourceId <- PhysicalResourceId.from(rawPhysicalResourceId)
-      physicalResourceType <- PhysicalResourceType.from(rawPhysicalResourceType)
     yield PhysicalResource(physicalResourceId, physicalResourceType)
 
-  def getTask(physicalResourceTypes: List[PhysicalResourceType])(xml: Node): Result[Task] =
+  def getTask(physicalResourceTypes: List[String])(xml: Node): Result[Task] =
     for
       rawTaskId <- XML.fromAttribute(xml, "id")
       rawTaskTime <- XML.fromAttribute(xml, "time")
@@ -56,28 +55,28 @@ object XMLToDomain :
       taskTime <- TaskTime.from(rawTaskTime)
       taskPhysicalResources <- XML.traverse(xml \ "PhysicalResource", { physicalResourceNode =>
         XML.fromAttribute(physicalResourceNode, "type").flatMap { typeString =>
-          val isValidType = physicalResourceTypes.exists(_.to == typeString)
-          if (isValidType) {
-            PhysicalResourceType.from(typeString)
-          } else {
+          val isValidType = physicalResourceTypes.contains(typeString)
+          if (!isValidType) {
             Left(TaskUsesNonExistentPRT(typeString))
+          } else {
+            Right(typeString)
           }
         }
       })
     yield Task(taskId, taskTime, taskPhysicalResources)
 
-  def getHumanResource(physicalResourceTypes: List[PhysicalResourceType])(xml: Node): Result[HumanResource] =
+  def getHumanResource(physicalResourceTypes: List[String])(xml: Node): Result[HumanResource] =
     for
       rawHumanResourceId <- XML.fromAttribute(xml, "id")
       humanResourceId <- HumanResourceId.from(rawHumanResourceId)
       humanResourceName <- XML.fromAttribute(xml, "name")
       humanResourcePhysicalResources <- XML.traverse(xml \ "Handles", { physicalResourceNode =>
         XML.fromAttribute(physicalResourceNode, "type").flatMap { typeString =>
-          val isValidType = physicalResourceTypes.exists(_.to == typeString)
-          if (isValidType) {
-            PhysicalResourceType.from(typeString)
+          val isValidType = physicalResourceTypes.contains(typeString)
+          if (!isValidType) {
+            Left(PhysicalResourceTypeNotFound(s"$rawHumanResourceId,$typeString"))
           } else {
-            Left(PhysicalResourceTypeNotFound(s"Human resource '$rawHumanResourceId' references unknown PhysicalResource type: '$typeString'"))
+            Right(typeString)
           }
         }
       })

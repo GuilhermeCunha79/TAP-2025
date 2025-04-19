@@ -67,22 +67,7 @@ object Types :
       @targetName("TaskIdTo")
       def to: String = id
 
-
-  opaque type PhysicalResourceType = String
-  object PhysicalResourceType:
-    def from(resourceType: String): Result[PhysicalResourceType] =
-      if(resourceType.isEmpty)
-        Left(EmptyPhysicalResourceType(resourceType))
-      else
-        Right(resourceType)
-
-    extension (resourceType: PhysicalResourceType)
-      @targetName("PhysicalResourceTypeTo")
-      def to: String = resourceType
-      def equal(otherPhysicalResourceType: PhysicalResourceType): Boolean =
-        resourceType.equals(otherPhysicalResourceType)
-
-
+  
   opaque type OrderQuantity = Int
   object OrderQuantity:
     def from(quantity: String): Result[OrderQuantity] =

@@ -11,7 +11,7 @@ object ScheduleMS01 extends Schedule {
 
   private def scheduleDataRetriever(xml: Elem): Result[(
     List[PhysicalResource],
-    List[PhysicalResourceType],
+    List[String],
     List[Task],
     List[HumanResource],
     List[Product],
@@ -38,36 +38,36 @@ object ScheduleMS01 extends Schedule {
 
   private def allocatePhysicalResources(
     taskId: TaskId,
-    requiredTypes: List[PhysicalResourceType],
+    requiredTypes: List[String],
     availableResources: List[PhysicalResource]
   ): Result[List[PhysicalResourceId]] =
     requiredTypes.foldLeft[Result[(List[PhysicalResourceId], Set[PhysicalResourceId])]](Right((Nil, Set.empty))) {
       case (accResult, requiredType) => accResult.flatMap { case (assignedIds, usedIds) =>
         availableResources
-          .find(resource => resource.name.equal(requiredType) && !usedIds.contains(resource.id))
+          .find(resource => resource.name.equals(requiredType) && !usedIds.contains(resource.id))
           .map(_.id)
-          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType.to))
+          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType))
           .map(id => (id :: assignedIds, usedIds + id))
       }
     }.map(_._1.reverse)
 
   private def allocateHumanResources(
     taskId: TaskId,
-    requiredTypes: List[PhysicalResourceType],
+    requiredTypes: List[String],
     availableHumans: List[HumanResource]
   ): Result[List[String]] =
     requiredTypes.foldLeft[Result[(List[String], Set[String])]](Right((Nil, Set.empty))) {
       case (accResult, requiredType) => accResult.flatMap { case (assignedNames, usedNames) =>
         availableHumans
           .find(hr => hr.physicalResources.contains(requiredType) && !usedNames.contains(hr.name))
-          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType.to))
+          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType))
           .map(hr => (hr.name :: assignedNames, usedNames + hr.name))
       }
     }.map(_._1.reverse)
 
   private def generateSchedule(
       physicalResources: List[PhysicalResource],
-      physicalTypes: List[PhysicalResourceType],
+      physicalTypes: List[String],
       allTasks: List[Task],
       humanResources: List[HumanResource],
       allProducts: List[Product],
