@@ -29,7 +29,28 @@ object ScheduleMS01 extends Schedule {
     yield
       (physicalResources, physicalTypes, tasks, humanResources, products, orders)
 
-  private def FullLogic(
+  private def allocatePhysical(taskId: TaskId, types: List[PhysicalResourceType], physicalResources: List[PhysicalResource]): Result[List[PhysicalResourceId]] =
+    types.foldLeft[Result[(List[PhysicalResourceId], Set[PhysicalResourceId])]](Right((Nil, Set.empty))) {
+      case (acc, typ) => acc.flatMap { case (assigned, used) =>
+        physicalResources
+          .find(pr => pr.name.to == typ.to && !used.contains(pr.id))
+          .map(_.id)
+          .toRight(DomainError.ResourceUnavailable(taskId.to, typ.to))
+          .map(id => (id :: assigned, used + id))
+      }
+    }.map(_._1.reverse)
+
+  private def allocateHuman(taskId: TaskId, types: List[PhysicalResourceType], humanResources: List[HumanResource]): Result[List[String]] =
+    types.foldLeft[Result[(List[String], Set[String])]](Right((Nil, Set.empty))) {
+      case (acc, typ) => acc.flatMap { case (assigned, used) =>
+        humanResources
+          .find(hr => hr.physicalResources.contains(typ) && !used.contains(hr.name))
+          .toRight(DomainError.ResourceUnavailable(taskId.to, typ.to))
+          .map(hr => (hr.name :: assigned, used + hr.name))
+      }
+    }.map(_._1.reverse)
+
+  private def GenerateSchedule(
                          physicalResources: List[PhysicalResource],
                          physicalTypes: List[PhysicalResourceType],
                          tasks: List[Task],
@@ -37,27 +58,6 @@ object ScheduleMS01 extends Schedule {
                          products: List[Product],
                          orders: List[Order]
                        ): Result[Elem] =
-    
-    def allocatePhysical(taskId: TaskId, types: List[PhysicalResourceType]): Result[List[PhysicalResourceId]] =
-      types.foldLeft[Result[(List[PhysicalResourceId], Set[PhysicalResourceId])]](Right((Nil, Set.empty))) {
-        case (acc, typ) => acc.flatMap { case (assigned, used) =>
-          physicalResources
-            .find(pr => pr.name.to == typ.to && !used.contains(pr.id))
-            .map(_.id)
-            .toRight(DomainError.ResourceUnavailable(taskId.to, typ.to))
-            .map(id => (id :: assigned, used + id))
-        }
-      }.map(_._1.reverse)
-    
-    def allocateHuman(taskId: TaskId, types: List[PhysicalResourceType]): Result[List[String]] =
-      types.foldLeft[Result[(List[String], Set[String])]](Right((Nil, Set.empty))) {
-        case (acc, typ) => acc.flatMap { case (assigned, used) =>
-          humanResources
-            .find(hr => hr.physicalResources.contains(typ) && !used.contains(hr.name))
-            .toRight(DomainError.ResourceUnavailable(taskId.to, typ.to))
-            .map(hr => (hr.name :: assigned, used + hr.name))
-        }
-      }.map(_._1.reverse)
 
     type Acc = (List[TaskSchedule], Int)
     val initial: Result[Acc] = Right((Nil, 0))
@@ -76,14 +76,13 @@ object ScheduleMS01 extends Schedule {
                     .toRight(DomainError.TaskDoesNotExist(tId.to))
                     .flatMap { t =>
                       for {
-                        physIds <- allocatePhysical(t.id, t.physicalResources)
-                        humIds <- allocateHuman(t.id, t.physicalResources)
+                        physIds <- allocatePhysical(t.id, t.physicalResources, physicalResources)
+                        humIds <- allocateHuman(t.id, t.physicalResources, humanResources)
                       } yield
-                        val start = tStart
-                        val end = start + t.time.to
+                        val end = tStart + t.time.to
                         val schedule = TaskSchedule(
                           order.id, prodNum, t.id,
-                          start, end,
+                          tStart, end,
                           physIds, humIds
                         )
                         (schedule :: ts, end)
@@ -130,6 +129,6 @@ object ScheduleMS01 extends Schedule {
     yield value
 
     domain match
-      case Right(value) => FullLogic(value._1, value._2, value._3, value._4, value._5, value._6)
+      case Right(value) => GenerateSchedule(value._1, value._2, value._3, value._4, value._5, value._6)
       case Left(error) => Left(error)
 }
