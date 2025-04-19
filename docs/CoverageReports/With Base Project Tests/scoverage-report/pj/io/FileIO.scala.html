@@ -1,0 +1,1184 @@
+<html>
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title id="title">
+          pj\io\FileIO.scala.html
+        </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/css/theme.default.min.css" type="text/css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/js/jquery.tablesorter.min.js"></script><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" type="text/css"/><script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script><script type="text/javascript">
+        $(document).ready(function() {$(".tablesorter").tablesorter();});
+      </script>
+        <style>
+          table.codegrid { font-family: monospace; font-size: 12px; width: auto!important; }table.statementlist { width: auto!important; font-size: 13px; } table.codegrid td { padding: 0!important; border: 0!important } table td.linenumber { width: 40px!important; } 
+        </style>
+      </head>
+      <body style="font-family: monospace;">
+        <ul class="nav nav-tabs">
+          <li>
+            <a href="#codegrid" data-toggle="tab">Codegrid</a>
+          </li>
+          <li>
+            <a href="#statementlist" data-toggle="tab">Statement List</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="codegrid">
+            <pre style='font-size: 12pt; font-family: courier, monospace;'>1 <span style=''>package pj.io
+</span>2 <span style=''>
+</span>3 <span style=''>import pj.domain.*
+</span>4 <span style=''>import pj.domain.DomainError.*
+</span>5 <span style=''>
+</span>6 <span style=''>import java.io.{File, PrintWriter}
+</span>7 <span style=''>import scala.util.Try
+</span>8 <span style=''>import scala.xml.{Elem, PrettyPrinter, XML}
+</span>9 <span style=''>
+</span>10 <span style=''>object FileIO:
+</span>11 <span style=''>
+</span>12 <span style=''>  /** load xml by file name
+</span>13 <span style=''>   *
+</span>14 <span style=''>   * @param fn file name
+</span>15 <span style=''>   * @return a xml element if file exists or a domain error
+</span>16 <span style=''>   */
+</span>17 <span style=''>  </span><span style='background: #F0ADAD'>def load</span><span style=''>(fn: String): Result[Elem] =
+</span>18 <span style=''>    </span><span style='background: #F0ADAD'>Try(XML.loadFile(fn)).fold(t =&gt; Left(IOFileProblem(t.getMessage)), xml =&gt; Right(xml))</span><span style=''>
+</span>19 <span style=''>
+</span>20 <span style=''>  /** load xml by file
+</span>21 <span style=''>   *
+</span>22 <span style=''>   * @param f file
+</span>23 <span style=''>   * @return a xml element if file exists or a domain error
+</span>24 <span style=''>   */
+</span>25 <span style=''>  </span><span style='background: #AEF1AE'>def load</span><span style=''>(f: File): Result[Elem] =
+</span>26 <span style=''>    </span><span style='background: #AEF1AE'>Try(XML.loadFile(f)).fold(t =&gt; </span><span style='background: #F0ADAD'>Left</span><span style='background: #AEF1AE'>(IOFileProblem(</span><span style='background: #F0ADAD'>t.getMessage</span><span style='background: #AEF1AE'>)), xml =&gt; Right(xml))</span><span style=''>
+</span>27 <span style=''>  
+</span>28 <span style=''>  /** load xml error file by filename
+</span>29 <span style=''>   *
+</span>30 <span style=''>   * @param fname file name
+</span>31 <span style=''>   * @return the message string if it exists or a domain error
+</span>32 <span style=''>   */
+</span>33 <span style=''>  </span><span style='background: #F0ADAD'>def loadError</span><span style=''>(fname: String): Result[String] =
+</span>34 <span style=''>    </span><span style='background: #F0ADAD'>Try(XML.loadFile(fname)).fold(t =&gt; Left(IOFileProblem(t.getMessage)) , xml =&gt; {
+</span>35 <span style=''></span><span style='background: #F0ADAD'>      val message  = xml \@ &quot;message&quot;
+</span>36 <span style=''></span><span style='background: #F0ADAD'>      if (message.isEmpty) Left(IOFileProblem(&quot;File does not have message&quot;))
+</span>37 <span style=''></span><span style='background: #F0ADAD'>      else Right(message)
+</span>38 <span style=''></span><span style='background: #F0ADAD'>    })</span><span style=''>
+</span>39 <span style=''>  
+</span>40 <span style=''>  /** load xml error file
+</span>41 <span style=''>   *
+</span>42 <span style=''>   * @param f file
+</span>43 <span style=''>   * @return the message string if it exists or a domain error
+</span>44 <span style=''>   */
+</span>45 <span style=''>  </span><span style='background: #AEF1AE'>def loadError</span><span style=''>(f: File): Result[String] =
+</span>46 <span style=''>    </span><span style='background: #AEF1AE'>Try(XML.loadFile(f)).fold(t =&gt; </span><span style='background: #F0ADAD'>Left</span><span style='background: #AEF1AE'>(IOFileProblem(</span><span style='background: #F0ADAD'>t.getMessage</span><span style='background: #AEF1AE'>)) , xml =&gt; {
+</span>47 <span style=''></span><span style='background: #AEF1AE'>      val message  = xml \@ &quot;message&quot;
+</span>48 <span style=''></span><span style='background: #AEF1AE'>      if (message.isEmpty) </span><span style='background: #F0ADAD'>Left(IOFileProblem(&quot;File does not have message&quot;))</span><span style='background: #AEF1AE'>
+</span>49 <span style=''></span><span style='background: #AEF1AE'>      else Right(message)
+</span>50 <span style=''></span><span style='background: #AEF1AE'>    })</span><span style=''>    
+</span>51 <span style=''>
+</span>52 <span style=''>  // save xml to filename
+</span>53 <span style=''>  private val normalizer = </span><span style='background: #AEF1AE'>new PrettyPrinter(120, 4)</span><span style=''>
+</span>54 <span style=''>
+</span>55 <span style=''>  /** save xml element fo filename
+</span>56 <span style=''>   * 
+</span>57 <span style=''>   * @param fname file name
+</span>58 <span style=''>   * @param xml xml element
+</span>59 <span style=''>   */
+</span>60 <span style=''>  </span><span style='background: #F0ADAD'>def save</span><span style=''>(fname: String, xml: Elem): Unit =
+</span>61 <span style=''>    val prettyXml = </span><span style='background: #F0ADAD'>normalizer.format(xml)</span><span style=''>
+</span>62 <span style=''>    new PrintWriter(fname) { </span><span style='background: #F0ADAD'>println(&quot;&lt;?xml version='1.0' encoding=\&quot;UTF-8\&quot;?&gt;&quot;)</span><span style=''>; </span><span style='background: #F0ADAD'>println(prettyXml)</span><span style=''>; </span><span style='background: #F0ADAD'>close()</span><span style=''> }
+</span></pre>
+          </div>
+          <div class="tab-pane" id="statementlist">
+            <table cellspacing="0" cellpadding="0" class="table statementlist">
+      <tr>
+        <th>Line</th>
+        <th>Stmt Id</th>
+        <th>Pos</th>
+        <th>Tree</th>
+        <th>Symbol</th>
+        <th>Tests</th>
+        <th>Code</th>
+      </tr><tr>
+        <td>
+          17
+        </td>
+        <td>
+          224
+        </td>
+        <td>
+          326
+          -
+          334
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          load
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def load
+        </td>
+      </tr><tr>
+        <td>
+          18
+        </td>
+        <td>
+          218
+        </td>
+        <td>
+          368
+          -
+          453
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fold
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Try(XML.loadFile(fn)).fold(t =&gt; Left(IOFileProblem(t.getMessage)), xml =&gt; Right(xml))
+        </td>
+      </tr><tr>
+        <td>
+          18
+        </td>
+        <td>
+          220
+        </td>
+        <td>
+          372
+          -
+          388
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          loadFile
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          XML.loadFile(fn)
+        </td>
+      </tr><tr>
+        <td>
+          18
+        </td>
+        <td>
+          223
+        </td>
+        <td>
+          442
+          -
+          447
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Right
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Right
+        </td>
+      </tr><tr>
+        <td>
+          18
+        </td>
+        <td>
+          219
+        </td>
+        <td>
+          368
+          -
+          389
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Try(XML.loadFile(fn))
+        </td>
+      </tr><tr>
+        <td>
+          18
+        </td>
+        <td>
+          222
+        </td>
+        <td>
+          419
+          -
+          431
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getMessage
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          t.getMessage
+        </td>
+      </tr><tr>
+        <td>
+          18
+        </td>
+        <td>
+          221
+        </td>
+        <td>
+          400
+          -
+          404
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Left
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Left
+        </td>
+      </tr><tr>
+        <td>
+          25
+        </td>
+        <td>
+          231
+        </td>
+        <td>
+          577
+          -
+          585
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          load
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def load
+        </td>
+      </tr><tr>
+        <td>
+          26
+        </td>
+        <td>
+          227
+        </td>
+        <td>
+          620
+          -
+          635
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          loadFile
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.loadFile(f)
+        </td>
+      </tr><tr>
+        <td>
+          26
+        </td>
+        <td>
+          226
+        </td>
+        <td>
+          616
+          -
+          636
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Try(XML.loadFile(f))
+        </td>
+      </tr><tr>
+        <td>
+          26
+        </td>
+        <td>
+          229
+        </td>
+        <td>
+          666
+          -
+          678
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getMessage
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          t.getMessage
+        </td>
+      </tr><tr>
+        <td>
+          26
+        </td>
+        <td>
+          225
+        </td>
+        <td>
+          616
+          -
+          700
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fold
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Try(XML.loadFile(f)).fold(t =&gt; Left(IOFileProblem(t.getMessage)), xml =&gt; Right(xml))
+        </td>
+      </tr><tr>
+        <td>
+          26
+        </td>
+        <td>
+          228
+        </td>
+        <td>
+          647
+          -
+          651
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Left
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Left
+        </td>
+      </tr><tr>
+        <td>
+          26
+        </td>
+        <td>
+          230
+        </td>
+        <td>
+          689
+          -
+          694
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Right
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right
+        </td>
+      </tr><tr>
+        <td>
+          33
+        </td>
+        <td>
+          243
+        </td>
+        <td>
+          853
+          -
+          866
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          loadError
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def loadError
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          236
+        </td>
+        <td>
+          959
+          -
+          971
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getMessage
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          t.getMessage
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          235
+        </td>
+        <td>
+          940
+          -
+          944
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Left
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Left
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          232
+        </td>
+        <td>
+          905
+          -
+          1136
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fold
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Try(XML.loadFile(fname)).fold(t =&gt; Left(IOFileProblem(t.getMessage)) , xml =&gt; {\r\n      val message  = xml \\@ &quot;message&quot;\r\n      if (message.isEmpty) Left(IOFileProblem(&quot;File does not have message&quot;))\r\n      else Right(message)\r\n    })
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          234
+        </td>
+        <td>
+          909
+          -
+          928
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          loadFile
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          XML.loadFile(fname)
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          233
+        </td>
+        <td>
+          905
+          -
+          929
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Try(XML.loadFile(fname))
+        </td>
+      </tr><tr>
+        <td>
+          35
+        </td>
+        <td>
+          237
+        </td>
+        <td>
+          1007
+          -
+          1023
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          \\@
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          xml \\@ &quot;message&quot;
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          238
+        </td>
+        <td>
+          1035
+          -
+          1050
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          isEmpty
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          message.isEmpty
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          240
+        </td>
+        <td>
+          1052
+          -
+          1101
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Left(IOFileProblem(&quot;File does not have message&quot;))
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          239
+        </td>
+        <td>
+          1052
+          -
+          1056
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Left
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Left
+        </td>
+      </tr><tr>
+        <td>
+          37
+        </td>
+        <td>
+          241
+        </td>
+        <td>
+          1114
+          -
+          1119
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Right
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Right
+        </td>
+      </tr><tr>
+        <td>
+          37
+        </td>
+        <td>
+          242
+        </td>
+        <td>
+          1114
+          -
+          1128
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Right(message)
+        </td>
+      </tr><tr>
+        <td>
+          45
+        </td>
+        <td>
+          255
+        </td>
+        <td>
+          1268
+          -
+          1281
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          loadError
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def loadError
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          245
+        </td>
+        <td>
+          1314
+          -
+          1334
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Try(XML.loadFile(f))
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          244
+        </td>
+        <td>
+          1314
+          -
+          1541
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fold
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Try(XML.loadFile(f)).fold(t =&gt; Left(IOFileProblem(t.getMessage)) , xml =&gt; {\r\n      val message  = xml \\@ &quot;message&quot;\r\n      if (message.isEmpty) Left(IOFileProblem(&quot;File does not have message&quot;))\r\n      else Right(message)\r\n    })
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          247
+        </td>
+        <td>
+          1345
+          -
+          1349
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Left
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Left
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          246
+        </td>
+        <td>
+          1318
+          -
+          1333
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          loadFile
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.loadFile(f)
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          248
+        </td>
+        <td>
+          1364
+          -
+          1376
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getMessage
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          t.getMessage
+        </td>
+      </tr><tr>
+        <td>
+          47
+        </td>
+        <td>
+          249
+        </td>
+        <td>
+          1412
+          -
+          1428
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          \\@
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          xml \\@ &quot;message&quot;
+        </td>
+      </tr><tr>
+        <td>
+          48
+        </td>
+        <td>
+          250
+        </td>
+        <td>
+          1440
+          -
+          1455
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          isEmpty
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          message.isEmpty
+        </td>
+      </tr><tr>
+        <td>
+          48
+        </td>
+        <td>
+          252
+        </td>
+        <td>
+          1457
+          -
+          1506
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Left(IOFileProblem(&quot;File does not have message&quot;))
+        </td>
+      </tr><tr>
+        <td>
+          48
+        </td>
+        <td>
+          251
+        </td>
+        <td>
+          1457
+          -
+          1461
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Left
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Left
+        </td>
+      </tr><tr>
+        <td>
+          49
+        </td>
+        <td>
+          254
+        </td>
+        <td>
+          1519
+          -
+          1533
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right(message)
+        </td>
+      </tr><tr>
+        <td>
+          49
+        </td>
+        <td>
+          253
+        </td>
+        <td>
+          1519
+          -
+          1524
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Right
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right
+        </td>
+      </tr><tr>
+        <td>
+          53
+        </td>
+        <td>
+          256
+        </td>
+        <td>
+          1603
+          -
+          1628
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          new PrettyPrinter(120, 4)
+        </td>
+      </tr><tr>
+        <td>
+          60
+        </td>
+        <td>
+          262
+        </td>
+        <td>
+          1742
+          -
+          1750
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          save
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def save
+        </td>
+      </tr><tr>
+        <td>
+          61
+        </td>
+        <td>
+          258
+        </td>
+        <td>
+          1806
+          -
+          1823
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          format$default$2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          normalizer.format
+        </td>
+      </tr><tr>
+        <td>
+          61
+        </td>
+        <td>
+          257
+        </td>
+        <td>
+          1806
+          -
+          1828
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          format
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          normalizer.format(xml)
+        </td>
+      </tr><tr>
+        <td>
+          62
+        </td>
+        <td>
+          259
+        </td>
+        <td>
+          1859
+          -
+          1910
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          println(&quot;&lt;?xml version='1.0' encoding=\\&quot;UTF-8\\&quot;?&gt;&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          62
+        </td>
+        <td>
+          261
+        </td>
+        <td>
+          1932
+          -
+          1939
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          close
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          close()
+        </td>
+      </tr><tr>
+        <td>
+          62
+        </td>
+        <td>
+          260
+        </td>
+        <td>
+          1912
+          -
+          1930
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          println(prettyXml)
+        </td>
+      </tr>
+    </table>
+          </div>
+        </div>
+      </body>
+    </html>
