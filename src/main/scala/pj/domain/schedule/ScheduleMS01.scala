@@ -33,7 +33,7 @@ object ScheduleMS01 extends Schedule {
     types.foldLeft[Result[(List[PhysicalResourceId], Set[PhysicalResourceId])]](Right((Nil, Set.empty))) {
       case (acc, typ) => acc.flatMap { case (assigned, used) =>
         physicalResources
-          .find(pr => pr.name.to == typ.to && !used.contains(pr.id))
+          .find(pr => pr.name.equal(typ) && !used.contains(pr.id))
           .map(_.id)
           .toRight(DomainError.ResourceUnavailable(taskId.to, typ.to))
           .map(id => (id :: assigned, used + id))

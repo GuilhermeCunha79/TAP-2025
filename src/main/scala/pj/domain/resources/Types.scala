@@ -79,6 +79,8 @@ object Types :
     extension (resourceType: PhysicalResourceType)
       @targetName("PhysicalResourceTypeTo")
       def to: String = resourceType
+      def equal(otherPhysicalResourceType: PhysicalResourceType): Boolean =
+        resourceType.equals(otherPhysicalResourceType)
 
 
   opaque type OrderQuantity = Int
