@@ -6,9 +6,9 @@ enum DomainError:
   case IOFileProblem(error: String)
   case XMLError(error: String)
   case InvalidProductId(error: String)
-  case InvalidPhysicalResourceId(error: String)
+  case InvalidPhysicalId(error: String)
   case InvalidOrderId(error: String)
-  case InvalidHumanResourceId(error: String)
+  case InvalidHumanId(error: String)
   case InvalidTaskId(error: String)
 
   case EmptyPhysicalResourceType(error: String) //TODO: Create a xml input and output file with empty resource type

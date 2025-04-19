@@ -25,7 +25,7 @@ object Types :
     def from(id: String): Result[PhysicalResourceId] =
       val pattern = "^PRS_.*$".r
       if pattern.matches(id) then Right(id)
-      else Left(InvalidPhysicalResourceId(id))
+      else Left(InvalidPhysicalId(id))
 
     extension (id: PhysicalResourceId)
       @targetName("PhysicalResourceIdTo")
@@ -49,7 +49,7 @@ object Types :
     def from(id: String): Result[HumanResourceId] =
       val pattern: Regex = "^HRS_.*$".r
       if pattern.matches(id) then Right(id)
-      else Left(InvalidHumanResourceId(id))
+      else Left(InvalidHumanId(id))
 
     extension (id: HumanResourceId)
       @targetName("HumanResourceIdTo")
