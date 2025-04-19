@@ -9,7 +9,7 @@ import scala.xml.Elem
 
 object ScheduleMS01 extends Schedule {
 
-  private def ScheduleDataRetriever(xml: Elem): Result[(List[PhysicalResource], List[PhysicalResourceType], List[Task], List[HumanResource], List[Product], List[Order])] =
+  private def scheduleDataRetriever(xml: Elem): Result[(List[PhysicalResource], List[PhysicalResourceType], List[Task], List[HumanResource], List[Product], List[Order])] =
     for
       physicalNode <- XML.fromNode(xml, "PhysicalResources")
       physicalResources <- XML.traverse(physicalNode \ "Physical", XMLToDomain.getPhysicalResource)
@@ -50,14 +50,14 @@ object ScheduleMS01 extends Schedule {
       }
     }.map(_._1.reverse)
 
-  private def GenerateSchedule(
-                         physicalResources: List[PhysicalResource],
-                         physicalTypes: List[PhysicalResourceType],
-                         tasks: List[Task],
-                         humanResources: List[HumanResource],
-                         products: List[Product],
-                         orders: List[Order]
-                       ): Result[Elem] =
+  private def generateSchedule(
+    physicalResources: List[PhysicalResource],
+    physicalTypes: List[PhysicalResourceType],
+    tasks: List[Task],
+    humanResources: List[HumanResource],
+    products: List[Product],
+    orders: List[Order]
+  ): Result[Elem] =
 
     type Acc = (List[TaskSchedule], Int)
     val initial: Result[Acc] = Right((Nil, 0))
@@ -110,12 +110,12 @@ object ScheduleMS01 extends Schedule {
                     end={sched.end.toString}>
         <PhysicalResources>
           {sched.physicalResourceIds.map(id =>
-            <Physical id={id.to}/> // SELF-CLOSING TAG
+            <Physical id={id.to}/>
         )}
         </PhysicalResources>
         <HumanResources>
           {sched.humanResourceNames.map(name =>
-            <Human name={name}/> // SELF-CLOSING TAG
+            <Human name={name}/>
         )}
         </HumanResources>
       </TaskSchedule>
@@ -124,11 +124,9 @@ object ScheduleMS01 extends Schedule {
 
   // The main function to create the schedule
   def create(xml: Elem): Result[Elem] =
-    val domain = for
-      value <- ScheduleDataRetriever(xml)
-    yield value
-
-    domain match
-      case Right(value) => GenerateSchedule(value._1, value._2, value._3, value._4, value._5, value._6)
-      case Left(error) => Left(error)
+    scheduleDataRetriever(xml) match
+      case Right((physResources, physTypes, tasks, humanResources, products, orders)) => 
+        generateSchedule(physResources, physTypes, tasks, humanResources, products, orders)
+      case Left(error) => 
+        Left(error)
 }
