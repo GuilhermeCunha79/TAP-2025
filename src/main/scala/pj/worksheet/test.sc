@@ -5,9 +5,9 @@ import pj.io.FileIO
 import pj.xml.*
 
 //val filePath = "C:\\Users\\Utilizador\\Documents\\TAP_Project\\files\\assessment\\ms01\\validAgenda_01_in.xml"
-val filePath = "C:\\Users\\migue\\Desktop\\Universidade\\Mestrado GitHub Projects\\2 Ano\\2 Semestre\\TAP\\tap-pj-ncf-12\\files\\assessment\\ms01\\validAgenda_01_in.xml"
+//val filePath = "C:\\Users\\migue\\Desktop\\Universidade\\Mestrado GitHub Projects\\2 Ano\\2 Semestre\\TAP\\tap-pj-ncf-12\\files\\assessment\\ms01\\validAgenda_01_in.xml"
 // Caminho do arquivo XML
-//val filePath = "C:\Users\Guilherme Cunha\IdeaProjects\tap-pj-ncf-12\files\assessment\ms01\validAgenda_01_in.xml"
+val filePath = "C:\\Users\\Guilherme Cunha\\IdeaProjects\\tap-pj-ncf-12\\files\\assessment\\ms01\\invalidAgenda_02_in.xml"
 
 // Carregar o arquivo XML
 val result = FileIO.load(filePath)

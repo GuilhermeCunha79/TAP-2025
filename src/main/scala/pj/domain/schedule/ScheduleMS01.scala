@@ -7,9 +7,9 @@ import pj.xml.{XML, XMLToDomain}
 
 import scala.xml.Elem
 
-object ScheduleMS01 extends Schedule:
+object ScheduleMS01 extends Schedule {
 
-  def ScheduleDataRetriever(xml: Elem): Result[(List[PhysicalResource], List[PhysicalResourceType], List[Task], List[HumanResource], List[Product], List[Order])] =
+  private def ScheduleDataRetriever(xml: Elem): Result[(List[PhysicalResource], List[PhysicalResourceType], List[Task], List[HumanResource], List[Product], List[Order])] =
     for
       physicalNode <- XML.fromNode(xml, "PhysicalResources")
       physicalResources <- XML.traverse(physicalNode \ "Physical", XMLToDomain.getPhysicalResource)
@@ -29,77 +29,107 @@ object ScheduleMS01 extends Schedule:
     yield
       (physicalResources, physicalTypes, tasks, humanResources, products, orders)
 
-  private def FullLogic(physicalResources: List[PhysicalResource],
-                        physicalTypes: List[PhysicalResourceType],
-                        tasks: List[Task],
-                        humanResources: List[HumanResource],
-                        products: List[Product],
-                        orders: List[Order]
-                       ): Elem =
+  private def FullLogic(
+                         physicalResources: List[PhysicalResource],
+                         physicalTypes: List[PhysicalResourceType],
+                         tasks: List[Task],
+                         humanResources: List[HumanResource],
+                         products: List[Product],
+                         orders: List[Order]
+                       ): Result[Elem] =
+    
+    def allocatePhysical(taskId: TaskId, types: List[PhysicalResourceType]): Result[List[PhysicalResourceId]] =
+      types.foldLeft[Result[(List[PhysicalResourceId], Set[PhysicalResourceId])]](Right((Nil, Set.empty))) {
+        case (acc, typ) => acc.flatMap { case (assigned, used) =>
+          physicalResources
+            .find(pr => pr.name.to == typ.to && !used.contains(pr.id))
+            .map(_.id)
+            .toRight(DomainError.ResourceUnavailable(taskId.to, typ.to))
+            .map(id => (id :: assigned, used + id))
+        }
+      }.map(_._1.reverse)
+    
+    def allocateHuman(taskId: TaskId, types: List[PhysicalResourceType]): Result[List[String]] =
+      types.foldLeft[Result[(List[String], Set[String])]](Right((Nil, Set.empty))) {
+        case (acc, typ) => acc.flatMap { case (assigned, used) =>
+          humanResources
+            .find(hr => hr.physicalResources.contains(typ) && !used.contains(hr.name))
+            .toRight(DomainError.ResourceUnavailable(taskId.to, typ.to))
+            .map(hr => (hr.name :: assigned, used + hr.name))
+        }
+      }.map(_._1.reverse)
 
-    val accumulatedSchedules = orders.flatMap { order =>
-      val order_orderId = order.id
-      val order_productId = order.productId
-      val order_quantity = order.quantity
+    type Acc = (List[TaskSchedule], Int)
+    val initial: Result[Acc] = Right((Nil, 0))
 
-      (1 to order_quantity.to).foldLeft(List.empty[(Int, List[PhysicalResourceId], List[String], Int)]) { (accumulatedSchedules, productNumber) =>
-        val productOpt = products.find(_.id == order_productId)
+    val finalResult = orders.foldLeft(initial) { (ordAcc, order) =>
+      ordAcc.flatMap { case (scheds, currentTime) =>
+        val productOpt = products.find(_.id == order.productId)
+          .toRight(DomainError.ProductDoesNotExist(order.productId.to))
 
-        productOpt match
-          case Some(p) =>
-            val product_tasks = p.tasksList
-
-            product_tasks.foldLeft(accumulatedSchedules) { (acc, taskId) =>
-              val taskOpt = tasks.find(_.id == taskId)
-
-              taskOpt match
-                case Some(t) =>
-                  val task_taskId = t.id
-                  val task_taskTime = t.time
-                  val task_physicalResourceTypes = t.physicalResources
-
-                  val updatedPhysicalResourceIds =
-                    task_physicalResourceTypes.flatMap { name =>
-                      physicalResources.find(_.name == name).map(_.id)
+        (1 to order.quantity.to).foldLeft[Result[Acc]](Right((scheds, currentTime))):
+          case (prodAcc, prodNum) => prodAcc.flatMap { case (ps, time0) =>
+            productOpt.flatMap { p =>
+              p.tasksList.foldLeft[Result[Acc]](Right((ps, time0))):
+                case (taskAcc, tId) => taskAcc.flatMap { case (ts, tStart) =>
+                  tasks.find(_.id == tId)
+                    .toRight(DomainError.TaskDoesNotExist(tId.to))
+                    .flatMap { t =>
+                      for {
+                        physIds <- allocatePhysical(t.id, t.physicalResources)
+                        humIds <- allocateHuman(t.id, t.physicalResources)
+                      } yield
+                        val start = tStart
+                        val end = start + t.time.to
+                        val schedule = TaskSchedule(
+                          order.id, prodNum, t.id,
+                          start, end,
+                          physIds, humIds
+                        )
+                        (schedule :: ts, end)
                     }
-
-                  val updatedHumanResourceNames =
-                    task_physicalResourceTypes.flatMap { name =>
-                      humanResources.filter(_.physicalResources.contains(name)).map(_.name)
-                    }
-
-                  val start = acc.headOption.map(_._1).getOrElse(0)
-                  val end = start + task_taskTime.to
-                  val updatedPhysicalResourceIdsReverse = updatedPhysicalResourceIds.reverse
-                  val updatedHumanResourceNamesReverse = updatedHumanResourceNames.reverse
-
-                  println(
-                    s"Task Scheduled: Order ID: $order_orderId, Product Number $productNumber, Task ID: $task_taskId, Start: $start, End: $end, " +
-                      s"Physical Resources: $updatedPhysicalResourceIdsReverse, Human Resources: $updatedHumanResourceNamesReverse"
-                  )
-
-                  (end, updatedPhysicalResourceIdsReverse, updatedHumanResourceNamesReverse, end) :: acc
-
-                case None => acc
+                }
             }
-
-          case None => accumulatedSchedules
+          }
       }
     }
 
-    val reversedSchedules = accumulatedSchedules.reverse
+    finalResult.map { case (allSchedules, _) =>
+      toXml(allSchedules)
+    }
 
-    <schedules></schedules>
+  // Function to generate the XML
+  private def toXml(schedules: List[TaskSchedule]): Elem =
+    <Schedule xmlns="http://www.dei.isep.ipp.pt/tap-2025"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd ">
+      {schedules.sortBy(s => (s.orderId.to, s.productNumber, s.start)).map { sched =>
+      <TaskSchedule order={sched.orderId.to}
+                    productNumber={sched.productNumber.toString}
+                    task={sched.taskId.to}
+                    start={sched.start.toString}
+                    end={sched.end.toString}>
+        <PhysicalResources>
+          {sched.physicalResourceIds.map(id =>
+            <Physical id={id.to}/> // SELF-CLOSING TAG
+        )}
+        </PhysicalResources>
+        <HumanResources>
+          {sched.humanResourceNames.map(name =>
+            <Human name={name}/> // SELF-CLOSING TAG
+        )}
+        </HumanResources>
+      </TaskSchedule>
+    }}
+    </Schedule>
 
-
-  // TODO: Create the code to implement a functional domain model for schedule creation
-  //       Use the xml.XML code to handle the xml elements
-  //       Refer to https://github.com/scala/scala-xml/wiki/XML-Processing for xml creation
+  // The main function to create the schedule
   def create(xml: Elem): Result[Elem] =
     val domain = for
       value <- ScheduleDataRetriever(xml)
     yield value
 
     domain match
-      case Right(value) => Right(FullLogic(value._1, value._2, value._3, value._4, value._5, value._6))
+      case Right(value) => FullLogic(value._1, value._2, value._3, value._4, value._5, value._6)
       case Left(error) => Left(error)
+}

@@ -60,7 +60,7 @@ object XMLToDomain :
           if (isValidType) {
             PhysicalResourceType.from(typeString)
           } else {
-            Left(PhysicalResourceTypeNotFound(s"Task '$rawTaskId' references unknown PhysicalResource type: '$typeString'"))
+            Left(TaskUsesNonExistentPRT(typeString))
           }
         }
       })
