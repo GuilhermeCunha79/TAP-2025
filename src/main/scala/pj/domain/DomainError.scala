@@ -11,14 +11,14 @@ enum DomainError:
   case InvalidHumanId(error: String)
   case InvalidTaskId(error: String)
 
-  case EmptyPhysicalResourceType(error: String) //TODO: Create a xml input and output file with empty resource type
-  case PhysicalResourceTypeNotFound(error: String) //TODO: Create a xml input and output file with a task that has an non existing Physical Resource Type
+  case EmptyPhysicalResourceType(error: String)
+  case PhysicalResourceTypeNotFound(error: String)
 
   case ProductDoesNotExist(error: String)
   case TaskDoesNotExist(error: String)
 
   case InvalidQuantity(error: String)
-  case InvalidTime(error: String)   //TODO: Create a xml input and output file with time <= 0
+  case InvalidTime(error: String)
 
   case TaskUsesNonExistentPRT(error: String)
   case ResourceUnavailable(task: String, physicalResource: String)

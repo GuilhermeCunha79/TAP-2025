@@ -51,9 +51,11 @@ object Types :
       if pattern.matches(id) then Right(id)
       else Left(InvalidHumanId(id))
 
+    /*
     extension (id: HumanResourceId)
       @targetName("HumanResourceIdTo")
       def to: String = id
+      */
 
 
   opaque type TaskId = String
