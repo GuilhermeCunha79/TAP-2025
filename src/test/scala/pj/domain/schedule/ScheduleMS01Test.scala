@@ -21,6 +21,18 @@ class ScheduleMS01Test extends AnyFunSuite:
     val result = ProductId.from("PRD_123")
     assert(result.fold(_ => false, prodId => prodId.to == "PRD_123"))
 
+  test("ProductId.from with string without prefix"):
+    val result = ProductId.from("12345")
+    assert(result == Left(InvalidProductId("12345")))
+
+  test("ProductId.from with minimum valid input"):
+    val result = ProductId.from("PRD_1")
+    assert(result.fold(_ => false, _ => true))
+
+  test("ProductId.from with long valid input"):
+    val result = ProductId.from("PRD_123_ABC_456_DEF")
+    assert(result.fold(_ => false, id => id.to == "PRD_123_ABC_456_DEF"))
+
   test("OrderQuantity.from with non-numeric string"):
     val result = OrderQuantity.from("abc")
     assert(result == Left(InvalidQuantity("abc")))
@@ -77,5 +89,63 @@ class ScheduleMS01Test extends AnyFunSuite:
     val result = PhysicalResourceId.from("PRS_123")
     assert(result.fold(_ => false, id => id.to == "PRS_123"))
 
+  test("TaskTime.from with positive integer string"):
+    val result = TaskTime.from("10")
+    assert(result.fold(_ => false, time => time.to == 10))
 
+  test("TaskTime.from with minimum valid input (1)"):
+    val result = TaskTime.from("1")
+    assert(result.fold(_ => false, _ => true))
+
+  test("TaskTime.from with non-numeric string"):
+    val result = TaskTime.from("abc")
+    assert(result == Left(InvalidTime("abc")))
+
+  test("TaskTime.from with empty string"):
+    val result = TaskTime.from("")
+    assert(result == Left(InvalidTime("")))
+
+  test("TaskTime.from with zero"):
+    val result = TaskTime.from("0")
+    assert(result == Left(InvalidTime("0")))
+
+  test("TaskTime.from with negative number"):
+    val result = TaskTime.from("-5")
+    assert(result == Left(InvalidTime("-5")))
+
+  test("TaskTime.to returns the parsed int"):
+    val result = TaskTime.from("15")
+    assert(result.fold(_ => false, t => t.to == 15))
+
+  test("TaskId.from with invalid prefix"):
+    val result = TaskId.from("TSKX_123")
+    assert(result == Left(InvalidTaskId("TSKX_123")))
+
+  test("TaskId.from with empty string"):
+    val result = TaskId.from("")
+    assert(result == Left(InvalidTaskId("")))
+
+  test("TaskId.from with minimum valid input"):
+    val result = TaskId.from("TSK_1")
+    assert(result.fold(_ => false, _ => true))
+
+  test("TaskId.from with long valid input"):
+    val result = TaskId.from("TSK_123_456_789_ABC")
+    assert(result.fold(_ => false, id => id.to == "TSK_123_456_789_ABC"))
+
+  test("TaskId.to returns the original string"):
+    val result = TaskId.from("TSK_123")
+    assert(result.fold(_ => false, taskId => taskId.to == "TSK_123"))
+
+  test("HumanResourceId.from with invalid prefix"):
+    val result = HumanResourceId.from("HRSX_123")
+    assert(result == Left(InvalidHumanId("HRSX_123")))
+
+  test("HumanResourceId.from with empty string"):
+    val result = HumanResourceId.from("")
+    assert(result == Left(InvalidHumanId("")))
+
+  test("HumanResourceId.from with minimum valid input"):
+    val result = HumanResourceId.from("HRS_1")
+    assert(result.fold(_ => false, _ => true))
 
