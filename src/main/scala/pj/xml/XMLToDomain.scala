@@ -74,7 +74,7 @@ object XMLToDomain :
         XML.fromAttribute(physicalResourceNode, "type").flatMap { typeString =>
           val isValidType = physicalResourceTypes.contains(typeString)
           if (!isValidType) {
-            Left(PhysicalResourceTypeNotFound(s"$rawHumanResourceId,$typeString"))
+            Left(PhysicalResourceTypeNotFound(rawHumanResourceId,typeString))
           } else {
             Right(typeString)
           }

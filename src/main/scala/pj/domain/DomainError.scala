@@ -12,7 +12,7 @@ enum DomainError:
   case InvalidTaskId(error: String)
 
   case EmptyPhysicalResourceType(error: String)
-  case PhysicalResourceTypeNotFound(error: String)
+  case PhysicalResourceTypeNotFound(humanResourceId: String, physicalResourceType: String)
 
   case ProductDoesNotExist(error: String)
   case TaskDoesNotExist(error: String)

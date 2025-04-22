@@ -9,7 +9,7 @@ import scala.xml.Elem
 
 object ScheduleMS01 extends Schedule {
 
-  private def scheduleDataRetriever(xml: Elem): Result[(
+  def scheduleDataRetriever(xml: Elem): Result[(
     List[PhysicalResource],
     List[String],
     List[Task],
@@ -34,9 +34,10 @@ object ScheduleMS01 extends Schedule {
       ordersNode <- XML.fromNode(xml, "Orders")
       orders <- XML.traverse(ordersNode \ "Order", XMLToDomain.getOrder(products))
     yield
+      println((physicalResources, physicalTypes, tasks, humanResources, products, orders))
       (physicalResources, physicalTypes, tasks, humanResources, products, orders)
 
-  private def allocatePhysicalResources(
+   def allocatePhysicalResources(
     taskId: TaskId,
     requiredTypes: List[String],
     availableResources: List[PhysicalResource]
@@ -51,7 +52,7 @@ object ScheduleMS01 extends Schedule {
       }
     }.map(_._1.reverse)
 
-  private def allocateHumanResources(
+   def allocateHumanResources(
     taskId: TaskId,
     requiredTypes: List[String],
     availableHumans: List[HumanResource]
@@ -59,7 +60,7 @@ object ScheduleMS01 extends Schedule {
     requiredTypes.foldLeft[Result[(List[String], Set[String])]](Right((Nil, Set.empty))) {
       case (accResult, requiredType) => accResult.flatMap { case (assignedNames, usedNames) =>
         availableHumans
-          .find(hr => hr.physicalResources.contains(requiredType) && !usedNames.contains(hr.name))
+          .find(hr => hr.physicalResourceTypes.contains(requiredType) && !usedNames.contains(hr.name))
           .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType))
           .map(hr => (hr.name :: assignedNames, usedNames + hr.name))
       }
@@ -92,8 +93,8 @@ object ScheduleMS01 extends Schedule {
                       .toRight(DomainError.TaskDoesNotExist(taskId.to))
                       .flatMap { task =>
                         for {
-                          allocatedPhysicalResources <- allocatePhysicalResources(task.id, task.physicalResources, physicalResources)
-                          allocatedHumanResources <- allocateHumanResources(task.id, task.physicalResources, humanResources)
+                          allocatedPhysicalResources <- allocatePhysicalResources(task.id, task.physicalResourceTypes, physicalResources)
+                          allocatedHumanResources <- allocateHumanResources(task.id, task.physicalResourceTypes, humanResources)
                         } yield
                           val taskEndTime = taskStartTime + task.time.to
                           val taskSchedule = TaskSchedule(
