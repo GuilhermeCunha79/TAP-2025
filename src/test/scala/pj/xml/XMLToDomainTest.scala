@@ -32,7 +32,7 @@ class XMLToDomainTest extends AnyFunSuite:
 
     val physicalTypes = List("PRST 1", "PRST 4")
 
-    //assert(XMLToDomain.getHumanResource(physicalTypes)(node) == Left(DomainError.PhysicalResourceTypeNotFound("HRS_1,PRST 2")))
+    assert(XMLToDomain.getHumanResource(physicalTypes)(node) == Left(DomainError.PhysicalResourceTypeNotFound("HRS_1","PRST 2")))
 
   test("getHumanResource with valid data - Should be valid"):
     val node = <Human id="HRS_1" name="Antonio">

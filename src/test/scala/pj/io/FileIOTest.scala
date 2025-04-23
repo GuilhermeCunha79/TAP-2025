@@ -2,12 +2,22 @@ package pj.io
 
 import org.scalatest.funsuite.AnyFunSuite
 import pj.domain.DomainError.IOFileProblem
-import pj.xml.XMLToDomain
 
 import java.io.{File, PrintWriter}
-import scala.xml.Source
 
 class FileIOTest extends AnyFunSuite:
+
+  val testFilesDir = "files/group/ms01/"
+
+  test("loadError deve carregar o arquivo emptyMessageAttribute_outError.xml corretamente"):
+    val result = FileIO.loadError(testFilesDir + "emptyMessageAttribute_outError.xml")
+    assert(result.isRight)
+    assert(result.getOrElse("") == "InvalidTime(0)")
+
+  test("loadError deve carregar o arquivo noMessageAttribute_outError.xml corretamente"):
+    val result = FileIO.loadError(testFilesDir + "noMessageAttribute_outError.xml")
+    assert(result.isRight)
+    assert(result.getOrElse("") == "InvalidTime(-5)")
 
   test("load should return Right(Elem) when XML file exists and is valid"):
     val file = File.createTempFile("test", ".xml")
@@ -57,4 +67,3 @@ class FileIOTest extends AnyFunSuite:
       case Left(IOFileProblem(_)) => true
       case _ => false
     )
-
