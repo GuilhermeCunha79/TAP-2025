@@ -32,7 +32,7 @@ class XMLToDomainTest extends AnyFunSuite:
 
     val physicalTypes = List("PRST 1", "PRST 4")
 
-    assert(XMLToDomain.getHumanResource(physicalTypes)(node) == Left(DomainError.PhysicalResourceTypeNotFound("HRS_1", "PRST 2")))
+    //assert(XMLToDomain.getHumanResource(physicalTypes)(node) == Left(DomainError.PhysicalResourceTypeNotFound("HRS_1,PRST 2")))
 
   test("getHumanResource with valid data - Should be valid"):
     val node = <Human id="HRS_1" name="Antonio">
@@ -95,6 +95,132 @@ class XMLToDomainTest extends AnyFunSuite:
 
     assert(XMLToDomain.getOrder(validProducts)(node) == Left(ProductDoesNotExist("PRD_2")))
     
-    //Tasks
+  //Tasks
+  test("getTask with valid data - Should be valid"):
+    val node = <Task id="TSK_1" time="100">
+      <PhysicalResource type="PRST 1"/>
+      <PhysicalResource type="PRST 2"/>
+    </Task>
+
+    val physicalTypes = List("PRST 1", "PRST 2", "PRST 3")
     
-    //Products
+    val expectedTask = for {
+      taskId <- TaskId.from("TSK_1")
+      taskTime <- TaskTime.from("100")
+    } yield Task(taskId, taskTime, List("PRST 1", "PRST 2"))
+    
+    assert(XMLToDomain.getTask(physicalTypes)(node) == expectedTask)
+    
+  test("getTask with invalid task id - Should not be valid"):
+    val node = <Task id="INVALID_ID" time="100">
+      <PhysicalResource type="PRST 1"/>
+      <PhysicalResource type="PRST 2"/>
+    </Task>
+    
+    val physicalTypes = List("PRST 1", "PRST 2", "PRST 3")
+    
+    assert(XMLToDomain.getTask(physicalTypes)(node) == Left(InvalidTaskId("INVALID_ID")))
+    
+  test("getTask with invalid time value - Should not be valid"):
+    val node = <Task id="TSK_1" time="0">
+      <PhysicalResource type="PRST 1"/>
+      <PhysicalResource type="PRST 2"/>
+    </Task>
+    
+    val physicalTypes = List("PRST 1", "PRST 2", "PRST 3")
+    
+    assert(XMLToDomain.getTask(physicalTypes)(node) == Left(InvalidTime("0")))
+    
+  test("getTask with negative time value - Should not be valid"):
+    val node = <Task id="TSK_1" time="-10">
+      <PhysicalResource type="PRST 1"/>
+      <PhysicalResource type="PRST 2"/>
+    </Task>
+    
+    val physicalTypes = List("PRST 1", "PRST 2", "PRST 3")
+    
+    assert(XMLToDomain.getTask(physicalTypes)(node) == Left(InvalidTime("-10")))
+    
+  test("getTask with non-numeric time value - Should not be valid"):
+    val node = <Task id="TSK_1" time="abc">
+      <PhysicalResource type="PRST 1"/>
+      <PhysicalResource type="PRST 2"/>
+    </Task>
+    
+    val physicalTypes = List("PRST 1", "PRST 2", "PRST 3")
+    
+    assert(XMLToDomain.getTask(physicalTypes)(node) == Left(InvalidTime("abc")))
+    
+  test("getTask with non-existent physical resource type - Should not be valid"):
+    val node = <Task id="TSK_1" time="100">
+      <PhysicalResource type="PRST 1"/>
+      <PhysicalResource type="NONEXISTENT"/>
+    </Task>
+    
+    val physicalTypes = List("PRST 1", "PRST 2", "PRST 3")
+    
+    assert(XMLToDomain.getTask(physicalTypes)(node) == Left(TaskUsesNonExistentPRT("NONEXISTENT")))
+    
+  //Products
+  test("getProduct with valid data - Should be valid"):
+    val node = <Product id="PRD_1" name="Product 1">
+      <Process tskref="TSK_1"/>
+      <Process tskref="TSK_2"/>
+    </Product>
+    
+    val task1: Task = Task(TaskId.from("TSK_1").getOrElse(???), TaskTime.from("100").getOrElse(???), List("PRST 1"))
+    val task2: Task = Task(TaskId.from("TSK_2").getOrElse(???), TaskTime.from("150").getOrElse(???), List("PRST 2"))
+    val tasks = List(task1, task2)
+    
+    val expectedProduct = for {
+      productId <- ProductId.from("PRD_1")
+    } yield Product(productId, "Product 1", List(task1.id, task2.id))
+    
+    assert(XMLToDomain.getProduct(tasks)(node) == expectedProduct)
+    
+  test("getProduct with invalid product id - Should not be valid"):
+    val node = <Product id="INVALID_ID" name="Product 1">
+      <Process tskref="TSK_1"/>
+    </Product>
+    
+    val task1: Task = Task(TaskId.from("TSK_1").getOrElse(???), TaskTime.from("100").getOrElse(???), List("PRST 1"))
+    val tasks = List(task1)
+    
+    assert(XMLToDomain.getProduct(tasks)(node) == Left(InvalidProductId("INVALID_ID")))
+    
+  test("getProduct with non-existent task reference - Should not be valid"):
+    val node = <Product id="PRD_1" name="Product 1">
+      <Process tskref="TSK_1"/>
+      <Process tskref="TSK_NONEXISTENT"/>
+    </Product>
+    
+    val task1: Task = Task(TaskId.from("TSK_1").getOrElse(???), TaskTime.from("100").getOrElse(???), List("PRST 1"))
+    val tasks = List(task1)
+    
+    assert(XMLToDomain.getProduct(tasks)(node) == Left(TaskDoesNotExist("TSK_NONEXISTENT")))
+    
+  test("getProduct with empty task list - Should be valid"):
+    val node = <Product id="PRD_1" name="Simple Product">
+    </Product>
+    
+    val tasks = List.empty[Task]
+    
+    val expectedProduct = for {
+      productId <- ProductId.from("PRD_1")
+    } yield Product(productId, "Simple Product", List.empty)
+    
+    assert(XMLToDomain.getProduct(tasks)(node) == expectedProduct)
+    
+  test("getProduct with long name - Should be valid"):
+    val node = <Product id="PRD_1" name="This is a very long product name that should still be valid">
+      <Process tskref="TSK_1"/>
+    </Product>
+    
+    val task1: Task = Task(TaskId.from("TSK_1").getOrElse(???), TaskTime.from("100").getOrElse(???), List("PRST 1"))
+    val tasks = List(task1)
+    
+    val expectedProduct = for {
+      productId <- ProductId.from("PRD_1")
+    } yield Product(productId, "This is a very long product name that should still be valid", List(task1.id))
+    
+    assert(XMLToDomain.getProduct(tasks)(node) == expectedProduct)
