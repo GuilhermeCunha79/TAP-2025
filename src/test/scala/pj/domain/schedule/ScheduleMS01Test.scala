@@ -8,6 +8,7 @@ import pj.domain.resources.Types.*
 import pj.io.FileIO
 
 import scala.language.adhocExtensions
+import scala.xml.{Elem, XML}
 
 class ScheduleMS01Test extends AnyFunSuite:
 
@@ -91,3 +92,69 @@ class ScheduleMS01Test extends AnyFunSuite:
         assert(ScheduleMS01.scheduleDataRetriever(xml) == result)
       case Left(error) =>
         fail(s"Erro ao carregar o arquivo XML: $error")
+
+  test("create with invalid task time - should return error"):
+    val xmlString =
+      """<?xml version="1.0" encoding="UTF-8"?>
+        |<Production>
+        |  <PhysicalResources>
+        |    <Physical id="PRS_1" type="PRST_1"/>
+        |  </PhysicalResources>
+        |  <Tasks>
+        |    <Task id="TSK_1" time="0"> <!-- Invalid time -->
+        |      <PhysicalResource type="PRST_1"/>
+        |    </Task>
+        |  </Tasks>    
+        |  <HumanResources>
+        |    <Human id="HRS_1" name="Worker1">
+        |      <Handles type="PRST_1"/>
+        |    </Human>
+        |  </HumanResources>
+        |  <Products>
+        |    <Product id="PRD_1" name="Product1">
+        |      <Process tskref="TSK_1"/>
+        |    </Product>
+        |  </Products>
+        |  <Orders>
+        |    <Order id="ORD_1" prdref="PRD_1" quantity="1"/>
+        |  </Orders>
+        |</Production>""".stripMargin
+  
+    val xml = XML.loadString(xmlString)
+    val result = ScheduleMS01.create(xml)
+  
+    assert(result.isLeft)
+    assert(result == Left(InvalidTime("0")))
+
+  test("create with invalid order quantity - should return error"):
+    val xmlString =
+      """<?xml version="1.0" encoding="UTF-8"?>
+        |<Production>
+        |  <PhysicalResources>
+        |    <Physical id="PRS_1" type="PRST_1"/>
+        |  </PhysicalResources>
+        |  <Tasks>
+        |    <Task id="TSK_1" time="10">
+        |      <PhysicalResource type="PRST_1"/>
+        |    </Task>
+        |  </Tasks>    
+        |  <HumanResources>
+        |    <Human id="HRS_1" name="Worker1">
+        |      <Handles type="PRST_1"/>
+        |    </Human>
+        |  </HumanResources>
+        |  <Products>
+        |    <Product id="PRD_1" name="Product1">
+        |      <Process tskref="TSK_1"/>
+        |    </Product>
+        |  </Products>
+        |  <Orders>
+        |    <Order id="ORD_1" prdref="PRD_1" quantity="0"/> <!-- Invalid quantity -->
+        |  </Orders>
+        |</Production>""".stripMargin
+  
+    val xml = XML.loadString(xmlString)
+    val result = ScheduleMS01.create(xml)
+  
+    assert(result.isLeft)
+    assert(result == Left(InvalidQuantity("0")))
