@@ -51,11 +51,9 @@ object Types :
       if pattern.matches(id) then Right(id)
       else Left(InvalidHumanId(id))
 
-    /*
     extension (id: HumanResourceId)
       @targetName("HumanResourceIdTo")
       def to: String = id
-      */
 
 
   opaque type TaskId = String
@@ -102,32 +100,17 @@ object Types :
       def to: Int = timeInt
 
 
-
-
-
-
-
-
-
-// To use Later
-//opaque type ID = String
-//object ID:
+//  opaque type PositiveInteger = Int
+//  object PositiveInteger:
+//    def from(positiveInteger: String): Result[PositiveInteger] =
+//      positiveInteger.toIntOption match
+//        case None =>
+//          Left(InvalidTime(positiveInteger))
+//        case Some(positiveInt) if positiveInt <= 0 =>
+//          Left(InvalidTime(positiveInteger))
+//        case Some(positiveInt) =>
+//          Right(positiveInt)
 //
-//  enum IDType(val pattern: Regex):
-//    case Physical extends IDType("^PRS_.*$".r)
-//    case Human    extends IDType("^HRS_.*$".r)
-//    case Task     extends IDType("^TSK_.*$".r)
-//    case Product  extends IDType("^PRD_.*$".r)
-//    case Order    extends IDType("^ORD_.*$".r)
-//
-//    // For IDREFs (if needed):
-//    case TaskRef     extends IDType("^TSK_.*$".r)
-//    case ProductRef  extends IDType("^PRD_.*$".r)
-//
-//  def from(id: String, idType: IDType): Result[ID] =
-//    if idType.pattern.matches(id) then Right(id)
-//    else Left(InvalidId(s"Invalid ID '$id' for type ${idType.toString}"))
-//
-//  // Extension methods for working with ID
-//  extension (id: ID)
-//    def value: String = id
+//    extension (positiveInt: PositiveInteger)
+//      @targetName("PositiveIntegerTo")
+//      def to: Int = positiveInt

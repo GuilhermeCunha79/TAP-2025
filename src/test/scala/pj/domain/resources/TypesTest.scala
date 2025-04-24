@@ -1,12 +1,9 @@
 package pj.domain.resources
 
 import org.scalatest.funsuite.AnyFunSuite
-import pj.domain.DomainError.InvalidProductId
-import pj.domain.resources.Types.ProductId
-import org.scalatest.funsuite.AnyFunSuite
 import pj.domain.DomainError.*
-import pj.domain.{DomainError, Result}
 import pj.domain.resources.Types.*
+import pj.domain.{DomainError, Result}
 
 class TypesTest extends AnyFunSuite:
 

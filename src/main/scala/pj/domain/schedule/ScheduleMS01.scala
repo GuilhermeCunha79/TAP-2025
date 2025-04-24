@@ -34,7 +34,6 @@ object ScheduleMS01 extends Schedule {
       ordersNode <- XML.fromNode(xml, "Orders")
       orders <- XML.traverse(ordersNode \ "Order", XMLToDomain.getOrder(products))
     yield
-      println((physicalResources, physicalTypes, tasks, humanResources, products, orders))
       (physicalResources, physicalTypes, tasks, humanResources, products, orders)
 
    def allocatePhysicalResources(
