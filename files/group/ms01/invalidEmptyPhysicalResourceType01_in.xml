@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Production xmlns="http://www.dei.isep.ipp.pt/tap-2025" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../production.xsd ">
   <PhysicalResources>
-    <Physical id="PRS_1" type=""/>
+    <Physical id="PRS_1" type=""/>  <!-- EMPTY -->
 	<Physical id="PRS_2" type="PRST 2"/>
     <Physical id="PRS_3" type="PRST 3"/>
     <Physical id="PRS_4" type="PRST 4"/>

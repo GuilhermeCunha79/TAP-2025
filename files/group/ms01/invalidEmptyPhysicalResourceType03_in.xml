@@ -19,7 +19,7 @@
   </Tasks>    
   <HumanResources>
     <Human id="HRS_1" name="Antonio">
-      <Handles type=""/>
+      <Handles type=""/>   <!-- EMPTY -->
       <Handles type="PRST 2"/>
     </Human>
     <Human id="HRS_2" name="Maria">

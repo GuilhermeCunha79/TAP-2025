@@ -9,7 +9,7 @@
   </PhysicalResources>
   <Tasks>
     <Task id="TSK_1" time="100">
-      <PhysicalResource type=""/>
+      <PhysicalResource type=""/>  <!-- EMPTY -->
       <PhysicalResource type="PRST 4"/>
     </Task>
     <Task id="TSK_2" time="80">
