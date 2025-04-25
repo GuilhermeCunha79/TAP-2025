@@ -1,3 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ScheduleError xmlns="http://www.dei.isep.ipp.pt/tap-2025" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../scheduleError.xsd "
-               message="IOFileProblem(Element type &quot;Physical&quot; must be followed by either attribute specifications, &quot;&gt;&quot; or &quot;/&gt;&quot;.)"/> 
