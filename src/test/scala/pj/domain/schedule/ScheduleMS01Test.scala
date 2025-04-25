@@ -4,7 +4,7 @@ import org.scalatest.funsuite.AnyFunSuite
 import pj.domain.DomainError.*
 import pj.domain.{DomainError, Result}
 import pj.domain.resources.*
-import pj.domain.resources.Types.*
+import pj.domain.resources.Types.{HumanResourceId, OrderId, OrderQuantity, PhysicalResourceId, ProductId, TaskId, TaskTime}
 import pj.io.FileIO
 
 import scala.language.adhocExtensions
@@ -119,10 +119,10 @@ class ScheduleMS01Test extends AnyFunSuite:
         |    <Order id="ORD_1" prdref="PRD_1" quantity="1"/>
         |  </Orders>
         |</Production>""".stripMargin
-  
+
     val xml = XML.loadString(xmlString)
     val result = ScheduleMS01.create(xml)
-  
+
     assert(result.isLeft)
     assert(result == Left(InvalidTime("0")))
 
@@ -152,9 +152,165 @@ class ScheduleMS01Test extends AnyFunSuite:
         |    <Order id="ORD_1" prdref="PRD_1" quantity="0"/> <!-- Invalid quantity -->
         |  </Orders>
         |</Production>""".stripMargin
-  
+
     val xml = XML.loadString(xmlString)
     val result = ScheduleMS01.create(xml)
-  
+
     assert(result.isLeft)
     assert(result == Left(InvalidQuantity("0")))
+
+  test("allocatePhysicalResources should allocate matching and available resources"):
+    val required = List("printer", "scanner")
+
+    val result = for {
+      taskId <- TaskId.from("TSK_1")
+      id1 <- PhysicalResourceId.from("PRS_1")
+      id2 <- PhysicalResourceId.from("PRS_2")
+      id3 <- PhysicalResourceId.from("PRS_3")
+    } yield
+      val resources = List(
+        PhysicalResource(id1, "printer"),
+        PhysicalResource(id2, "scanner"),
+        PhysicalResource(id3, "printer")
+      )
+      ScheduleMS01.allocatePhysicalResources(taskId, required, resources)
+    assert(result == Right(Right(List("PRS_1", "PRS_2"))))
+
+  test("allocatePhysicalResources should fail if a required resource type is missing"):
+    val required = List("printer", "scanner", "fax")
+
+    val result = for {
+      taskId <- TaskId.from("TSK_2")
+      id1 <- PhysicalResourceId.from("PRS_1")
+      id2 <- PhysicalResourceId.from("PRS_2")
+    } yield
+      val resources = List(
+        PhysicalResource(id1, "printer"),
+        PhysicalResource(id2, "scanner")
+      )
+      ScheduleMS01.allocatePhysicalResources(taskId, required, resources)
+
+    assert(result == Right(Left(DomainError.ResourceUnavailable("TSK_2", "fax"))))
+
+  test("allocatePhysicalResources should not reuse the same resource for multiple required types"):
+    val required = List("printer", "scanner")
+
+    val result = for {
+      taskId <- TaskId.from("TSK_3")
+      sharedId <- PhysicalResourceId.from("PRS_SHARED")
+    } yield
+      val resources = List(
+        PhysicalResource(sharedId, "printer"),
+        PhysicalResource(sharedId, "scanner")
+      )
+      ScheduleMS01.allocatePhysicalResources(taskId, required, resources)
+
+    assert(result == Right(Left(DomainError.ResourceUnavailable("TSK_3", "scanner"))))
+
+  test("allocatePhysicalResources should return empty list when no types are required"):
+    val required = Nil
+
+    val result = for {
+      taskId <- TaskId.from("TSK_4")
+      id1 <- PhysicalResourceId.from("PRS_1")
+    } yield
+      val resources = List(PhysicalResource(id1, "printer"))
+      ScheduleMS01.allocatePhysicalResources(taskId, required, resources)
+
+    assert(result == Right(Right(Nil)))
+
+  test("allocatePhysicalResources should allocate based on resource order"):
+    val required = List("scanner", "printer")
+
+    val result = for {
+      taskId <- TaskId.from("TSK_5")
+      id1 <- PhysicalResourceId.from("PRS_1")
+      id2 <- PhysicalResourceId.from("PRS_2")
+    } yield
+      val resources = List(
+        PhysicalResource(id1, "printer"),
+        PhysicalResource(id2, "scanner")
+      )
+      ScheduleMS01.allocatePhysicalResources(taskId, required, resources)
+
+    assert(result == Right(Right(List("PRS_2", "PRS_1"))))
+
+  test("allocateHumanResources should allocate matching and available humans"):
+    val required = List("printer", "scanner")
+
+    val result = for {
+      taskId <- TaskId.from("TSK_1")
+      id1 <- HumanResourceId.from("HRS_1")
+      id2 <- HumanResourceId.from("HRS_2")
+      id3 <- HumanResourceId.from("HRS_3")
+    } yield
+      val humans = List(
+        HumanResource(id1, "Alice", List("printer")),
+        HumanResource(id2, "Bob", List("scanner")),
+        HumanResource(id3, "Charlie", List("printer"))
+      )
+      ScheduleMS01.allocateHumanResources(taskId, required, humans)
+
+    assert(result == Right(Right(List("Alice", "Bob"))))
+
+
+  test("allocateHumanResources should fail if a required resource type is missing"):
+    val required = List("printer", "scanner", "fax")
+
+    val result = for {
+      taskId <- TaskId.from("TSK_2")
+      id1 <- HumanResourceId.from("HRS_1")
+      id2 <- HumanResourceId.from("HRS_2")
+    } yield
+      val humans = List(
+        HumanResource(id1, "Alice", List("printer")),
+        HumanResource(id2, "Bob", List("scanner"))
+      )
+      ScheduleMS01.allocateHumanResources(taskId, required, humans)
+
+    assert(result == Right(Left(DomainError.ResourceUnavailable("TSK_2", "fax"))))
+
+  test("allocateHumanResources should not reuse the same human for multiple required types"):
+    val required = List("printer", "scanner")
+
+    val result = for {
+      taskId <- TaskId.from("TSK_3")
+      sharedId <- HumanResourceId.from("HRS_SHARED")
+    } yield
+      val humans = List(
+        HumanResource(sharedId, "Alice", List("printer", "scanner"))
+      )
+      ScheduleMS01.allocateHumanResources(taskId, required, humans)
+
+    assert(result == Right(Left(DomainError.ResourceUnavailable("TSK_3", "scanner"))))
+
+
+  test("allocateHumanResources should return empty list when no types are required"):
+    val required = Nil
+
+    val result = for {
+      taskId <- TaskId.from("TSK_4")
+      id1 <- HumanResourceId.from("HRS_1")
+    } yield
+      val humans = List(HumanResource(id1, "Alice", List("printer")))
+      ScheduleMS01.allocateHumanResources(taskId, required, humans)
+
+    assert(result == Right(Right(Nil)))
+
+
+  test("allocateHumanResources should allocate based on human order"):
+    val required = List("scanner", "printer")
+
+    val result = for {
+      taskId <- TaskId.from("TSK_5")
+      id1 <- HumanResourceId.from("HRS_1")
+      id2 <- HumanResourceId.from("HRS_2")
+    } yield
+      val humans = List(
+        HumanResource(id1, "Alice", List("printer")),
+        HumanResource(id2, "Bob", List("scanner"))
+      )
+      ScheduleMS01.allocateHumanResources(taskId, required, humans)
+
+    assert(result == Right(Right(List("Bob", "Alice"))))
+
