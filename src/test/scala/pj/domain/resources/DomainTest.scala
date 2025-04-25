@@ -156,12 +156,15 @@ class DomainTest extends AnyFunSuite:
         taskId <- TaskId.from("TSK_10")
         pr1 <- PhysicalResourceId.from("PRS_1")
         pr2 <- PhysicalResourceId.from("PRS_2")
+        productNumber <- ProductNumber.from(1)
+        start <- TaskScheduleTime.from(0)
+        end <- TaskScheduleTime.from(10)
       yield TaskSchedule(
         orderId = orderId,
-        productNumber = 1,
+        productNumber = productNumber,
         taskId = taskId,
-        start = 0,
-        end = 10,
+        start = start,
+        end = end,
         physicalResourceIds = List(pr1, pr2),
         humanResourceNames = List("Alice", "Bob")
       )
@@ -170,10 +173,10 @@ class DomainTest extends AnyFunSuite:
       case Right(schedule) =>
         assert(
           schedule.orderId.to == "ORD_100" &&
-            schedule.productNumber == 1 &&
+            schedule.productNumber.to == 1 &&
             schedule.taskId.to == "TSK_10" &&
-            schedule.start == 0 &&
-            schedule.end == 10 &&
+            schedule.start.to == 0 &&
+            schedule.end.to == 10 &&
             schedule.physicalResourceIds.map(_.to) == List("PRS_1", "PRS_2") &&
             schedule.humanResourceNames == List("Alice", "Bob")
         )
@@ -185,7 +188,10 @@ class DomainTest extends AnyFunSuite:
         orderId <- OrderId.from("INVALID")
         taskId <- TaskId.from("TSK_10")
         pr <- PhysicalResourceId.from("PRS_1")
-      yield TaskSchedule(orderId, 1, taskId, 0, 10, List(pr), List("Alice"))
+        productNumber <- ProductNumber.from(1)
+        start <- TaskScheduleTime.from(0)
+        end <- TaskScheduleTime.from(10)
+      yield TaskSchedule(orderId, productNumber, taskId, start, end, List(pr), List("Alice"))
 
     assert(result == Left(InvalidOrderId("INVALID")))
 
@@ -195,7 +201,10 @@ class DomainTest extends AnyFunSuite:
         orderId <- OrderId.from("ORD_1")
         taskId <- TaskId.from("WRONG")
         pr <- PhysicalResourceId.from("PRS_1")
-      yield TaskSchedule(orderId, 1, taskId, 0, 10, List(pr), List("Bob"))
+        productNumber <- ProductNumber.from(1)
+        start <- TaskScheduleTime.from(0)
+        end <- TaskScheduleTime.from(10)
+      yield TaskSchedule(orderId, productNumber, taskId, start, end, List(pr), List("Bob"))
 
     assert(result == Left(InvalidTaskId("WRONG")))
 
@@ -213,7 +222,10 @@ class DomainTest extends AnyFunSuite:
         orderId <- OrderId.from("ORD_2")
         taskId <- TaskId.from("TSK_2")
         pr <- PhysicalResourceId.from("PRS_10")
-      yield TaskSchedule(orderId, 5, taskId, 100, 200, List(pr), List.empty)
+        productNumber <- ProductNumber.from(5)
+        start <- TaskScheduleTime.from(100)
+        end <- TaskScheduleTime.from(200)
+      yield TaskSchedule(orderId, productNumber, taskId, start, end, List(pr), List.empty)
 
     result match
       case Right(schedule) =>

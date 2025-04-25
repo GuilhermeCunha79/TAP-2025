@@ -146,3 +146,27 @@ class TypesTest extends AnyFunSuite:
   test("HumanResourceId.from with minimum valid input"):
     val result = HumanResourceId.from("HRS_1")
     assert(result.fold(_ => false, _ => true))
+
+  test("ProductNumber.from with valid input returns Right"):
+    val result = ProductNumber.from(5)
+    assert(result.fold(_ => false, pn => pn.to == 5))
+
+  test("ProductNumber.from with zero returns Left"):
+    val result = ProductNumber.from(0)
+    assert(result == Left(InvalidProductNumber("0")))
+
+  test("ProductNumber.from with negative number returns Left"):
+    val result = ProductNumber.from(-3)
+    assert(result == Left(InvalidProductNumber("-3")))
+
+  test("TaskScheduleTime.from with valid input returns Right"):
+    val result = TaskScheduleTime.from(10)
+    assert(result.fold(_ => false, time => time.to == 10))
+
+  test("TaskScheduleTime.from with zero returns Right"):
+    val result = TaskScheduleTime.from(0)
+    assert(result.fold(_ => false, time => time.to == 0))
+
+  test("TaskScheduleTime.from with negative number returns Left"):
+    val result = TaskScheduleTime.from(-1)
+    assert(result == Left(InvalidTaskScheduleTime("-1")))

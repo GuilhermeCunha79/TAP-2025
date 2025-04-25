@@ -100,17 +100,25 @@ object Types :
       def to: Int = timeInt
 
 
-//  opaque type PositiveInteger = Int
-//  object PositiveInteger:
-//    def from(positiveInteger: String): Result[PositiveInteger] =
-//      positiveInteger.toIntOption match
-//        case None =>
-//          Left(InvalidTime(positiveInteger))
-//        case Some(positiveInt) if positiveInt <= 0 =>
-//          Left(InvalidTime(positiveInteger))
-//        case Some(positiveInt) =>
-//          Right(positiveInt)
-//
-//    extension (positiveInt: PositiveInteger)
-//      @targetName("PositiveIntegerTo")
-//      def to: Int = positiveInt
+  opaque type ProductNumber = Int
+  object ProductNumber:
+    def from(productNumber: Int): Result[ProductNumber] =
+      if productNumber <= 0
+      then Left(InvalidProductNumber(productNumber.toString))
+      else Right(productNumber)
+
+    extension (productNumberInt: ProductNumber)
+      @targetName("ProductNumberTo")
+      def to: Int = productNumberInt
+
+
+  opaque type TaskScheduleTime = Int
+  object TaskScheduleTime:
+    def from(taskScheduleTime: Int): Result[TaskScheduleTime] =
+      if taskScheduleTime < 0
+      then Left(InvalidTaskScheduleTime(taskScheduleTime.toString))
+      else Right(taskScheduleTime)
+
+    extension (taskScheduleTimeInt: TaskScheduleTime)
+      @targetName("TaskScheduleTimeTo")
+      def to: Int = taskScheduleTimeInt

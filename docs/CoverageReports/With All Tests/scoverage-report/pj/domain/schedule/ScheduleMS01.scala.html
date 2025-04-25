@@ -1,0 +1,4014 @@
+<html>
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title id="title">
+          pj\domain\schedule\ScheduleMS01.scala.html
+        </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/css/theme.default.min.css" type="text/css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/js/jquery.tablesorter.min.js"></script><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" type="text/css"/><script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script><script type="text/javascript">
+        $(document).ready(function() {$(".tablesorter").tablesorter();});
+      </script>
+        <style>
+          table.codegrid { font-family: monospace; font-size: 12px; width: auto!important; }table.statementlist { width: auto!important; font-size: 13px; } table.codegrid td { padding: 0!important; border: 0!important } table td.linenumber { width: 40px!important; } 
+        </style>
+      </head>
+      <body style="font-family: monospace;">
+        <ul class="nav nav-tabs">
+          <li>
+            <a href="#codegrid" data-toggle="tab">Codegrid</a>
+          </li>
+          <li>
+            <a href="#statementlist" data-toggle="tab">Statement List</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="codegrid">
+            <pre style='font-size: 12pt; font-family: courier, monospace;'>1 <span style=''>package pj.domain.schedule
+</span>2 <span style=''>
+</span>3 <span style=''>import pj.domain.*
+</span>4 <span style=''>import pj.domain.resources.*
+</span>5 <span style=''>import pj.domain.resources.Types.*
+</span>6 <span style=''>import pj.xml.{XML, XMLToDomain}
+</span>7 <span style=''>
+</span>8 <span style=''>import scala.xml.Elem
+</span>9 <span style=''>
+</span>10 <span style=''>object ScheduleMS01 extends Schedule {
+</span>11 <span style=''>
+</span>12 <span style=''>  // Function to retrieve the data from the XML input file
+</span>13 <span style=''>  </span><span style='background: #AEF1AE'>def scheduleDataRetriever</span><span style=''>(xml: Elem): Result[(
+</span>14 <span style=''>    List[PhysicalResource],
+</span>15 <span style=''>    List[String],
+</span>16 <span style=''>    List[Task],
+</span>17 <span style=''>    List[HumanResource],
+</span>18 <span style=''>    List[Product],
+</span>19 <span style=''>    List[Order]
+</span>20 <span style=''>  )] =
+</span>21 <span style=''>    </span><span style='background: #AEF1AE'>for
+</span>22 <span style=''></span><span style='background: #AEF1AE'>      physicalNode &lt;- XML.fromNode(xml, &quot;PhysicalResources&quot;)
+</span>23 <span style=''></span><span style='background: #AEF1AE'>      physicalResources &lt;- XML.traverse(physicalNode \ &quot;Physical&quot;, XMLToDomain.getPhysicalResource)
+</span>24 <span style=''></span><span style='background: #AEF1AE'>      physicalTypes = physicalResources.map(_.name).distinct
+</span>25 <span style=''></span><span style='background: #AEF1AE'>
+</span>26 <span style=''></span><span style='background: #AEF1AE'>      tasksNode &lt;- XML.fromNode(xml, &quot;Tasks&quot;)
+</span>27 <span style=''></span><span style='background: #AEF1AE'>      tasks &lt;- XML.traverse(tasksNode \ &quot;Task&quot;, XMLToDomain.getTask(physicalTypes))
+</span>28 <span style=''></span><span style='background: #AEF1AE'>
+</span>29 <span style=''></span><span style='background: #AEF1AE'>      humanNode &lt;- XML.fromNode(xml, &quot;HumanResources&quot;)
+</span>30 <span style=''></span><span style='background: #AEF1AE'>      humanResources &lt;- XML.traverse(humanNode \ &quot;Human&quot;, XMLToDomain.getHumanResource(physicalTypes))
+</span>31 <span style=''></span><span style='background: #AEF1AE'>
+</span>32 <span style=''></span><span style='background: #AEF1AE'>      productsNode &lt;- XML.fromNode(xml, &quot;Products&quot;)
+</span>33 <span style=''></span><span style='background: #AEF1AE'>      products &lt;- XML.traverse(productsNode \ &quot;Product&quot;, XMLToDomain.getProduct(tasks))
+</span>34 <span style=''></span><span style='background: #AEF1AE'>
+</span>35 <span style=''></span><span style='background: #AEF1AE'>      ordersNode &lt;- XML.fromNode(xml, &quot;Orders&quot;)
+</span>36 <span style=''></span><span style='background: #AEF1AE'>      orders &lt;- XML.traverse(ordersNode \ &quot;Order&quot;, XMLToDomain.getOrder(products))
+</span>37 <span style=''></span><span style='background: #AEF1AE'>    yield
+</span>38 <span style=''></span><span style='background: #AEF1AE'>      (physicalResources, physicalTypes, tasks, humanResources, products, orders)</span><span style=''>
+</span>39 <span style=''>
+</span>40 <span style=''>  // Function to find physical resources available to perform the tasks
+</span>41 <span style=''>   </span><span style='background: #AEF1AE'>def allocatePhysicalResources</span><span style=''>(
+</span>42 <span style=''>    taskId: TaskId,
+</span>43 <span style=''>    requiredTypes: List[String],
+</span>44 <span style=''>    availableResources: List[PhysicalResource]
+</span>45 <span style=''>  ): Result[List[PhysicalResourceId]] =
+</span>46 <span style=''>    </span><span style='background: #AEF1AE'>requiredTypes.foldLeft[Result[(List[PhysicalResourceId], Set[PhysicalResourceId])]](Right((Nil, Set.empty))) {
+</span>47 <span style=''></span><span style='background: #AEF1AE'>      case (accResult, requiredType) =&gt; accResult.flatMap { case (assignedIds, usedIds) =&gt;
+</span>48 <span style=''></span><span style='background: #AEF1AE'>        availableResources
+</span>49 <span style=''></span><span style='background: #AEF1AE'>          .find(resource =&gt; resource.name.equals(requiredType) &amp;&amp; !usedIds.contains(resource.id))
+</span>50 <span style=''></span><span style='background: #AEF1AE'>          .map(_.id)
+</span>51 <span style=''></span><span style='background: #AEF1AE'>          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType))
+</span>52 <span style=''></span><span style='background: #AEF1AE'>          .map(id =&gt; (id :: assignedIds, usedIds + id))
+</span>53 <span style=''></span><span style='background: #AEF1AE'>      }
+</span>54 <span style=''></span><span style='background: #AEF1AE'>    }.map(_._1.reverse)</span><span style=''>
+</span>55 <span style=''>
+</span>56 <span style=''>  // Function to find human resources available to perform the tasks
+</span>57 <span style=''>   </span><span style='background: #AEF1AE'>def allocateHumanResources</span><span style=''>(
+</span>58 <span style=''>    taskId: TaskId,
+</span>59 <span style=''>    requiredTypes: List[String],
+</span>60 <span style=''>    availableHumans: List[HumanResource]
+</span>61 <span style=''>  ): Result[List[String]] =
+</span>62 <span style=''>    </span><span style='background: #AEF1AE'>requiredTypes.foldLeft[Result[(List[String], Set[String])]](Right((Nil, Set.empty))) {
+</span>63 <span style=''></span><span style='background: #AEF1AE'>      case (accResult, requiredType) =&gt; accResult.flatMap { case (assignedNames, usedNames) =&gt;
+</span>64 <span style=''></span><span style='background: #AEF1AE'>        availableHumans
+</span>65 <span style=''></span><span style='background: #AEF1AE'>          .find(hr =&gt; hr.physicalResourceTypes.contains(requiredType) &amp;&amp; !usedNames.contains(hr.name))
+</span>66 <span style=''></span><span style='background: #AEF1AE'>          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType))
+</span>67 <span style=''></span><span style='background: #AEF1AE'>          .map(hr =&gt; (hr.name :: assignedNames, usedNames + hr.name))
+</span>68 <span style=''></span><span style='background: #AEF1AE'>      }
+</span>69 <span style=''></span><span style='background: #AEF1AE'>    }.map(_._1.reverse)</span><span style=''>
+</span>70 <span style=''>
+</span>71 <span style=''>  // Function to process all the schedule build logic
+</span>72 <span style=''>  </span><span style='background: #AEF1AE'>private def generateSchedule</span><span style=''>(
+</span>73 <span style=''>      physicalResources: List[PhysicalResource],
+</span>74 <span style=''>      physicalTypes: List[String],
+</span>75 <span style=''>      allTasks: List[Task],
+</span>76 <span style=''>      humanResources: List[HumanResource],
+</span>77 <span style=''>      allProducts: List[Product],
+</span>78 <span style=''>      allOrders: List[Order]
+</span>79 <span style=''>    ): Result[Elem] =
+</span>80 <span style=''>
+</span>81 <span style=''>    type Accumulator = (List[TaskSchedule], Int)
+</span>82 <span style=''>    val initialAccumulator: Result[Accumulator] = </span><span style='background: #AEF1AE'>Right</span><span style=''>((</span><span style='background: #AEF1AE'>Nil</span><span style=''>, 0))
+</span>83 <span style=''>
+</span>84 <span style=''>    val scheduleResult = </span><span style='background: #AEF1AE'>allOrders.foldLeft[Result[Accumulator]](initialAccumulator) { (accumulatorForOrders, currentOrder) =&gt;
+</span>85 <span style=''></span><span style='background: #AEF1AE'>      accumulatorForOrders.flatMap { case (scheduledTasksSoFar, globalTimeSoFar) =&gt;
+</span>86 <span style=''></span><span style='background: #AEF1AE'>        val matchedProduct = allProducts.find(_.id == currentOrder.productId)
+</span>87 <span style=''></span><span style='background: #AEF1AE'>          .toRight(DomainError.ProductDoesNotExist(</span><span style='background: #F0ADAD'>currentOrder.productId.to</span><span style='background: #AEF1AE'>))
+</span>88 <span style=''></span><span style='background: #AEF1AE'>
+</span>89 <span style=''></span><span style='background: #AEF1AE'>        (1 to currentOrder.quantity.to).foldLeft[Result[Accumulator]](Right((scheduledTasksSoFar, globalTimeSoFar))):
+</span>90 <span style=''></span><span style='background: #AEF1AE'>          case (accumulatorForProducts, productInstanceNumber) =&gt; accumulatorForProducts.flatMap:
+</span>91 <span style=''></span><span style='background: #AEF1AE'>            case (tasksForProduct, timeAtStartOfProduct) =&gt; matchedProduct.flatMap { productDef =&gt;
+</span>92 <span style=''></span><span style='background: #AEF1AE'>              productDef.tasksList.foldLeft[Result[Accumulator]](Right((tasksForProduct, timeAtStartOfProduct))):
+</span>93 <span style=''></span><span style='background: #AEF1AE'>                case (accumulatorForTasks, taskId) =&gt; accumulatorForTasks.flatMap:
+</span>94 <span style=''></span><span style='background: #AEF1AE'>                  case (taskList, taskStartTime) =&gt;
+</span>95 <span style=''></span><span style='background: #AEF1AE'>                    allTasks.find(_.id == taskId)
+</span>96 <span style=''></span><span style='background: #AEF1AE'>                      .toRight(DomainError.TaskDoesNotExist(</span><span style='background: #F0ADAD'>taskId.to</span><span style='background: #AEF1AE'>))
+</span>97 <span style=''></span><span style='background: #AEF1AE'>                      .flatMap { task =&gt;
+</span>98 <span style=''></span><span style='background: #AEF1AE'>                        for {
+</span>99 <span style=''></span><span style='background: #AEF1AE'>                          allocatedPhysicalResources &lt;- allocatePhysicalResources(task.id, task.physicalResourceTypes, physicalResources)
+</span>100 <span style=''></span><span style='background: #AEF1AE'>                          allocatedHumanResources &lt;- allocateHumanResources(task.id, task.physicalResourceTypes, humanResources)
+</span>101 <span style=''></span><span style='background: #AEF1AE'>                          productNumber &lt;- ProductNumber.from(productInstanceNumber)
+</span>102 <span style=''></span><span style='background: #AEF1AE'>                          startTime &lt;- TaskScheduleTime.from(taskStartTime)
+</span>103 <span style=''></span><span style='background: #AEF1AE'>                          endTime &lt;- TaskScheduleTime.from(taskStartTime + task.time.to)
+</span>104 <span style=''></span><span style='background: #AEF1AE'>                        } yield
+</span>105 <span style=''></span><span style='background: #AEF1AE'>                          val taskSchedule = TaskSchedule(
+</span>106 <span style=''></span><span style='background: #AEF1AE'>                            currentOrder.id,
+</span>107 <span style=''></span><span style='background: #AEF1AE'>                            productNumber,
+</span>108 <span style=''></span><span style='background: #AEF1AE'>                            task.id,
+</span>109 <span style=''></span><span style='background: #AEF1AE'>                            startTime,
+</span>110 <span style=''></span><span style='background: #AEF1AE'>                            endTime,
+</span>111 <span style=''></span><span style='background: #AEF1AE'>                            allocatedPhysicalResources,
+</span>112 <span style=''></span><span style='background: #AEF1AE'>                            allocatedHumanResources
+</span>113 <span style=''></span><span style='background: #AEF1AE'>                          )
+</span>114 <span style=''></span><span style='background: #AEF1AE'>                          (taskSchedule :: taskList, endTime.to)
+</span>115 <span style=''></span><span style='background: #AEF1AE'>                      }
+</span>116 <span style=''></span><span style='background: #AEF1AE'>              }
+</span>117 <span style=''></span><span style='background: #AEF1AE'>      }
+</span>118 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>119 <span style=''>
+</span>120 <span style=''>    </span><span style='background: #AEF1AE'>scheduleResult.map { case (allFinalSchedules, _) =&gt;
+</span>121 <span style=''></span><span style='background: #AEF1AE'>      toXml(allFinalSchedules)
+</span>122 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>123 <span style=''>
+</span>124 <span style=''>  // Function to generate the XML
+</span>125 <span style=''>  </span><span style='background: #AEF1AE'>private def toXml</span><span style=''>(schedules: List[TaskSchedule]): Elem =
+</span>126 <span style=''>    &lt;</span><span style='background: #AEF1AE'>Schedule xmlns=&quot;http://www.dei.isep.ipp.pt/tap-2025&quot;
+</span>127 <span style=''></span><span style='background: #AEF1AE'>              xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+</span>128 <span style=''></span><span style='background: #AEF1AE'>              xsi:schemaLocation=&quot;http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd &quot;&gt;
+</span>129 <span style=''></span><span style='background: #AEF1AE'>      {schedules.sortBy(s =&gt; (s.orderId.to, s.productNumber.to, s.start.to)).map { sched =&gt;
+</span>130 <span style=''></span><span style='background: #AEF1AE'>      &lt;TaskSchedule order={sched.orderId.to}
+</span>131 <span style=''></span><span style='background: #AEF1AE'>                    productNumber={sched.productNumber.to.toString}
+</span>132 <span style=''></span><span style='background: #AEF1AE'>                    task={sched.taskId.to}
+</span>133 <span style=''></span><span style='background: #AEF1AE'>                    start={sched.start.to.toString}
+</span>134 <span style=''></span><span style='background: #AEF1AE'>                    end={sched.end.to.toString}&gt;
+</span>135 <span style=''></span><span style='background: #AEF1AE'>        &lt;PhysicalResources&gt;
+</span>136 <span style=''></span><span style='background: #AEF1AE'>          {sched.physicalResourceIds.map(id =&gt;
+</span>137 <span style=''></span><span style='background: #AEF1AE'>            &lt;Physical id={id.to}/&gt;
+</span>138 <span style=''></span><span style='background: #AEF1AE'>        )}
+</span>139 <span style=''></span><span style='background: #AEF1AE'>        &lt;/PhysicalResources&gt;
+</span>140 <span style=''></span><span style='background: #AEF1AE'>        &lt;HumanResources&gt;
+</span>141 <span style=''></span><span style='background: #AEF1AE'>          {sched.humanResourceNames.map(name =&gt;
+</span>142 <span style=''></span><span style='background: #AEF1AE'>            &lt;Human name={name}/&gt;
+</span>143 <span style=''></span><span style='background: #AEF1AE'>        )}
+</span>144 <span style=''></span><span style='background: #AEF1AE'>        &lt;/HumanResources&gt;
+</span>145 <span style=''></span><span style='background: #AEF1AE'>      &lt;/TaskSchedule&gt;
+</span>146 <span style=''></span><span style='background: #AEF1AE'>    }}
+</span>147 <span style=''></span><span style='background: #AEF1AE'>    &lt;/Schedule&gt;</span><span style=''>
+</span>148 <span style=''>
+</span>149 <span style=''>  // The main function to create the schedule
+</span>150 <span style=''>  </span><span style='background: #AEF1AE'>def create</span><span style=''>(xml: Elem): Result[Elem] =
+</span>151 <span style=''>    </span><span style='background: #AEF1AE'>scheduleDataRetriever(xml)</span><span style=''> match
+</span>152 <span style=''>      case Right((physResources, physTypes, tasks, humanResources, products, orders)) </span><span style='background: #AEF1AE'>=&gt;
+</span>153 <span style=''></span><span style='background: #AEF1AE'>        generateSchedule(physResources, physTypes, tasks, humanResources, products, orders)</span><span style=''>
+</span>154 <span style=''>      case Left(error) </span><span style='background: #AEF1AE'>=&gt;
+</span>155 <span style=''></span><span style='background: #AEF1AE'>        Left(error)</span><span style=''>
+</span>156 <span style=''>}
+</span></pre>
+          </div>
+          <div class="tab-pane" id="statementlist">
+            <table cellspacing="0" cellpadding="0" class="table statementlist">
+      <tr>
+        <th>Line</th>
+        <th>Stmt Id</th>
+        <th>Pos</th>
+        <th>Tree</th>
+        <th>Symbol</th>
+        <th>Tests</th>
+        <th>Code</th>
+      </tr><tr>
+        <td>
+          13
+        </td>
+        <td>
+          113
+        </td>
+        <td>
+          281
+          -
+          306
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          scheduleDataRetriever
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def scheduleDataRetriever
+        </td>
+      </tr><tr>
+        <td>
+          21
+        </td>
+        <td>
+          79
+        </td>
+        <td>
+          469
+          -
+          1366
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          for\r\n      physicalNode &lt;- XML.fromNode(xml, &quot;PhysicalResources&quot;)\r\n      physicalResources &lt;- XML.traverse(physicalNode \\ &quot;Physical&quot;, XMLToDomain.getPhysicalResource)\r\n      physicalTypes = physicalResources.map(_.name).distinct\r\n\r\n      tasksNode &lt;- XML.fromNode(xml, &quot;Tasks&quot;)\r\n      tasks &lt;- XML.traverse(tasksNode \\ &quot;Task&quot;, XMLToDomain.getTask(physicalTypes))\r\n\r\n      humanNode &lt;- XML.fromNode(xml, &quot;HumanResources&quot;)\r\n      humanResources &lt;- XML.traverse(humanNode \\ &quot;Human&quot;, XMLToDomain.getHumanResource(physicalTypes))\r\n\r\n      productsNode &lt;- XML.fromNode(xml, &quot;Products&quot;)\r\n      products &lt;- XML.traverse(productsNode \\ &quot;Product&quot;, XMLToDomain.getProduct(tasks))\r\n\r\n      ordersNode &lt;- XML.fromNode(xml, &quot;Orders&quot;)\r\n      orders &lt;- XML.traverse(ordersNode \\ &quot;Order&quot;, XMLToDomain.getOrder(products))\r\n    yield\r\n      (physicalResources, physicalTypes, tasks, humanResources, products, orders)
+        </td>
+      </tr><tr>
+        <td>
+          22
+        </td>
+        <td>
+          80
+        </td>
+        <td>
+          496
+          -
+          534
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fromNode
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.fromNode(xml, &quot;PhysicalResources&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          83
+        </td>
+        <td>
+          563
+          -
+          635
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          traverse
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.traverse(physicalNode \\ &quot;Physical&quot;, XMLToDomain.getPhysicalResource)
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          82
+        </td>
+        <td>
+          542
+          -
+          697
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          physicalResources &lt;- XML.traverse(physicalNode \\ &quot;Physical&quot;, XMLToDomain.getPhysicalResource)\r\n      physicalTypes = physicalResources.map(_.name).distinct
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          85
+        </td>
+        <td>
+          603
+          -
+          634
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getPhysicalResource
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XMLToDomain.getPhysicalResource
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          81
+        </td>
+        <td>
+          542
+          -
+          1366
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          physicalResources &lt;- XML.traverse(physicalNode \\ &quot;Physical&quot;, XMLToDomain.getPhysicalResource)\r\n      physicalTypes = physicalResources.map(_.name).distinct\r\n\r\n      tasksNode &lt;- XML.fromNode(xml, &quot;Tasks&quot;)\r\n      tasks &lt;- XML.traverse(tasksNode \\ &quot;Task&quot;, XMLToDomain.getTask(physicalTypes))\r\n\r\n      humanNode &lt;- XML.fromNode(xml, &quot;HumanResources&quot;)\r\n      humanResources &lt;- XML.traverse(humanNode \\ &quot;Human&quot;, XMLToDomain.getHumanResource(physicalTypes))\r\n\r\n      productsNode &lt;- XML.fromNode(xml, &quot;Products&quot;)\r\n      products &lt;- XML.traverse(productsNode \\ &quot;Product&quot;, XMLToDomain.getProduct(tasks))\r\n\r\n      ordersNode &lt;- XML.fromNode(xml, &quot;Orders&quot;)\r\n      orders &lt;- XML.traverse(ordersNode \\ &quot;Order&quot;, XMLToDomain.getOrder(products))\r\n    yield\r\n      (physicalResources, physicalTypes, tasks, humanResources, products, orders)
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          84
+        </td>
+        <td>
+          576
+          -
+          601
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          \\
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          physicalNode \\ &quot;Physical&quot;
+        </td>
+      </tr><tr>
+        <td>
+          24
+        </td>
+        <td>
+          86
+        </td>
+        <td>
+          659
+          -
+          688
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          physicalResources.map(_.name)
+        </td>
+      </tr><tr>
+        <td>
+          24
+        </td>
+        <td>
+          87
+        </td>
+        <td>
+          659
+          -
+          697
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          distinct
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          physicalResources.map(_.name).distinct
+        </td>
+      </tr><tr>
+        <td>
+          26
+        </td>
+        <td>
+          89
+        </td>
+        <td>
+          720
+          -
+          746
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fromNode
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.fromNode(xml, &quot;Tasks&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          26
+        </td>
+        <td>
+          112
+        </td>
+        <td>
+          707
+          -
+          1366
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          tasksNode &lt;- XML.fromNode(xml, &quot;Tasks&quot;)\r\n      tasks &lt;- XML.traverse(tasksNode \\ &quot;Task&quot;, XMLToDomain.getTask(physicalTypes))\r\n\r\n      humanNode &lt;- XML.fromNode(xml, &quot;HumanResources&quot;)\r\n      humanResources &lt;- XML.traverse(humanNode \\ &quot;Human&quot;, XMLToDomain.getHumanResource(physicalTypes))\r\n\r\n      productsNode &lt;- XML.fromNode(xml, &quot;Products&quot;)\r\n      products &lt;- XML.traverse(productsNode \\ &quot;Product&quot;, XMLToDomain.getProduct(tasks))\r\n\r\n      ordersNode &lt;- XML.fromNode(xml, &quot;Orders&quot;)\r\n      orders &lt;- XML.traverse(ordersNode \\ &quot;Order&quot;, XMLToDomain.getOrder(products))\r\n    yield\r\n      (physicalResources, physicalTypes, tasks, humanResources, products, orders)
+        </td>
+      </tr><tr>
+        <td>
+          26
+        </td>
+        <td>
+          88
+        </td>
+        <td>
+          707
+          -
+          1366
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          tasksNode &lt;- XML.fromNode(xml, &quot;Tasks&quot;)\r\n      tasks &lt;- XML.traverse(tasksNode \\ &quot;Task&quot;, XMLToDomain.getTask(physicalTypes))\r\n\r\n      humanNode &lt;- XML.fromNode(xml, &quot;HumanResources&quot;)\r\n      humanResources &lt;- XML.traverse(humanNode \\ &quot;Human&quot;, XMLToDomain.getHumanResource(physicalTypes))\r\n\r\n      productsNode &lt;- XML.fromNode(xml, &quot;Products&quot;)\r\n      products &lt;- XML.traverse(productsNode \\ &quot;Product&quot;, XMLToDomain.getProduct(tasks))\r\n\r\n      ordersNode &lt;- XML.fromNode(xml, &quot;Orders&quot;)\r\n      orders &lt;- XML.traverse(ordersNode \\ &quot;Order&quot;, XMLToDomain.getOrder(products))\r\n    yield\r\n      (physicalResources, physicalTypes, tasks, humanResources, products, orders)
+        </td>
+      </tr><tr>
+        <td>
+          27
+        </td>
+        <td>
+          92
+        </td>
+        <td>
+          776
+          -
+          794
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          \\
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          tasksNode \\ &quot;Task&quot;
+        </td>
+      </tr><tr>
+        <td>
+          27
+        </td>
+        <td>
+          91
+        </td>
+        <td>
+          763
+          -
+          831
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          traverse
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.traverse(tasksNode \\ &quot;Task&quot;, XMLToDomain.getTask(physicalTypes))
+        </td>
+      </tr><tr>
+        <td>
+          27
+        </td>
+        <td>
+          90
+        </td>
+        <td>
+          754
+          -
+          1366
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          tasks &lt;- XML.traverse(tasksNode \\ &quot;Task&quot;, XMLToDomain.getTask(physicalTypes))\r\n\r\n      humanNode &lt;- XML.fromNode(xml, &quot;HumanResources&quot;)\r\n      humanResources &lt;- XML.traverse(humanNode \\ &quot;Human&quot;, XMLToDomain.getHumanResource(physicalTypes))\r\n\r\n      productsNode &lt;- XML.fromNode(xml, &quot;Products&quot;)\r\n      products &lt;- XML.traverse(productsNode \\ &quot;Product&quot;, XMLToDomain.getProduct(tasks))\r\n\r\n      ordersNode &lt;- XML.fromNode(xml, &quot;Orders&quot;)\r\n      orders &lt;- XML.traverse(ordersNode \\ &quot;Order&quot;, XMLToDomain.getOrder(products))\r\n    yield\r\n      (physicalResources, physicalTypes, tasks, humanResources, products, orders)
+        </td>
+      </tr><tr>
+        <td>
+          27
+        </td>
+        <td>
+          93
+        </td>
+        <td>
+          796
+          -
+          830
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getTask
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XMLToDomain.getTask(physicalTypes)
+        </td>
+      </tr><tr>
+        <td>
+          29
+        </td>
+        <td>
+          95
+        </td>
+        <td>
+          854
+          -
+          889
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fromNode
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.fromNode(xml, &quot;HumanResources&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          29
+        </td>
+        <td>
+          94
+        </td>
+        <td>
+          841
+          -
+          1366
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          humanNode &lt;- XML.fromNode(xml, &quot;HumanResources&quot;)\r\n      humanResources &lt;- XML.traverse(humanNode \\ &quot;Human&quot;, XMLToDomain.getHumanResource(physicalTypes))\r\n\r\n      productsNode &lt;- XML.fromNode(xml, &quot;Products&quot;)\r\n      products &lt;- XML.traverse(productsNode \\ &quot;Product&quot;, XMLToDomain.getProduct(tasks))\r\n\r\n      ordersNode &lt;- XML.fromNode(xml, &quot;Orders&quot;)\r\n      orders &lt;- XML.traverse(ordersNode \\ &quot;Order&quot;, XMLToDomain.getOrder(products))\r\n    yield\r\n      (physicalResources, physicalTypes, tasks, humanResources, products, orders)
+        </td>
+      </tr><tr>
+        <td>
+          30
+        </td>
+        <td>
+          98
+        </td>
+        <td>
+          928
+          -
+          947
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          \\
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          humanNode \\ &quot;Human&quot;
+        </td>
+      </tr><tr>
+        <td>
+          30
+        </td>
+        <td>
+          97
+        </td>
+        <td>
+          915
+          -
+          993
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          traverse
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.traverse(humanNode \\ &quot;Human&quot;, XMLToDomain.getHumanResource(physicalTypes))
+        </td>
+      </tr><tr>
+        <td>
+          30
+        </td>
+        <td>
+          96
+        </td>
+        <td>
+          897
+          -
+          1366
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          humanResources &lt;- XML.traverse(humanNode \\ &quot;Human&quot;, XMLToDomain.getHumanResource(physicalTypes))\r\n\r\n      productsNode &lt;- XML.fromNode(xml, &quot;Products&quot;)\r\n      products &lt;- XML.traverse(productsNode \\ &quot;Product&quot;, XMLToDomain.getProduct(tasks))\r\n\r\n      ordersNode &lt;- XML.fromNode(xml, &quot;Orders&quot;)\r\n      orders &lt;- XML.traverse(ordersNode \\ &quot;Order&quot;, XMLToDomain.getOrder(products))\r\n    yield\r\n      (physicalResources, physicalTypes, tasks, humanResources, products, orders)
+        </td>
+      </tr><tr>
+        <td>
+          30
+        </td>
+        <td>
+          99
+        </td>
+        <td>
+          949
+          -
+          992
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getHumanResource
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XMLToDomain.getHumanResource(physicalTypes)
+        </td>
+      </tr><tr>
+        <td>
+          32
+        </td>
+        <td>
+          101
+        </td>
+        <td>
+          1019
+          -
+          1048
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fromNode
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.fromNode(xml, &quot;Products&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          32
+        </td>
+        <td>
+          100
+        </td>
+        <td>
+          1003
+          -
+          1366
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          productsNode &lt;- XML.fromNode(xml, &quot;Products&quot;)\r\n      products &lt;- XML.traverse(productsNode \\ &quot;Product&quot;, XMLToDomain.getProduct(tasks))\r\n\r\n      ordersNode &lt;- XML.fromNode(xml, &quot;Orders&quot;)\r\n      orders &lt;- XML.traverse(ordersNode \\ &quot;Order&quot;, XMLToDomain.getOrder(products))\r\n    yield\r\n      (physicalResources, physicalTypes, tasks, humanResources, products, orders)
+        </td>
+      </tr><tr>
+        <td>
+          33
+        </td>
+        <td>
+          104
+        </td>
+        <td>
+          1081
+          -
+          1105
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          \\
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          productsNode \\ &quot;Product&quot;
+        </td>
+      </tr><tr>
+        <td>
+          33
+        </td>
+        <td>
+          103
+        </td>
+        <td>
+          1068
+          -
+          1137
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          traverse
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.traverse(productsNode \\ &quot;Product&quot;, XMLToDomain.getProduct(tasks))
+        </td>
+      </tr><tr>
+        <td>
+          33
+        </td>
+        <td>
+          105
+        </td>
+        <td>
+          1107
+          -
+          1136
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getProduct
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XMLToDomain.getProduct(tasks)
+        </td>
+      </tr><tr>
+        <td>
+          33
+        </td>
+        <td>
+          102
+        </td>
+        <td>
+          1056
+          -
+          1366
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          products &lt;- XML.traverse(productsNode \\ &quot;Product&quot;, XMLToDomain.getProduct(tasks))\r\n\r\n      ordersNode &lt;- XML.fromNode(xml, &quot;Orders&quot;)\r\n      orders &lt;- XML.traverse(ordersNode \\ &quot;Order&quot;, XMLToDomain.getOrder(products))\r\n    yield\r\n      (physicalResources, physicalTypes, tasks, humanResources, products, orders)
+        </td>
+      </tr><tr>
+        <td>
+          35
+        </td>
+        <td>
+          107
+        </td>
+        <td>
+          1161
+          -
+          1188
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fromNode
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.fromNode(xml, &quot;Orders&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          35
+        </td>
+        <td>
+          106
+        </td>
+        <td>
+          1147
+          -
+          1366
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ordersNode &lt;- XML.fromNode(xml, &quot;Orders&quot;)\r\n      orders &lt;- XML.traverse(ordersNode \\ &quot;Order&quot;, XMLToDomain.getOrder(products))\r\n    yield\r\n      (physicalResources, physicalTypes, tasks, humanResources, products, orders)
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          110
+        </td>
+        <td>
+          1219
+          -
+          1239
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          \\
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ordersNode \\ &quot;Order&quot;
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          109
+        </td>
+        <td>
+          1206
+          -
+          1272
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          traverse
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.traverse(ordersNode \\ &quot;Order&quot;, XMLToDomain.getOrder(products))
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          108
+        </td>
+        <td>
+          1196
+          -
+          1366
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          orders &lt;- XML.traverse(ordersNode \\ &quot;Order&quot;, XMLToDomain.getOrder(products))\r\n    yield\r\n      (physicalResources, physicalTypes, tasks, humanResources, products, orders)
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          111
+        </td>
+        <td>
+          1241
+          -
+          1271
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getOrder
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XMLToDomain.getOrder(products)
+        </td>
+      </tr><tr>
+        <td>
+          41
+        </td>
+        <td>
+          134
+        </td>
+        <td>
+          1446
+          -
+          1475
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          allocatePhysicalResources
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def allocatePhysicalResources
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          119
+        </td>
+        <td>
+          1722
+          -
+          1731
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          empty
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Set.empty
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          116
+        </td>
+        <td>
+          1710
+          -
+          1715
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Right
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          115
+        </td>
+        <td>
+          1626
+          -
+          2128
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          foldLeft
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          requiredTypes.foldLeft[Result[(List[PhysicalResourceId], Set[PhysicalResourceId])]](Right((Nil, Set.empty))) {\r\n      case (accResult, requiredType) =&gt; accResult.flatMap { case (assignedIds, usedIds) =&gt;\r\n        availableResources\r\n          .find(resource =&gt; resource.name.equals(requiredType) &amp;&amp; !usedIds.contains(resource.id))\r\n          .map(_.id)\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType))\r\n          .map(id =&gt; (id :: assignedIds, usedIds + id))\r\n      }\r\n    }
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          118
+        </td>
+        <td>
+          1722
+          -
+          1725
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Set
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Set
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          117
+        </td>
+        <td>
+          1717
+          -
+          1720
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Nil
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Nil
+        </td>
+      </tr><tr>
+        <td>
+          47
+        </td>
+        <td>
+          131
+        </td>
+        <td>
+          1775
+          -
+          2121
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          =&gt; accResult.flatMap { case (assignedIds, usedIds) =&gt;\r\n        availableResources\r\n          .find(resource =&gt; resource.name.equals(requiredType) &amp;&amp; !usedIds.contains(resource.id))\r\n          .map(_.id)\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType))\r\n          .map(id =&gt; (id :: assignedIds, usedIds + id))\r\n      }
+        </td>
+      </tr><tr>
+        <td>
+          47
+        </td>
+        <td>
+          130
+        </td>
+        <td>
+          1826
+          -
+          2112
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          =&gt;\r\n        availableResources\r\n          .find(resource =&gt; resource.name.equals(requiredType) &amp;&amp; !usedIds.contains(resource.id))\r\n          .map(_.id)\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType))\r\n          .map(id =&gt; (id :: assignedIds, usedIds + id))
+        </td>
+      </tr><tr>
+        <td>
+          47
+        </td>
+        <td>
+          120
+        </td>
+        <td>
+          1778
+          -
+          2121
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          accResult.flatMap { case (assignedIds, usedIds) =&gt;\r\n        availableResources\r\n          .find(resource =&gt; resource.name.equals(requiredType) &amp;&amp; !usedIds.contains(resource.id))\r\n          .map(_.id)\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType))\r\n          .map(id =&gt; (id :: assignedIds, usedIds + id))\r\n      }
+        </td>
+      </tr><tr>
+        <td>
+          49
+        </td>
+        <td>
+          125
+        </td>
+        <td>
+          1886
+          -
+          1920
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          equals
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          resource.name.equals(requiredType)
+        </td>
+      </tr><tr>
+        <td>
+          49
+        </td>
+        <td>
+          124
+        </td>
+        <td>
+          1838
+          -
+          1955
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          find
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          availableResources\r\n          .find(resource =&gt; resource.name.equals(requiredType) &amp;&amp; !usedIds.contains(resource.id))
+        </td>
+      </tr><tr>
+        <td>
+          49
+        </td>
+        <td>
+          126
+        </td>
+        <td>
+          1925
+          -
+          1954
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          contains
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          usedIds.contains(resource.id)
+        </td>
+      </tr><tr>
+        <td>
+          50
+        </td>
+        <td>
+          123
+        </td>
+        <td>
+          1838
+          -
+          1977
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          availableResources\r\n          .find(resource =&gt; resource.name.equals(requiredType) &amp;&amp; !usedIds.contains(resource.id))\r\n          .map(_.id)
+        </td>
+      </tr><tr>
+        <td>
+          51
+        </td>
+        <td>
+          122
+        </td>
+        <td>
+          1838
+          -
+          2055
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          toRight
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          availableResources\r\n          .find(resource =&gt; resource.name.equals(requiredType) &amp;&amp; !usedIds.contains(resource.id))\r\n          .map(_.id)\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType))
+        </td>
+      </tr><tr>
+        <td>
+          51
+        </td>
+        <td>
+          127
+        </td>
+        <td>
+          2030
+          -
+          2039
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          taskId.to
+        </td>
+      </tr><tr>
+        <td>
+          52
+        </td>
+        <td>
+          128
+        </td>
+        <td>
+          2079
+          -
+          2096
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ::
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          id :: assignedIds
+        </td>
+      </tr><tr>
+        <td>
+          52
+        </td>
+        <td>
+          121
+        </td>
+        <td>
+          1838
+          -
+          2112
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          availableResources\r\n          .find(resource =&gt; resource.name.equals(requiredType) &amp;&amp; !usedIds.contains(resource.id))\r\n          .map(_.id)\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType))\r\n          .map(id =&gt; (id :: assignedIds, usedIds + id))
+        </td>
+      </tr><tr>
+        <td>
+          52
+        </td>
+        <td>
+          129
+        </td>
+        <td>
+          2098
+          -
+          2110
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          usedIds + id
+        </td>
+      </tr><tr>
+        <td>
+          54
+        </td>
+        <td>
+          133
+        </td>
+        <td>
+          2133
+          -
+          2145
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          reverse
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          _._1.reverse
+        </td>
+      </tr><tr>
+        <td>
+          54
+        </td>
+        <td>
+          132
+        </td>
+        <td>
+          2133
+          -
+          2137
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          _._1
+        </td>
+      </tr><tr>
+        <td>
+          54
+        </td>
+        <td>
+          114
+        </td>
+        <td>
+          1626
+          -
+          2146
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          requiredTypes.foldLeft[Result[(List[PhysicalResourceId], Set[PhysicalResourceId])]](Right((Nil, Set.empty))) {\r\n      case (accResult, requiredType) =&gt; accResult.flatMap { case (assignedIds, usedIds) =&gt;\r\n        availableResources\r\n          .find(resource =&gt; resource.name.equals(requiredType) &amp;&amp; !usedIds.contains(resource.id))\r\n          .map(_.id)\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType))\r\n          .map(id =&gt; (id :: assignedIds, usedIds + id))\r\n      }\r\n    }.map(_._1.reverse)
+        </td>
+      </tr><tr>
+        <td>
+          57
+        </td>
+        <td>
+          154
+        </td>
+        <td>
+          2223
+          -
+          2249
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          allocateHumanResources
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def allocateHumanResources
+        </td>
+      </tr><tr>
+        <td>
+          62
+        </td>
+        <td>
+          137
+        </td>
+        <td>
+          2442
+          -
+          2447
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Right
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right
+        </td>
+      </tr><tr>
+        <td>
+          62
+        </td>
+        <td>
+          140
+        </td>
+        <td>
+          2454
+          -
+          2463
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          empty
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Set.empty
+        </td>
+      </tr><tr>
+        <td>
+          62
+        </td>
+        <td>
+          136
+        </td>
+        <td>
+          2382
+          -
+          2858
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          foldLeft
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          requiredTypes.foldLeft[Result[(List[String], Set[String])]](Right((Nil, Set.empty))) {\r\n      case (accResult, requiredType) =&gt; accResult.flatMap { case (assignedNames, usedNames) =&gt;\r\n        availableHumans\r\n          .find(hr =&gt; hr.physicalResourceTypes.contains(requiredType) &amp;&amp; !usedNames.contains(hr.name))\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType))\r\n          .map(hr =&gt; (hr.name :: assignedNames, usedNames + hr.name))\r\n      }\r\n    }
+        </td>
+      </tr><tr>
+        <td>
+          62
+        </td>
+        <td>
+          139
+        </td>
+        <td>
+          2454
+          -
+          2457
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Set
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Set
+        </td>
+      </tr><tr>
+        <td>
+          62
+        </td>
+        <td>
+          138
+        </td>
+        <td>
+          2449
+          -
+          2452
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Nil
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Nil
+        </td>
+      </tr><tr>
+        <td>
+          63
+        </td>
+        <td>
+          151
+        </td>
+        <td>
+          2507
+          -
+          2851
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          =&gt; accResult.flatMap { case (assignedNames, usedNames) =&gt;\r\n        availableHumans\r\n          .find(hr =&gt; hr.physicalResourceTypes.contains(requiredType) &amp;&amp; !usedNames.contains(hr.name))\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType))\r\n          .map(hr =&gt; (hr.name :: assignedNames, usedNames + hr.name))\r\n      }
+        </td>
+      </tr><tr>
+        <td>
+          63
+        </td>
+        <td>
+          150
+        </td>
+        <td>
+          2562
+          -
+          2842
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          =&gt;\r\n        availableHumans\r\n          .find(hr =&gt; hr.physicalResourceTypes.contains(requiredType) &amp;&amp; !usedNames.contains(hr.name))\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType))\r\n          .map(hr =&gt; (hr.name :: assignedNames, usedNames + hr.name))
+        </td>
+      </tr><tr>
+        <td>
+          63
+        </td>
+        <td>
+          141
+        </td>
+        <td>
+          2510
+          -
+          2851
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          accResult.flatMap { case (assignedNames, usedNames) =&gt;\r\n        availableHumans\r\n          .find(hr =&gt; hr.physicalResourceTypes.contains(requiredType) &amp;&amp; !usedNames.contains(hr.name))\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType))\r\n          .map(hr =&gt; (hr.name :: assignedNames, usedNames + hr.name))\r\n      }
+        </td>
+      </tr><tr>
+        <td>
+          65
+        </td>
+        <td>
+          146
+        </td>
+        <td>
+          2665
+          -
+          2692
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          contains
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          usedNames.contains(hr.name)
+        </td>
+      </tr><tr>
+        <td>
+          65
+        </td>
+        <td>
+          145
+        </td>
+        <td>
+          2613
+          -
+          2660
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          contains
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          hr.physicalResourceTypes.contains(requiredType)
+        </td>
+      </tr><tr>
+        <td>
+          65
+        </td>
+        <td>
+          144
+        </td>
+        <td>
+          2574
+          -
+          2693
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          find
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          availableHumans\r\n          .find(hr =&gt; hr.physicalResourceTypes.contains(requiredType) &amp;&amp; !usedNames.contains(hr.name))
+        </td>
+      </tr><tr>
+        <td>
+          66
+        </td>
+        <td>
+          147
+        </td>
+        <td>
+          2746
+          -
+          2755
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          taskId.to
+        </td>
+      </tr><tr>
+        <td>
+          66
+        </td>
+        <td>
+          143
+        </td>
+        <td>
+          2574
+          -
+          2771
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          toRight
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          availableHumans\r\n          .find(hr =&gt; hr.physicalResourceTypes.contains(requiredType) &amp;&amp; !usedNames.contains(hr.name))\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType))
+        </td>
+      </tr><tr>
+        <td>
+          67
+        </td>
+        <td>
+          149
+        </td>
+        <td>
+          2821
+          -
+          2840
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          usedNames + hr.name
+        </td>
+      </tr><tr>
+        <td>
+          67
+        </td>
+        <td>
+          142
+        </td>
+        <td>
+          2574
+          -
+          2842
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          availableHumans\r\n          .find(hr =&gt; hr.physicalResourceTypes.contains(requiredType) &amp;&amp; !usedNames.contains(hr.name))\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType))\r\n          .map(hr =&gt; (hr.name :: assignedNames, usedNames + hr.name))
+        </td>
+      </tr><tr>
+        <td>
+          67
+        </td>
+        <td>
+          148
+        </td>
+        <td>
+          2795
+          -
+          2819
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ::
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          hr.name :: assignedNames
+        </td>
+      </tr><tr>
+        <td>
+          69
+        </td>
+        <td>
+          153
+        </td>
+        <td>
+          2863
+          -
+          2875
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          reverse
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          _._1.reverse
+        </td>
+      </tr><tr>
+        <td>
+          69
+        </td>
+        <td>
+          135
+        </td>
+        <td>
+          2382
+          -
+          2876
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          requiredTypes.foldLeft[Result[(List[String], Set[String])]](Right((Nil, Set.empty))) {\r\n      case (accResult, requiredType) =&gt; accResult.flatMap { case (assignedNames, usedNames) =&gt;\r\n        availableHumans\r\n          .find(hr =&gt; hr.physicalResourceTypes.contains(requiredType) &amp;&amp; !usedNames.contains(hr.name))\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType))\r\n          .map(hr =&gt; (hr.name :: assignedNames, usedNames + hr.name))\r\n      }\r\n    }.map(_._1.reverse)
+        </td>
+      </tr><tr>
+        <td>
+          69
+        </td>
+        <td>
+          152
+        </td>
+        <td>
+          2863
+          -
+          2867
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          _._1
+        </td>
+      </tr><tr>
+        <td>
+          72
+        </td>
+        <td>
+          197
+        </td>
+        <td>
+          2937
+          -
+          2965
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          generateSchedule
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          private def generateSchedule
+        </td>
+      </tr><tr>
+        <td>
+          82
+        </td>
+        <td>
+          155
+        </td>
+        <td>
+          3317
+          -
+          3322
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Right
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right
+        </td>
+      </tr><tr>
+        <td>
+          82
+        </td>
+        <td>
+          156
+        </td>
+        <td>
+          3324
+          -
+          3327
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Nil
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Nil
+        </td>
+      </tr><tr>
+        <td>
+          84
+        </td>
+        <td>
+          157
+        </td>
+        <td>
+          3361
+          -
+          5559
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          foldLeft
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          allOrders.foldLeft[Result[Accumulator]](initialAccumulator) { (accumulatorForOrders, currentOrder) =&gt;\r\n      accumulatorForOrders.flatMap { case (scheduledTasksSoFar, globalTimeSoFar) =&gt;\r\n        val matchedProduct = allProducts.find(_.id == currentOrder.productId)\r\n          .toRight(DomainError.ProductDoesNotExist(currentOrder.productId.to))\r\n\r\n        (1 to currentOrder.quantity.to).foldLeft[Result[Accumulator]](Right((scheduledTasksSoFar, globalTimeSoFar))):\r\n          case (accumulatorForProducts, productInstanceNumber) =&gt; accumulatorForProducts.flatMap:\r\n            case (tasksForProduct, timeAtStartOfProduct) =&gt; matchedProduct.flatMap { productDef =&gt;\r\n              productDef.tasksList.foldLeft[Result[Accumulator]](Right((tasksForProduct, timeAtStartOfProduct))):\r\n                case (accumulatorForTasks, taskId) =&gt; accumulatorForTasks.flatMap:\r\n                  case (taskList, taskStartTime) =&gt;\r\n                    allTasks.find(_.id == taskId)\r\n                      .toRight(DomainError.TaskDoesNotExist(taskId.to))\r\n                      .flatMap { task =&gt;\r\n                        for {\r\n                          allocatedPhysicalResources &lt;- allocatePhysicalResources(task.id, task.physicalResourceTypes, physicalResources)\r\n                          allocatedHumanResources &lt;- allocateHumanResources(task.id, task.physicalResourceTypes, humanResources)\r\n                          productNumber &lt;- ProductNumber.from(productInstanceNumber)\r\n                          startTime &lt;- TaskScheduleTime.from(taskStartTime)\r\n                          endTime &lt;- TaskScheduleTime.from(taskStartTime + task.time.to)\r\n                        } yield\r\n                          val taskSchedule = TaskSchedule(\r\n                            currentOrder.id,\r\n                            productNumber,\r\n                            task.id,\r\n                            startTime,\r\n                            endTime,\r\n                            allocatedPhysicalResources,\r\n                            allocatedHumanResources\r\n                          )\r\n                          (taskSchedule :: taskList, endTime.to)\r\n                      }\r\n              }\r\n      }\r\n    }
+        </td>
+      </tr><tr>
+        <td>
+          85
+        </td>
+        <td>
+          158
+        </td>
+        <td>
+          3470
+          -
+          5552
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          accumulatorForOrders.flatMap { case (scheduledTasksSoFar, globalTimeSoFar) =&gt;\r\n        val matchedProduct = allProducts.find(_.id == currentOrder.productId)\r\n          .toRight(DomainError.ProductDoesNotExist(currentOrder.productId.to))\r\n\r\n        (1 to currentOrder.quantity.to).foldLeft[Result[Accumulator]](Right((scheduledTasksSoFar, globalTimeSoFar))):\r\n          case (accumulatorForProducts, productInstanceNumber) =&gt; accumulatorForProducts.flatMap:\r\n            case (tasksForProduct, timeAtStartOfProduct) =&gt; matchedProduct.flatMap { productDef =&gt;\r\n              productDef.tasksList.foldLeft[Result[Accumulator]](Right((tasksForProduct, timeAtStartOfProduct))):\r\n                case (accumulatorForTasks, taskId) =&gt; accumulatorForTasks.flatMap:\r\n                  case (taskList, taskStartTime) =&gt;\r\n                    allTasks.find(_.id == taskId)\r\n                      .toRight(DomainError.TaskDoesNotExist(taskId.to))\r\n                      .flatMap { task =&gt;\r\n                        for {\r\n                          allocatedPhysicalResources &lt;- allocatePhysicalResources(task.id, task.physicalResourceTypes, physicalResources)\r\n                          allocatedHumanResources &lt;- allocateHumanResources(task.id, task.physicalResourceTypes, humanResources)\r\n                          productNumber &lt;- ProductNumber.from(productInstanceNumber)\r\n                          startTime &lt;- TaskScheduleTime.from(taskStartTime)\r\n                          endTime &lt;- TaskScheduleTime.from(taskStartTime + task.time.to)\r\n                        } yield\r\n                          val taskSchedule = TaskSchedule(\r\n                            currentOrder.id,\r\n                            productNumber,\r\n                            task.id,\r\n                            startTime,\r\n                            endTime,\r\n                            allocatedPhysicalResources,\r\n                            allocatedHumanResources\r\n                          )\r\n                          (taskSchedule :: taskList, endTime.to)\r\n                      }\r\n              }\r\n      }
+        </td>
+      </tr><tr>
+        <td>
+          85
+        </td>
+        <td>
+          193
+        </td>
+        <td>
+          3545
+          -
+          5543
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          =&gt;\r\n        val matchedProduct = allProducts.find(_.id == currentOrder.productId)\r\n          .toRight(DomainError.ProductDoesNotExist(currentOrder.productId.to))\r\n\r\n        (1 to currentOrder.quantity.to).foldLeft[Result[Accumulator]](Right((scheduledTasksSoFar, globalTimeSoFar))):\r\n          case (accumulatorForProducts, productInstanceNumber) =&gt; accumulatorForProducts.flatMap:\r\n            case (tasksForProduct, timeAtStartOfProduct) =&gt; matchedProduct.flatMap { productDef =&gt;\r\n              productDef.tasksList.foldLeft[Result[Accumulator]](Right((tasksForProduct, timeAtStartOfProduct))):\r\n                case (accumulatorForTasks, taskId) =&gt; accumulatorForTasks.flatMap:\r\n                  case (taskList, taskStartTime) =&gt;\r\n                    allTasks.find(_.id == taskId)\r\n                      .toRight(DomainError.TaskDoesNotExist(taskId.to))\r\n                      .flatMap { task =&gt;\r\n                        for {\r\n                          allocatedPhysicalResources &lt;- allocatePhysicalResources(task.id, task.physicalResourceTypes, physicalResources)\r\n                          allocatedHumanResources &lt;- allocateHumanResources(task.id, task.physicalResourceTypes, humanResources)\r\n                          productNumber &lt;- ProductNumber.from(productInstanceNumber)\r\n                          startTime &lt;- TaskScheduleTime.from(taskStartTime)\r\n                          endTime &lt;- TaskScheduleTime.from(taskStartTime + task.time.to)\r\n                        } yield\r\n                          val taskSchedule = TaskSchedule(\r\n                            currentOrder.id,\r\n                            productNumber,\r\n                            task.id,\r\n                            startTime,\r\n                            endTime,\r\n                            allocatedPhysicalResources,\r\n                            allocatedHumanResources\r\n                          )\r\n                          (taskSchedule :: taskList, endTime.to)\r\n                      }\r\n              }
+        </td>
+      </tr><tr>
+        <td>
+          86
+        </td>
+        <td>
+          160
+        </td>
+        <td>
+          3578
+          -
+          3626
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          find
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          allProducts.find(_.id == currentOrder.productId)
+        </td>
+      </tr><tr>
+        <td>
+          87
+        </td>
+        <td>
+          159
+        </td>
+        <td>
+          3578
+          -
+          3706
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          toRight
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          allProducts.find(_.id == currentOrder.productId)\r\n          .toRight(DomainError.ProductDoesNotExist(currentOrder.productId.to))
+        </td>
+      </tr><tr>
+        <td>
+          87
+        </td>
+        <td>
+          161
+        </td>
+        <td>
+          3679
+          -
+          3704
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          currentOrder.productId.to
+        </td>
+      </tr><tr>
+        <td>
+          89
+        </td>
+        <td>
+          164
+        </td>
+        <td>
+          3719
+          -
+          3720
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          intWrapper
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          1
+        </td>
+      </tr><tr>
+        <td>
+          89
+        </td>
+        <td>
+          166
+        </td>
+        <td>
+          3780
+          -
+          3785
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Right
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right
+        </td>
+      </tr><tr>
+        <td>
+          89
+        </td>
+        <td>
+          163
+        </td>
+        <td>
+          3719
+          -
+          3748
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          1 to currentOrder.quantity.to
+        </td>
+      </tr><tr>
+        <td>
+          89
+        </td>
+        <td>
+          165
+        </td>
+        <td>
+          3724
+          -
+          3748
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          currentOrder.quantity.to
+        </td>
+      </tr><tr>
+        <td>
+          90
+        </td>
+        <td>
+          192
+        </td>
+        <td>
+          3892
+          -
+          5543
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          =&gt; accumulatorForProducts.flatMap:\r\n            case (tasksForProduct, timeAtStartOfProduct) =&gt; matchedProduct.flatMap { productDef =&gt;\r\n              productDef.tasksList.foldLeft[Result[Accumulator]](Right((tasksForProduct, timeAtStartOfProduct))):\r\n                case (accumulatorForTasks, taskId) =&gt; accumulatorForTasks.flatMap:\r\n                  case (taskList, taskStartTime) =&gt;\r\n                    allTasks.find(_.id == taskId)\r\n                      .toRight(DomainError.TaskDoesNotExist(taskId.to))\r\n                      .flatMap { task =&gt;\r\n                        for {\r\n                          allocatedPhysicalResources &lt;- allocatePhysicalResources(task.id, task.physicalResourceTypes, physicalResources)\r\n                          allocatedHumanResources &lt;- allocateHumanResources(task.id, task.physicalResourceTypes, humanResources)\r\n                          productNumber &lt;- ProductNumber.from(productInstanceNumber)\r\n                          startTime &lt;- TaskScheduleTime.from(taskStartTime)\r\n                          endTime &lt;- TaskScheduleTime.from(taskStartTime + task.time.to)\r\n                        } yield\r\n                          val taskSchedule = TaskSchedule(\r\n                            currentOrder.id,\r\n                            productNumber,\r\n                            task.id,\r\n                            startTime,\r\n                            endTime,\r\n                            allocatedPhysicalResources,\r\n                            allocatedHumanResources\r\n                          )\r\n                          (taskSchedule :: taskList, endTime.to)\r\n                      }\r\n              }
+        </td>
+      </tr><tr>
+        <td>
+          90
+        </td>
+        <td>
+          162
+        </td>
+        <td>
+          3718
+          -
+          5543
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          foldLeft
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          (1 to currentOrder.quantity.to).foldLeft[Result[Accumulator]](Right((scheduledTasksSoFar, globalTimeSoFar))):\r\n          case (accumulatorForProducts, productInstanceNumber) =&gt; accumulatorForProducts.flatMap:\r\n            case (tasksForProduct, timeAtStartOfProduct) =&gt; matchedProduct.flatMap { productDef =&gt;\r\n              productDef.tasksList.foldLeft[Result[Accumulator]](Right((tasksForProduct, timeAtStartOfProduct))):\r\n                case (accumulatorForTasks, taskId) =&gt; accumulatorForTasks.flatMap:\r\n                  case (taskList, taskStartTime) =&gt;\r\n                    allTasks.find(_.id == taskId)\r\n                      .toRight(DomainError.TaskDoesNotExist(taskId.to))\r\n                      .flatMap { task =&gt;\r\n                        for {\r\n                          allocatedPhysicalResources &lt;- allocatePhysicalResources(task.id, task.physicalResourceTypes, physicalResources)\r\n                          allocatedHumanResources &lt;- allocateHumanResources(task.id, task.physicalResourceTypes, humanResources)\r\n                          productNumber &lt;- ProductNumber.from(productInstanceNumber)\r\n                          startTime &lt;- TaskScheduleTime.from(taskStartTime)\r\n                          endTime &lt;- TaskScheduleTime.from(taskStartTime + task.time.to)\r\n                        } yield\r\n                          val taskSchedule = TaskSchedule(\r\n                            currentOrder.id,\r\n                            productNumber,\r\n                            task.id,\r\n                            startTime,\r\n                            endTime,\r\n                            allocatedPhysicalResources,\r\n                            allocatedHumanResources\r\n                          )\r\n                          (taskSchedule :: taskList, endTime.to)\r\n                      }\r\n              }
+        </td>
+      </tr><tr>
+        <td>
+          91
+        </td>
+        <td>
+          191
+        </td>
+        <td>
+          3985
+          -
+          5543
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          =&gt; matchedProduct.flatMap { productDef =&gt;\r\n              productDef.tasksList.foldLeft[Result[Accumulator]](Right((tasksForProduct, timeAtStartOfProduct))):\r\n                case (accumulatorForTasks, taskId) =&gt; accumulatorForTasks.flatMap:\r\n                  case (taskList, taskStartTime) =&gt;\r\n                    allTasks.find(_.id == taskId)\r\n                      .toRight(DomainError.TaskDoesNotExist(taskId.to))\r\n                      .flatMap { task =&gt;\r\n                        for {\r\n                          allocatedPhysicalResources &lt;- allocatePhysicalResources(task.id, task.physicalResourceTypes, physicalResources)\r\n                          allocatedHumanResources &lt;- allocateHumanResources(task.id, task.physicalResourceTypes, humanResources)\r\n                          productNumber &lt;- ProductNumber.from(productInstanceNumber)\r\n                          startTime &lt;- TaskScheduleTime.from(taskStartTime)\r\n                          endTime &lt;- TaskScheduleTime.from(taskStartTime + task.time.to)\r\n                        } yield\r\n                          val taskSchedule = TaskSchedule(\r\n                            currentOrder.id,\r\n                            productNumber,\r\n                            task.id,\r\n                            startTime,\r\n                            endTime,\r\n                            allocatedPhysicalResources,\r\n                            allocatedHumanResources\r\n                          )\r\n                          (taskSchedule :: taskList, endTime.to)\r\n                      }\r\n              }
+        </td>
+      </tr><tr>
+        <td>
+          91
+        </td>
+        <td>
+          167
+        </td>
+        <td>
+          3895
+          -
+          5543
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          accumulatorForProducts.flatMap:\r\n            case (tasksForProduct, timeAtStartOfProduct) =&gt; matchedProduct.flatMap { productDef =&gt;\r\n              productDef.tasksList.foldLeft[Result[Accumulator]](Right((tasksForProduct, timeAtStartOfProduct))):\r\n                case (accumulatorForTasks, taskId) =&gt; accumulatorForTasks.flatMap:\r\n                  case (taskList, taskStartTime) =&gt;\r\n                    allTasks.find(_.id == taskId)\r\n                      .toRight(DomainError.TaskDoesNotExist(taskId.to))\r\n                      .flatMap { task =&gt;\r\n                        for {\r\n                          allocatedPhysicalResources &lt;- allocatePhysicalResources(task.id, task.physicalResourceTypes, physicalResources)\r\n                          allocatedHumanResources &lt;- allocateHumanResources(task.id, task.physicalResourceTypes, humanResources)\r\n                          productNumber &lt;- ProductNumber.from(productInstanceNumber)\r\n                          startTime &lt;- TaskScheduleTime.from(taskStartTime)\r\n                          endTime &lt;- TaskScheduleTime.from(taskStartTime + task.time.to)\r\n                        } yield\r\n                          val taskSchedule = TaskSchedule(\r\n                            currentOrder.id,\r\n                            productNumber,\r\n                            task.id,\r\n                            startTime,\r\n                            endTime,\r\n                            allocatedPhysicalResources,\r\n                            allocatedHumanResources\r\n                          )\r\n                          (taskSchedule :: taskList, endTime.to)\r\n                      }\r\n              }
+        </td>
+      </tr><tr>
+        <td>
+          91
+        </td>
+        <td>
+          168
+        </td>
+        <td>
+          3988
+          -
+          5543
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          matchedProduct.flatMap { productDef =&gt;\r\n              productDef.tasksList.foldLeft[Result[Accumulator]](Right((tasksForProduct, timeAtStartOfProduct))):\r\n                case (accumulatorForTasks, taskId) =&gt; accumulatorForTasks.flatMap:\r\n                  case (taskList, taskStartTime) =&gt;\r\n                    allTasks.find(_.id == taskId)\r\n                      .toRight(DomainError.TaskDoesNotExist(taskId.to))\r\n                      .flatMap { task =&gt;\r\n                        for {\r\n                          allocatedPhysicalResources &lt;- allocatePhysicalResources(task.id, task.physicalResourceTypes, physicalResources)\r\n                          allocatedHumanResources &lt;- allocateHumanResources(task.id, task.physicalResourceTypes, humanResources)\r\n                          productNumber &lt;- ProductNumber.from(productInstanceNumber)\r\n                          startTime &lt;- TaskScheduleTime.from(taskStartTime)\r\n                          endTime &lt;- TaskScheduleTime.from(taskStartTime + task.time.to)\r\n                        } yield\r\n                          val taskSchedule = TaskSchedule(\r\n                            currentOrder.id,\r\n                            productNumber,\r\n                            task.id,\r\n                            startTime,\r\n                            endTime,\r\n                            allocatedPhysicalResources,\r\n                            allocatedHumanResources\r\n                          )\r\n                          (taskSchedule :: taskList, endTime.to)\r\n                      }\r\n              }
+        </td>
+      </tr><tr>
+        <td>
+          92
+        </td>
+        <td>
+          170
+        </td>
+        <td>
+          4093
+          -
+          4098
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Right
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right
+        </td>
+      </tr><tr>
+        <td>
+          93
+        </td>
+        <td>
+          169
+        </td>
+        <td>
+          4042
+          -
+          5526
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          foldLeft
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          productDef.tasksList.foldLeft[Result[Accumulator]](Right((tasksForProduct, timeAtStartOfProduct))):\r\n                case (accumulatorForTasks, taskId) =&gt; accumulatorForTasks.flatMap:\r\n                  case (taskList, taskStartTime) =&gt;\r\n                    allTasks.find(_.id == taskId)\r\n                      .toRight(DomainError.TaskDoesNotExist(taskId.to))\r\n                      .flatMap { task =&gt;\r\n                        for {\r\n                          allocatedPhysicalResources &lt;- allocatePhysicalResources(task.id, task.physicalResourceTypes, physicalResources)\r\n                          allocatedHumanResources &lt;- allocateHumanResources(task.id, task.physicalResourceTypes, humanResources)\r\n                          productNumber &lt;- ProductNumber.from(productInstanceNumber)\r\n                          startTime &lt;- TaskScheduleTime.from(taskStartTime)\r\n                          endTime &lt;- TaskScheduleTime.from(taskStartTime + task.time.to)\r\n                        } yield\r\n                          val taskSchedule = TaskSchedule(\r\n                            currentOrder.id,\r\n                            productNumber,\r\n                            task.id,\r\n                            startTime,\r\n                            endTime,\r\n                            allocatedPhysicalResources,\r\n                            allocatedHumanResources\r\n                          )\r\n                          (taskSchedule :: taskList, endTime.to)\r\n                      }
+        </td>
+      </tr><tr>
+        <td>
+          93
+        </td>
+        <td>
+          190
+        </td>
+        <td>
+          4194
+          -
+          5526
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          =&gt; accumulatorForTasks.flatMap:\r\n                  case (taskList, taskStartTime) =&gt;\r\n                    allTasks.find(_.id == taskId)\r\n                      .toRight(DomainError.TaskDoesNotExist(taskId.to))\r\n                      .flatMap { task =&gt;\r\n                        for {\r\n                          allocatedPhysicalResources &lt;- allocatePhysicalResources(task.id, task.physicalResourceTypes, physicalResources)\r\n                          allocatedHumanResources &lt;- allocateHumanResources(task.id, task.physicalResourceTypes, humanResources)\r\n                          productNumber &lt;- ProductNumber.from(productInstanceNumber)\r\n                          startTime &lt;- TaskScheduleTime.from(taskStartTime)\r\n                          endTime &lt;- TaskScheduleTime.from(taskStartTime + task.time.to)\r\n                        } yield\r\n                          val taskSchedule = TaskSchedule(\r\n                            currentOrder.id,\r\n                            productNumber,\r\n                            task.id,\r\n                            startTime,\r\n                            endTime,\r\n                            allocatedPhysicalResources,\r\n                            allocatedHumanResources\r\n                          )\r\n                          (taskSchedule :: taskList, endTime.to)\r\n                      }
+        </td>
+      </tr><tr>
+        <td>
+          94
+        </td>
+        <td>
+          189
+        </td>
+        <td>
+          4276
+          -
+          5526
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          =&gt;\r\n                    allTasks.find(_.id == taskId)\r\n                      .toRight(DomainError.TaskDoesNotExist(taskId.to))\r\n                      .flatMap { task =&gt;\r\n                        for {\r\n                          allocatedPhysicalResources &lt;- allocatePhysicalResources(task.id, task.physicalResourceTypes, physicalResources)\r\n                          allocatedHumanResources &lt;- allocateHumanResources(task.id, task.physicalResourceTypes, humanResources)\r\n                          productNumber &lt;- ProductNumber.from(productInstanceNumber)\r\n                          startTime &lt;- TaskScheduleTime.from(taskStartTime)\r\n                          endTime &lt;- TaskScheduleTime.from(taskStartTime + task.time.to)\r\n                        } yield\r\n                          val taskSchedule = TaskSchedule(\r\n                            currentOrder.id,\r\n                            productNumber,\r\n                            task.id,\r\n                            startTime,\r\n                            endTime,\r\n                            allocatedPhysicalResources,\r\n                            allocatedHumanResources\r\n                          )\r\n                          (taskSchedule :: taskList, endTime.to)\r\n                      }
+        </td>
+      </tr><tr>
+        <td>
+          94
+        </td>
+        <td>
+          171
+        </td>
+        <td>
+          4197
+          -
+          5526
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          accumulatorForTasks.flatMap:\r\n                  case (taskList, taskStartTime) =&gt;\r\n                    allTasks.find(_.id == taskId)\r\n                      .toRight(DomainError.TaskDoesNotExist(taskId.to))\r\n                      .flatMap { task =&gt;\r\n                        for {\r\n                          allocatedPhysicalResources &lt;- allocatePhysicalResources(task.id, task.physicalResourceTypes, physicalResources)\r\n                          allocatedHumanResources &lt;- allocateHumanResources(task.id, task.physicalResourceTypes, humanResources)\r\n                          productNumber &lt;- ProductNumber.from(productInstanceNumber)\r\n                          startTime &lt;- TaskScheduleTime.from(taskStartTime)\r\n                          endTime &lt;- TaskScheduleTime.from(taskStartTime + task.time.to)\r\n                        } yield\r\n                          val taskSchedule = TaskSchedule(\r\n                            currentOrder.id,\r\n                            productNumber,\r\n                            task.id,\r\n                            startTime,\r\n                            endTime,\r\n                            allocatedPhysicalResources,\r\n                            allocatedHumanResources\r\n                          )\r\n                          (taskSchedule :: taskList, endTime.to)\r\n                      }
+        </td>
+      </tr><tr>
+        <td>
+          95
+        </td>
+        <td>
+          174
+        </td>
+        <td>
+          4300
+          -
+          4329
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          find
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          allTasks.find(_.id == taskId)
+        </td>
+      </tr><tr>
+        <td>
+          96
+        </td>
+        <td>
+          173
+        </td>
+        <td>
+          4300
+          -
+          4402
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          toRight
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          allTasks.find(_.id == taskId)\r\n                      .toRight(DomainError.TaskDoesNotExist(taskId.to))
+        </td>
+      </tr><tr>
+        <td>
+          96
+        </td>
+        <td>
+          175
+        </td>
+        <td>
+          4391
+          -
+          4400
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          taskId.to
+        </td>
+      </tr><tr>
+        <td>
+          97
+        </td>
+        <td>
+          172
+        </td>
+        <td>
+          4300
+          -
+          5526
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          allTasks.find(_.id == taskId)\r\n                      .toRight(DomainError.TaskDoesNotExist(taskId.to))\r\n                      .flatMap { task =&gt;\r\n                        for {\r\n                          allocatedPhysicalResources &lt;- allocatePhysicalResources(task.id, task.physicalResourceTypes, physicalResources)\r\n                          allocatedHumanResources &lt;- allocateHumanResources(task.id, task.physicalResourceTypes, humanResources)\r\n                          productNumber &lt;- ProductNumber.from(productInstanceNumber)\r\n                          startTime &lt;- TaskScheduleTime.from(taskStartTime)\r\n                          endTime &lt;- TaskScheduleTime.from(taskStartTime + task.time.to)\r\n                        } yield\r\n                          val taskSchedule = TaskSchedule(\r\n                            currentOrder.id,\r\n                            productNumber,\r\n                            task.id,\r\n                            startTime,\r\n                            endTime,\r\n                            allocatedPhysicalResources,\r\n                            allocatedHumanResources\r\n                          )\r\n                          (taskSchedule :: taskList, endTime.to)\r\n                      }
+        </td>
+      </tr><tr>
+        <td>
+          98
+        </td>
+        <td>
+          176
+        </td>
+        <td>
+          4470
+          -
+          5501
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          for {\r\n                          allocatedPhysicalResources &lt;- allocatePhysicalResources(task.id, task.physicalResourceTypes, physicalResources)\r\n                          allocatedHumanResources &lt;- allocateHumanResources(task.id, task.physicalResourceTypes, humanResources)\r\n                          productNumber &lt;- ProductNumber.from(productInstanceNumber)\r\n                          startTime &lt;- TaskScheduleTime.from(taskStartTime)\r\n                          endTime &lt;- TaskScheduleTime.from(taskStartTime + task.time.to)\r\n                        } yield\r\n                          val taskSchedule = TaskSchedule(\r\n                            currentOrder.id,\r\n                            productNumber,\r\n                            task.id,\r\n                            startTime,\r\n                            endTime,\r\n                            allocatedPhysicalResources,\r\n                            allocatedHumanResources\r\n                          )\r\n                          (taskSchedule :: taskList, endTime.to)
+        </td>
+      </tr><tr>
+        <td>
+          99
+        </td>
+        <td>
+          177
+        </td>
+        <td>
+          4533
+          -
+          4614
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          allocatePhysicalResources
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          allocatePhysicalResources(task.id, task.physicalResourceTypes, physicalResources)
+        </td>
+      </tr><tr>
+        <td>
+          100
+        </td>
+        <td>
+          178
+        </td>
+        <td>
+          4642
+          -
+          5501
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          allocatedHumanResources &lt;- allocateHumanResources(task.id, task.physicalResourceTypes, humanResources)\r\n                          productNumber &lt;- ProductNumber.from(productInstanceNumber)\r\n                          startTime &lt;- TaskScheduleTime.from(taskStartTime)\r\n                          endTime &lt;- TaskScheduleTime.from(taskStartTime + task.time.to)\r\n                        } yield\r\n                          val taskSchedule = TaskSchedule(\r\n                            currentOrder.id,\r\n                            productNumber,\r\n                            task.id,\r\n                            startTime,\r\n                            endTime,\r\n                            allocatedPhysicalResources,\r\n                            allocatedHumanResources\r\n                          )\r\n                          (taskSchedule :: taskList, endTime.to)
+        </td>
+      </tr><tr>
+        <td>
+          100
+        </td>
+        <td>
+          179
+        </td>
+        <td>
+          4669
+          -
+          4744
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          allocateHumanResources
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          allocateHumanResources(task.id, task.physicalResourceTypes, humanResources)
+        </td>
+      </tr><tr>
+        <td>
+          101
+        </td>
+        <td>
+          181
+        </td>
+        <td>
+          4789
+          -
+          4830
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ProductNumber.from(productInstanceNumber)
+        </td>
+      </tr><tr>
+        <td>
+          101
+        </td>
+        <td>
+          180
+        </td>
+        <td>
+          4772
+          -
+          5501
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          productNumber &lt;- ProductNumber.from(productInstanceNumber)\r\n                          startTime &lt;- TaskScheduleTime.from(taskStartTime)\r\n                          endTime &lt;- TaskScheduleTime.from(taskStartTime + task.time.to)\r\n                        } yield\r\n                          val taskSchedule = TaskSchedule(\r\n                            currentOrder.id,\r\n                            productNumber,\r\n                            task.id,\r\n                            startTime,\r\n                            endTime,\r\n                            allocatedPhysicalResources,\r\n                            allocatedHumanResources\r\n                          )\r\n                          (taskSchedule :: taskList, endTime.to)
+        </td>
+      </tr><tr>
+        <td>
+          102
+        </td>
+        <td>
+          182
+        </td>
+        <td>
+          4858
+          -
+          5501
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          startTime &lt;- TaskScheduleTime.from(taskStartTime)\r\n                          endTime &lt;- TaskScheduleTime.from(taskStartTime + task.time.to)\r\n                        } yield\r\n                          val taskSchedule = TaskSchedule(\r\n                            currentOrder.id,\r\n                            productNumber,\r\n                            task.id,\r\n                            startTime,\r\n                            endTime,\r\n                            allocatedPhysicalResources,\r\n                            allocatedHumanResources\r\n                          )\r\n                          (taskSchedule :: taskList, endTime.to)
+        </td>
+      </tr><tr>
+        <td>
+          102
+        </td>
+        <td>
+          183
+        </td>
+        <td>
+          4871
+          -
+          4907
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          TaskScheduleTime.from(taskStartTime)
+        </td>
+      </tr><tr>
+        <td>
+          103
+        </td>
+        <td>
+          185
+        </td>
+        <td>
+          4946
+          -
+          4997
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          TaskScheduleTime.from(taskStartTime + task.time.to)
+        </td>
+      </tr><tr>
+        <td>
+          103
+        </td>
+        <td>
+          184
+        </td>
+        <td>
+          4935
+          -
+          5501
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          endTime &lt;- TaskScheduleTime.from(taskStartTime + task.time.to)\r\n                        } yield\r\n                          val taskSchedule = TaskSchedule(\r\n                            currentOrder.id,\r\n                            productNumber,\r\n                            task.id,\r\n                            startTime,\r\n                            endTime,\r\n                            allocatedPhysicalResources,\r\n                            allocatedHumanResources\r\n                          )\r\n                          (taskSchedule :: taskList, endTime.to)
+        </td>
+      </tr><tr>
+        <td>
+          103
+        </td>
+        <td>
+          186
+        </td>
+        <td>
+          4984
+          -
+          4996
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          task.time.to
+        </td>
+      </tr><tr>
+        <td>
+          114
+        </td>
+        <td>
+          187
+        </td>
+        <td>
+          5464
+          -
+          5488
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ::
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          taskSchedule :: taskList
+        </td>
+      </tr><tr>
+        <td>
+          114
+        </td>
+        <td>
+          188
+        </td>
+        <td>
+          5490
+          -
+          5500
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          endTime.to
+        </td>
+      </tr><tr>
+        <td>
+          120
+        </td>
+        <td>
+          194
+        </td>
+        <td>
+          5567
+          -
+          5657
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          scheduleResult.map { case (allFinalSchedules, _) =&gt;\r\n      toXml(allFinalSchedules)\r\n    }
+        </td>
+      </tr><tr>
+        <td>
+          120
+        </td>
+        <td>
+          196
+        </td>
+        <td>
+          5616
+          -
+          5650
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          =&gt;\r\n      toXml(allFinalSchedules)
+        </td>
+      </tr><tr>
+        <td>
+          121
+        </td>
+        <td>
+          195
+        </td>
+        <td>
+          5626
+          -
+          5650
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          toXml
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          toXml(allFinalSchedules)
+        </td>
+      </tr><tr>
+        <td>
+          125
+        </td>
+        <td>
+          231
+        </td>
+        <td>
+          5698
+          -
+          5715
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          toXml
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          private def toXml
+        </td>
+      </tr><tr>
+        <td>
+          126
+        </td>
+        <td>
+          200
+        </td>
+        <td>
+          5761
+          -
+          6682
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Schedule xmlns=&quot;http://www.dei.isep.ipp.pt/tap-2025&quot;\r\n              xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;\r\n              xsi:schemaLocation=&quot;http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd &quot;&gt;\r\n      {schedules.sortBy(s =&gt; (s.orderId.to, s.productNumber.to, s.start.to)).map { sched =&gt;\r\n      &lt;TaskSchedule order={sched.orderId.to}\r\n                    productNumber={sched.productNumber.to.toString}\r\n                    task={sched.taskId.to}\r\n                    start={sched.start.to.toString}\r\n                    end={sched.end.to.toString}&gt;\r\n        &lt;PhysicalResources&gt;\r\n          {sched.physicalResourceIds.map(id =&gt;\r\n            &lt;Physical id={id.to}/&gt;\r\n        )}\r\n        &lt;/PhysicalResources&gt;\r\n        &lt;HumanResources&gt;\r\n          {sched.humanResourceNames.map(name =&gt;\r\n            &lt;Human name={name}/&gt;\r\n        )}\r\n        &lt;/HumanResources&gt;\r\n      &lt;/TaskSchedule&gt;\r\n    }}\r\n    &lt;/Schedule&gt;\r
+        </td>
+      </tr><tr>
+        <td>
+          128
+        </td>
+        <td>
+          199
+        </td>
+        <td>
+          5898
+          -
+          5974
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          xsi:schemaLocation=&quot;http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd &quot;
+        </td>
+      </tr><tr>
+        <td>
+          128
+        </td>
+        <td>
+          198
+        </td>
+        <td>
+          5898
+          -
+          5974
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          xsi:schemaLocation=&quot;http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd &quot;
+        </td>
+      </tr><tr>
+        <td>
+          129
+        </td>
+        <td>
+          202
+        </td>
+        <td>
+          5984
+          -
+          6663
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          schedules.sortBy(s =&gt; (s.orderId.to, s.productNumber.to, s.start.to)).map { sched =&gt;\r\n      &lt;TaskSchedule order={sched.orderId.to}\r\n                    productNumber={sched.productNumber.to.toString}\r\n                    task={sched.taskId.to}\r\n                    start={sched.start.to.toString}\r\n                    end={sched.end.to.toString}&gt;\r\n        &lt;PhysicalResources&gt;\r\n          {sched.physicalResourceIds.map(id =&gt;\r\n            &lt;Physical id={id.to}/&gt;\r\n        )}\r\n        &lt;/PhysicalResources&gt;\r\n        &lt;HumanResources&gt;\r\n          {sched.humanResourceNames.map(name =&gt;\r\n            &lt;Human name={name}/&gt;\r\n        )}\r\n        &lt;/HumanResources&gt;\r\n      &lt;/TaskSchedule&gt;\r\n    }
+        </td>
+      </tr><tr>
+        <td>
+          129
+        </td>
+        <td>
+          205
+        </td>
+        <td>
+          6021
+          -
+          6039
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          s.productNumber.to
+        </td>
+      </tr><tr>
+        <td>
+          129
+        </td>
+        <td>
+          201
+        </td>
+        <td>
+          5984
+          -
+          6663
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &amp;+
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          schedules.sortBy(s =&gt; (s.orderId.to, s.productNumber.to, s.start.to)).map { sched =&gt;\r\n      &lt;TaskSchedule order={sched.orderId.to}\r\n                    productNumber={sched.productNumber.to.toString}\r\n                    task={sched.taskId.to}\r\n                    start={sched.start.to.toString}\r\n                    end={sched.end.to.toString}&gt;\r\n        &lt;PhysicalResources&gt;\r\n          {sched.physicalResourceIds.map(id =&gt;\r\n            &lt;Physical id={id.to}/&gt;\r\n        )}\r\n        &lt;/PhysicalResources&gt;\r\n        &lt;HumanResources&gt;\r\n          {sched.humanResourceNames.map(name =&gt;\r\n            &lt;Human name={name}/&gt;\r\n        )}\r\n        &lt;/HumanResources&gt;\r\n      &lt;/TaskSchedule&gt;\r\n    }
+        </td>
+      </tr><tr>
+        <td>
+          129
+        </td>
+        <td>
+          204
+        </td>
+        <td>
+          6007
+          -
+          6019
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          s.orderId.to
+        </td>
+      </tr><tr>
+        <td>
+          129
+        </td>
+        <td>
+          203
+        </td>
+        <td>
+          5984
+          -
+          6053
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          sortBy
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          schedules.sortBy(s =&gt; (s.orderId.to, s.productNumber.to, s.start.to))
+        </td>
+      </tr><tr>
+        <td>
+          129
+        </td>
+        <td>
+          206
+        </td>
+        <td>
+          6041
+          -
+          6051
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          s.start.to
+        </td>
+      </tr><tr>
+        <td>
+          130
+        </td>
+        <td>
+          217
+        </td>
+        <td>
+          6077
+          -
+          6657
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          TaskSchedule order={sched.orderId.to}\r\n                    productNumber={sched.productNumber.to.toString}\r\n                    task={sched.taskId.to}\r\n                    start={sched.start.to.toString}\r\n                    end={sched.end.to.toString}&gt;\r\n        &lt;PhysicalResources&gt;\r\n          {sched.physicalResourceIds.map(id =&gt;\r\n            &lt;Physical id={id.to}/&gt;\r\n        )}\r\n        &lt;/PhysicalResources&gt;\r\n        &lt;HumanResources&gt;\r\n          {sched.humanResourceNames.map(name =&gt;\r\n            &lt;Human name={name}/&gt;\r\n        )}\r\n        &lt;/HumanResources&gt;\r\n      &lt;/TaskSchedule&gt;\r
+        </td>
+      </tr><tr>
+        <td>
+          130
+        </td>
+        <td>
+          216
+        </td>
+        <td>
+          6097
+          -
+          6113
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.orderId.to
+        </td>
+      </tr><tr>
+        <td>
+          130
+        </td>
+        <td>
+          215
+        </td>
+        <td>
+          6097
+          -
+          6113
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.orderId.to
+        </td>
+      </tr><tr>
+        <td>
+          131
+        </td>
+        <td>
+          214
+        </td>
+        <td>
+          6151
+          -
+          6173
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.productNumber.to
+        </td>
+      </tr><tr>
+        <td>
+          131
+        </td>
+        <td>
+          213
+        </td>
+        <td>
+          6151
+          -
+          6182
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.productNumber.to.toString
+        </td>
+      </tr><tr>
+        <td>
+          132
+        </td>
+        <td>
+          211
+        </td>
+        <td>
+          6211
+          -
+          6226
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.taskId.to
+        </td>
+      </tr><tr>
+        <td>
+          132
+        </td>
+        <td>
+          212
+        </td>
+        <td>
+          6211
+          -
+          6226
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.taskId.to
+        </td>
+      </tr><tr>
+        <td>
+          133
+        </td>
+        <td>
+          209
+        </td>
+        <td>
+          6256
+          -
+          6279
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.start.to.toString
+        </td>
+      </tr><tr>
+        <td>
+          133
+        </td>
+        <td>
+          210
+        </td>
+        <td>
+          6256
+          -
+          6270
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.start.to
+        </td>
+      </tr><tr>
+        <td>
+          134
+        </td>
+        <td>
+          208
+        </td>
+        <td>
+          6307
+          -
+          6319
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.end.to
+        </td>
+      </tr><tr>
+        <td>
+          134
+        </td>
+        <td>
+          207
+        </td>
+        <td>
+          6307
+          -
+          6328
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.end.to.toString
+        </td>
+      </tr><tr>
+        <td>
+          135
+        </td>
+        <td>
+          218
+        </td>
+        <td>
+          6341
+          -
+          6486
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &amp;+
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          PhysicalResources&gt;\r\n          {sched.physicalResourceIds.map(id =&gt;\r\n            &lt;Physical id={id.to}/&gt;\r\n        )}\r\n        &lt;/PhysicalResources&gt;\r
+        </td>
+      </tr><tr>
+        <td>
+          135
+        </td>
+        <td>
+          219
+        </td>
+        <td>
+          6341
+          -
+          6486
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          PhysicalResources&gt;\r\n          {sched.physicalResourceIds.map(id =&gt;\r\n            &lt;Physical id={id.to}/&gt;\r\n        )}\r\n        &lt;/PhysicalResources&gt;\r
+        </td>
+      </tr><tr>
+        <td>
+          136
+        </td>
+        <td>
+          220
+        </td>
+        <td>
+          6372
+          -
+          6454
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &amp;+
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.physicalResourceIds.map(id =&gt;\r\n            &lt;Physical id={id.to}/&gt;\r\n        )
+        </td>
+      </tr><tr>
+        <td>
+          136
+        </td>
+        <td>
+          221
+        </td>
+        <td>
+          6372
+          -
+          6454
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.physicalResourceIds.map(id =&gt;\r\n            &lt;Physical id={id.to}/&gt;\r\n        )
+        </td>
+      </tr><tr>
+        <td>
+          137
+        </td>
+        <td>
+          223
+        </td>
+        <td>
+          6435
+          -
+          6440
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          id.to
+        </td>
+      </tr><tr>
+        <td>
+          137
+        </td>
+        <td>
+          222
+        </td>
+        <td>
+          6435
+          -
+          6440
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          id.to
+        </td>
+      </tr><tr>
+        <td>
+          137
+        </td>
+        <td>
+          224
+        </td>
+        <td>
+          6422
+          -
+          6444
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Physical id={id.to}/&gt;\r
+        </td>
+      </tr><tr>
+        <td>
+          140
+        </td>
+        <td>
+          226
+        </td>
+        <td>
+          6496
+          -
+          6634
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          HumanResources&gt;\r\n          {sched.humanResourceNames.map(name =&gt;\r\n            &lt;Human name={name}/&gt;\r\n        )}\r\n        &lt;/HumanResources&gt;\r
+        </td>
+      </tr><tr>
+        <td>
+          140
+        </td>
+        <td>
+          225
+        </td>
+        <td>
+          6496
+          -
+          6634
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &amp;+
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          HumanResources&gt;\r\n          {sched.humanResourceNames.map(name =&gt;\r\n            &lt;Human name={name}/&gt;\r\n        )}\r\n        &lt;/HumanResources&gt;\r
+        </td>
+      </tr><tr>
+        <td>
+          141
+        </td>
+        <td>
+          227
+        </td>
+        <td>
+          6524
+          -
+          6605
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &amp;+
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.humanResourceNames.map(name =&gt;\r\n            &lt;Human name={name}/&gt;\r\n        )
+        </td>
+      </tr><tr>
+        <td>
+          141
+        </td>
+        <td>
+          228
+        </td>
+        <td>
+          6524
+          -
+          6605
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.humanResourceNames.map(name =&gt;\r\n            &lt;Human name={name}/&gt;\r\n        )
+        </td>
+      </tr><tr>
+        <td>
+          142
+        </td>
+        <td>
+          229
+        </td>
+        <td>
+          6587
+          -
+          6591
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          name
+        </td>
+      </tr><tr>
+        <td>
+          142
+        </td>
+        <td>
+          230
+        </td>
+        <td>
+          6575
+          -
+          6595
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Human name={name}/&gt;\r
+        </td>
+      </tr><tr>
+        <td>
+          150
+        </td>
+        <td>
+          237
+        </td>
+        <td>
+          6734
+          -
+          6744
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          create
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def create
+        </td>
+      </tr><tr>
+        <td>
+          151
+        </td>
+        <td>
+          232
+        </td>
+        <td>
+          6777
+          -
+          6803
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scheduleDataRetriever
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          scheduleDataRetriever(xml)
+        </td>
+      </tr><tr>
+        <td>
+          152
+        </td>
+        <td>
+          234
+        </td>
+        <td>
+          6897
+          -
+          6992
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          =&gt;\r\n        generateSchedule(physResources, physTypes, tasks, humanResources, products, orders)
+        </td>
+      </tr><tr>
+        <td>
+          153
+        </td>
+        <td>
+          233
+        </td>
+        <td>
+          6909
+          -
+          6992
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          generateSchedule
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          generateSchedule(physResources, physTypes, tasks, humanResources, products, orders)
+        </td>
+      </tr><tr>
+        <td>
+          154
+        </td>
+        <td>
+          236
+        </td>
+        <td>
+          7017
+          -
+          7040
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          =&gt;\r\n        Left(error)
+        </td>
+      </tr><tr>
+        <td>
+          155
+        </td>
+        <td>
+          235
+        </td>
+        <td>
+          7029
+          -
+          7033
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Left
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Left
+        </td>
+      </tr>
+    </table>
+          </div>
+        </div>
+      </body>
+    </html>

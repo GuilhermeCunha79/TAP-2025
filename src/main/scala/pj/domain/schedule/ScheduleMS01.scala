@@ -9,6 +9,7 @@ import scala.xml.Elem
 
 object ScheduleMS01 extends Schedule {
 
+  // Function to retrieve the data from the XML input file
   def scheduleDataRetriever(xml: Elem): Result[(
     List[PhysicalResource],
     List[String],
@@ -36,6 +37,7 @@ object ScheduleMS01 extends Schedule {
     yield
       (physicalResources, physicalTypes, tasks, humanResources, products, orders)
 
+  // Function to find physical resources available to perform the tasks
    def allocatePhysicalResources(
     taskId: TaskId,
     requiredTypes: List[String],
@@ -51,6 +53,7 @@ object ScheduleMS01 extends Schedule {
       }
     }.map(_._1.reverse)
 
+  // Function to find human resources available to perform the tasks
    def allocateHumanResources(
     taskId: TaskId,
     requiredTypes: List[String],
@@ -65,6 +68,7 @@ object ScheduleMS01 extends Schedule {
       }
     }.map(_._1.reverse)
 
+  // Function to process all the schedule build logic
   private def generateSchedule(
       physicalResources: List[PhysicalResource],
       physicalTypes: List[String],
@@ -94,18 +98,20 @@ object ScheduleMS01 extends Schedule {
                         for {
                           allocatedPhysicalResources <- allocatePhysicalResources(task.id, task.physicalResourceTypes, physicalResources)
                           allocatedHumanResources <- allocateHumanResources(task.id, task.physicalResourceTypes, humanResources)
+                          productNumber <- ProductNumber.from(productInstanceNumber)
+                          startTime <- TaskScheduleTime.from(taskStartTime)
+                          endTime <- TaskScheduleTime.from(taskStartTime + task.time.to)
                         } yield
-                          val taskEndTime = taskStartTime + task.time.to
                           val taskSchedule = TaskSchedule(
                             currentOrder.id,
-                            productInstanceNumber,
+                            productNumber,
                             task.id,
-                            taskStartTime,
-                            taskEndTime,
+                            startTime,
+                            endTime,
                             allocatedPhysicalResources,
                             allocatedHumanResources
                           )
-                          (taskSchedule :: taskList, taskEndTime)
+                          (taskSchedule :: taskList, endTime.to)
                       }
               }
       }
@@ -120,12 +126,12 @@ object ScheduleMS01 extends Schedule {
     <Schedule xmlns="http://www.dei.isep.ipp.pt/tap-2025"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd ">
-      {schedules.sortBy(s => (s.orderId.to, s.productNumber, s.start)).map { sched =>
+      {schedules.sortBy(s => (s.orderId.to, s.productNumber.to, s.start.to)).map { sched =>
       <TaskSchedule order={sched.orderId.to}
-                    productNumber={sched.productNumber.toString}
+                    productNumber={sched.productNumber.to.toString}
                     task={sched.taskId.to}
-                    start={sched.start.toString}
-                    end={sched.end.toString}>
+                    start={sched.start.to.toString}
+                    end={sched.end.to.toString}>
         <PhysicalResources>
           {sched.physicalResourceIds.map(id =>
             <Physical id={id.to}/>

@@ -10,6 +10,8 @@ enum DomainError:
   case InvalidOrderId(error: String)
   case InvalidHumanId(error: String)
   case InvalidTaskId(error: String)
+  case InvalidProductNumber(error: String)
+  case InvalidTaskScheduleTime(error: String)
 
   case EmptyPhysicalResourceType(error: String)
   case PhysicalResourceTypeNotFound(humanResourceId: String, physicalResourceType: String)
