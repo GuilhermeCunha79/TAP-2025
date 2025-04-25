@@ -12,6 +12,6 @@ final case class HumanResource(id: HumanResourceId, name: String, physicalResour
 
 final case class PhysicalResource(id: PhysicalResourceId, name: String)
 
-//TODO: MUDAR PRODUCTNUMBER START, END PARA NOVO SIMPLE TYPE "POSITIVEINTEGER"
-final case class TaskSchedule(orderId: OrderId, productNumber: Int, taskId:TaskId, start:Int, end:Int,
+final case class TaskSchedule(orderId: OrderId, productNumber: ProductNumber, taskId:TaskId, 
+                              start:TaskScheduleTime, end:TaskScheduleTime,
                               physicalResourceIds: List[PhysicalResourceId], humanResourceNames: List[String])

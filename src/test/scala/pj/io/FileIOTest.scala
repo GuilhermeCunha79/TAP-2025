@@ -9,12 +9,12 @@ class FileIOTest extends AnyFunSuite:
 
   val testFilesDir = "files/group/ms01/"
 
-  test("loadError deve carregar o arquivo emptyMessageAttribute_outError.xml corretamente"):
+  test("loadError should load the empty fileMessageAttribute_outError.xml correctly"):
     val result = FileIO.loadError(testFilesDir + "emptyMessageAttribute_outError.xml")
     assert(result.isRight)
     assert(result.getOrElse("") == "InvalidTime(0)")
 
-  test("loadError deve carregar o arquivo noMessageAttribute_outError.xml corretamente"):
+  test("loadError should load the noMessageAttribute_outError.xml file correctly"):
     val result = FileIO.loadError(testFilesDir + "noMessageAttribute_outError.xml")
     assert(result.isRight)
     assert(result.getOrElse("") == "InvalidTime(-5)")
