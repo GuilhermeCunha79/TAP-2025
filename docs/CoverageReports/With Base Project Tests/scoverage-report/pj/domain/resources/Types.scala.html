@@ -1,0 +1,1733 @@
+<html>
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title id="title">
+          pj\domain\resources\Types.scala.html
+        </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/css/theme.default.min.css" type="text/css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/js/jquery.tablesorter.min.js"></script><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" type="text/css"/><script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script><script type="text/javascript">
+        $(document).ready(function() {$(".tablesorter").tablesorter();});
+      </script>
+        <style>
+          table.codegrid { font-family: monospace; font-size: 12px; width: auto!important; }table.statementlist { width: auto!important; font-size: 13px; } table.codegrid td { padding: 0!important; border: 0!important } table td.linenumber { width: 40px!important; } 
+        </style>
+      </head>
+      <body style="font-family: monospace;">
+        <ul class="nav nav-tabs">
+          <li>
+            <a href="#codegrid" data-toggle="tab">Codegrid</a>
+          </li>
+          <li>
+            <a href="#statementlist" data-toggle="tab">Statement List</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="codegrid">
+            <pre style='font-size: 12pt; font-family: courier, monospace;'>1 <span style=''>package pj.domain.resources
+</span>2 <span style=''>
+</span>3 <span style=''>import pj.domain.DomainError.*
+</span>4 <span style=''>import pj.domain.Result
+</span>5 <span style=''>
+</span>6 <span style=''>import scala.annotation.targetName
+</span>7 <span style=''>import scala.util.matching.Regex
+</span>8 <span style=''>
+</span>9 <span style=''>object Types :
+</span>10 <span style=''>
+</span>11 <span style=''>  opaque type ProductId = String
+</span>12 <span style=''>  object ProductId:
+</span>13 <span style=''>    </span><span style='background: #AEF1AE'>def from</span><span style=''>(id: String): Result[ProductId] =
+</span>14 <span style=''>      val pattern = </span><span style='background: #AEF1AE'>&quot;^PRD_.*$&quot;.r</span><span style=''>
+</span>15 <span style=''>      if </span><span style='background: #AEF1AE'>pattern.matches(id)</span><span style=''> then </span><span style='background: #AEF1AE'>Right(id)</span><span style=''>
+</span>16 <span style=''>      else </span><span style='background: #AEF1AE'>Left(InvalidProductId(id))</span><span style=''>
+</span>17 <span style=''>
+</span>18 <span style=''>    extension (id: ProductId)
+</span>19 <span style=''>      </span><span style='background: #AEF1AE'>@targetName(&quot;ProductIdTo&quot;)
+</span>20 <span style=''></span><span style='background: #AEF1AE'>      def to</span><span style=''>: String = id
+</span>21 <span style=''>
+</span>22 <span style=''>
+</span>23 <span style=''>  opaque type PhysicalResourceId = String
+</span>24 <span style=''>  object PhysicalResourceId:
+</span>25 <span style=''>    </span><span style='background: #AEF1AE'>def from</span><span style=''>(id: String): Result[PhysicalResourceId] =
+</span>26 <span style=''>      val pattern = </span><span style='background: #AEF1AE'>&quot;^PRS_.*$&quot;.r</span><span style=''>
+</span>27 <span style=''>      if </span><span style='background: #AEF1AE'>pattern.matches(id)</span><span style=''> then </span><span style='background: #AEF1AE'>Right(id)</span><span style=''>
+</span>28 <span style=''>      else </span><span style='background: #AEF1AE'>Left(InvalidPhysicalId(id))</span><span style=''>
+</span>29 <span style=''>
+</span>30 <span style=''>    extension (id: PhysicalResourceId)
+</span>31 <span style=''>      </span><span style='background: #AEF1AE'>@targetName(&quot;PhysicalResourceIdTo&quot;)
+</span>32 <span style=''></span><span style='background: #AEF1AE'>      def to</span><span style=''>: String = id
+</span>33 <span style=''>
+</span>34 <span style=''>
+</span>35 <span style=''>  opaque type OrderId = String
+</span>36 <span style=''>  object OrderId:
+</span>37 <span style=''>    </span><span style='background: #AEF1AE'>def from</span><span style=''>(id: String): Result[OrderId] =
+</span>38 <span style=''>      val pattern= </span><span style='background: #AEF1AE'>&quot;^ORD_.*$&quot;.r</span><span style=''>
+</span>39 <span style=''>      if </span><span style='background: #AEF1AE'>pattern.matches(id)</span><span style=''> then </span><span style='background: #AEF1AE'>Right(id)</span><span style=''>
+</span>40 <span style=''>      else </span><span style='background: #AEF1AE'>Left(InvalidOrderId(id))</span><span style=''>
+</span>41 <span style=''>
+</span>42 <span style=''>    extension (id: OrderId)
+</span>43 <span style=''>      </span><span style='background: #AEF1AE'>@targetName(&quot;OrderIdTo&quot;)
+</span>44 <span style=''></span><span style='background: #AEF1AE'>      def to</span><span style=''>: String = id
+</span>45 <span style=''>
+</span>46 <span style=''>
+</span>47 <span style=''>  opaque type HumanResourceId = String
+</span>48 <span style=''>  object HumanResourceId:
+</span>49 <span style=''>    </span><span style='background: #AEF1AE'>def from</span><span style=''>(id: String): Result[HumanResourceId] =
+</span>50 <span style=''>      val pattern: Regex = </span><span style='background: #AEF1AE'>&quot;^HRS_.*$&quot;.r</span><span style=''>
+</span>51 <span style=''>      if </span><span style='background: #AEF1AE'>pattern.matches(id)</span><span style=''> then </span><span style='background: #AEF1AE'>Right(id)</span><span style=''>
+</span>52 <span style=''>      else </span><span style='background: #AEF1AE'>Left(InvalidHumanId(id))</span><span style=''>
+</span>53 <span style=''>
+</span>54 <span style=''>    extension (id: HumanResourceId)
+</span>55 <span style=''>      </span><span style='background: #F0ADAD'>@targetName(&quot;HumanResourceIdTo&quot;)
+</span>56 <span style=''></span><span style='background: #F0ADAD'>      def to</span><span style=''>: String = id
+</span>57 <span style=''>
+</span>58 <span style=''>
+</span>59 <span style=''>  opaque type TaskId = String
+</span>60 <span style=''>  object TaskId:
+</span>61 <span style=''>    </span><span style='background: #AEF1AE'>def from</span><span style=''>(id: String): Result[TaskId] =
+</span>62 <span style=''>      val pattern: Regex = </span><span style='background: #AEF1AE'>&quot;^TSK_.*$&quot;.r</span><span style=''>
+</span>63 <span style=''>      if </span><span style='background: #AEF1AE'>pattern.matches(id)</span><span style=''> then </span><span style='background: #AEF1AE'>Right(id)</span><span style=''>
+</span>64 <span style=''>      else </span><span style='background: #AEF1AE'>Left(InvalidTaskId(id))</span><span style=''>
+</span>65 <span style=''>
+</span>66 <span style=''>    extension (id: TaskId)
+</span>67 <span style=''>      </span><span style='background: #AEF1AE'>@targetName(&quot;TaskIdTo&quot;)
+</span>68 <span style=''></span><span style='background: #AEF1AE'>      def to</span><span style=''>: String = id
+</span>69 <span style=''>
+</span>70 <span style=''>  
+</span>71 <span style=''>  opaque type OrderQuantity = Int
+</span>72 <span style=''>  object OrderQuantity:
+</span>73 <span style=''>    </span><span style='background: #AEF1AE'>def from</span><span style=''>(quantity: String): Result[OrderQuantity] =
+</span>74 <span style=''>      </span><span style='background: #AEF1AE'>quantity.toIntOption</span><span style=''> match
+</span>75 <span style=''>        case None </span><span style='background: #F0ADAD'>=&gt;
+</span>76 <span style=''></span><span style='background: #F0ADAD'>          Left(InvalidQuantity(quantity))</span><span style=''>
+</span>77 <span style=''>        case Some(quantityInt) if quantityInt &lt;= 0 </span><span style='background: #AEF1AE'>=&gt;
+</span>78 <span style=''></span><span style='background: #AEF1AE'>          Left(InvalidQuantity(quantity))</span><span style=''>
+</span>79 <span style=''>        case Some(quantityInt) </span><span style='background: #AEF1AE'>=&gt;
+</span>80 <span style=''></span><span style='background: #AEF1AE'>          Right(quantityInt)</span><span style=''>
+</span>81 <span style=''>
+</span>82 <span style=''>    extension (quantityInt: OrderQuantity)
+</span>83 <span style=''>      </span><span style='background: #AEF1AE'>@targetName(&quot;OrderQuantityTo&quot;)
+</span>84 <span style=''></span><span style='background: #AEF1AE'>      def to</span><span style=''>: Int = quantityInt
+</span>85 <span style=''>
+</span>86 <span style=''>
+</span>87 <span style=''>  opaque type TaskTime = Int
+</span>88 <span style=''>  object TaskTime:
+</span>89 <span style=''>    </span><span style='background: #AEF1AE'>def from</span><span style=''>(time: String): Result[TaskTime] =
+</span>90 <span style=''>      </span><span style='background: #AEF1AE'>time.toIntOption</span><span style=''> match
+</span>91 <span style=''>        case None </span><span style='background: #F0ADAD'>=&gt;
+</span>92 <span style=''></span><span style='background: #F0ADAD'>          Left(InvalidTime(time))</span><span style=''>
+</span>93 <span style=''>        case Some(timeInt) if timeInt &lt;= 0 </span><span style='background: #F0ADAD'>=&gt;
+</span>94 <span style=''></span><span style='background: #F0ADAD'>          Left(InvalidTime(time))</span><span style=''>
+</span>95 <span style=''>        case Some(timeInt) </span><span style='background: #AEF1AE'>=&gt;
+</span>96 <span style=''></span><span style='background: #AEF1AE'>          Right(timeInt)</span><span style=''>
+</span>97 <span style=''>
+</span>98 <span style=''>    extension (timeInt: TaskTime)
+</span>99 <span style=''>      </span><span style='background: #AEF1AE'>@targetName(&quot;TaskTimeTo&quot;)
+</span>100 <span style=''></span><span style='background: #AEF1AE'>      def to</span><span style=''>: Int = timeInt
+</span>101 <span style=''>
+</span>102 <span style=''>
+</span>103 <span style=''>
+</span>104 <span style=''>
+</span>105 <span style=''>
+</span>106 <span style=''>
+</span>107 <span style=''>
+</span>108 <span style=''>
+</span>109 <span style=''>
+</span>110 <span style=''>// To use Later
+</span>111 <span style=''>//opaque type ID = String
+</span>112 <span style=''>//object ID:
+</span>113 <span style=''>//
+</span>114 <span style=''>//  enum IDType(val pattern: Regex):
+</span>115 <span style=''>//    case Physical extends IDType(&quot;^PRS_.*$&quot;.r)
+</span>116 <span style=''>//    case Human    extends IDType(&quot;^HRS_.*$&quot;.r)
+</span>117 <span style=''>//    case Task     extends IDType(&quot;^TSK_.*$&quot;.r)
+</span>118 <span style=''>//    case Product  extends IDType(&quot;^PRD_.*$&quot;.r)
+</span>119 <span style=''>//    case Order    extends IDType(&quot;^ORD_.*$&quot;.r)
+</span>120 <span style=''>//
+</span>121 <span style=''>//    // For IDREFs (if needed):
+</span>122 <span style=''>//    case TaskRef     extends IDType(&quot;^TSK_.*$&quot;.r)
+</span>123 <span style=''>//    case ProductRef  extends IDType(&quot;^PRD_.*$&quot;.r)
+</span>124 <span style=''>//
+</span>125 <span style=''>//  def from(id: String, idType: IDType): Result[ID] =
+</span>126 <span style=''>//    if idType.pattern.matches(id) then Right(id)
+</span>127 <span style=''>//    else Left(InvalidId(s&quot;Invalid ID '$id' for type ${idType.toString}&quot;))
+</span>128 <span style=''>//
+</span>129 <span style=''>//  // Extension methods for working with ID
+</span>130 <span style=''>//  extension (id: ID)
+</span>131 <span style=''>//    def value: String = id
+</span></pre>
+          </div>
+          <div class="tab-pane" id="statementlist">
+            <table cellspacing="0" cellpadding="0" class="table statementlist">
+      <tr>
+        <th>Line</th>
+        <th>Stmt Id</th>
+        <th>Pos</th>
+        <th>Tree</th>
+        <th>Symbol</th>
+        <th>Tests</th>
+        <th>Code</th>
+      </tr><tr>
+        <td>
+          13
+        </td>
+        <td>
+          11
+        </td>
+        <td>
+          239
+          -
+          247
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def from
+        </td>
+      </tr><tr>
+        <td>
+          14
+        </td>
+        <td>
+          5
+        </td>
+        <td>
+          302
+          -
+          314
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          r
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;^PRD_.*$&quot;.r
+        </td>
+      </tr><tr>
+        <td>
+          14
+        </td>
+        <td>
+          4
+        </td>
+        <td>
+          302
+          -
+          312
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          augmentString
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;^PRD_.*$&quot;
+        </td>
+      </tr><tr>
+        <td>
+          15
+        </td>
+        <td>
+          8
+        </td>
+        <td>
+          350
+          -
+          359
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right(id)
+        </td>
+      </tr><tr>
+        <td>
+          15
+        </td>
+        <td>
+          7
+        </td>
+        <td>
+          350
+          -
+          355
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Right
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right
+        </td>
+      </tr><tr>
+        <td>
+          15
+        </td>
+        <td>
+          6
+        </td>
+        <td>
+          325
+          -
+          344
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          matches
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          pattern.matches(id)
+        </td>
+      </tr><tr>
+        <td>
+          16
+        </td>
+        <td>
+          10
+        </td>
+        <td>
+          372
+          -
+          398
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Left(InvalidProductId(id))
+        </td>
+      </tr><tr>
+        <td>
+          16
+        </td>
+        <td>
+          9
+        </td>
+        <td>
+          372
+          -
+          376
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Left
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Left
+        </td>
+      </tr><tr>
+        <td>
+          20
+        </td>
+        <td>
+          12
+        </td>
+        <td>
+          439
+          -
+          479
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          @targetName(&quot;ProductIdTo&quot;)\r\n      def to
+        </td>
+      </tr><tr>
+        <td>
+          25
+        </td>
+        <td>
+          20
+        </td>
+        <td>
+          575
+          -
+          583
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def from
+        </td>
+      </tr><tr>
+        <td>
+          26
+        </td>
+        <td>
+          14
+        </td>
+        <td>
+          647
+          -
+          659
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          r
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;^PRS_.*$&quot;.r
+        </td>
+      </tr><tr>
+        <td>
+          26
+        </td>
+        <td>
+          13
+        </td>
+        <td>
+          647
+          -
+          657
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          augmentString
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;^PRS_.*$&quot;
+        </td>
+      </tr><tr>
+        <td>
+          27
+        </td>
+        <td>
+          17
+        </td>
+        <td>
+          695
+          -
+          704
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right(id)
+        </td>
+      </tr><tr>
+        <td>
+          27
+        </td>
+        <td>
+          16
+        </td>
+        <td>
+          695
+          -
+          700
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Right
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right
+        </td>
+      </tr><tr>
+        <td>
+          27
+        </td>
+        <td>
+          15
+        </td>
+        <td>
+          670
+          -
+          689
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          matches
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          pattern.matches(id)
+        </td>
+      </tr><tr>
+        <td>
+          28
+        </td>
+        <td>
+          19
+        </td>
+        <td>
+          717
+          -
+          744
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Left(InvalidPhysicalId(id))
+        </td>
+      </tr><tr>
+        <td>
+          28
+        </td>
+        <td>
+          18
+        </td>
+        <td>
+          717
+          -
+          721
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Left
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Left
+        </td>
+      </tr><tr>
+        <td>
+          32
+        </td>
+        <td>
+          21
+        </td>
+        <td>
+          794
+          -
+          843
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          @targetName(&quot;PhysicalResourceIdTo&quot;)\r\n      def to
+        </td>
+      </tr><tr>
+        <td>
+          37
+        </td>
+        <td>
+          29
+        </td>
+        <td>
+          917
+          -
+          925
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def from
+        </td>
+      </tr><tr>
+        <td>
+          38
+        </td>
+        <td>
+          23
+        </td>
+        <td>
+          977
+          -
+          989
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          r
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;^ORD_.*$&quot;.r
+        </td>
+      </tr><tr>
+        <td>
+          38
+        </td>
+        <td>
+          22
+        </td>
+        <td>
+          977
+          -
+          987
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          augmentString
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;^ORD_.*$&quot;
+        </td>
+      </tr><tr>
+        <td>
+          39
+        </td>
+        <td>
+          26
+        </td>
+        <td>
+          1025
+          -
+          1034
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right(id)
+        </td>
+      </tr><tr>
+        <td>
+          39
+        </td>
+        <td>
+          25
+        </td>
+        <td>
+          1025
+          -
+          1030
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Right
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right
+        </td>
+      </tr><tr>
+        <td>
+          39
+        </td>
+        <td>
+          24
+        </td>
+        <td>
+          1000
+          -
+          1019
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          matches
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          pattern.matches(id)
+        </td>
+      </tr><tr>
+        <td>
+          40
+        </td>
+        <td>
+          28
+        </td>
+        <td>
+          1047
+          -
+          1071
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Left(InvalidOrderId(id))
+        </td>
+      </tr><tr>
+        <td>
+          40
+        </td>
+        <td>
+          27
+        </td>
+        <td>
+          1047
+          -
+          1051
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Left
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Left
+        </td>
+      </tr><tr>
+        <td>
+          44
+        </td>
+        <td>
+          30
+        </td>
+        <td>
+          1110
+          -
+          1148
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          @targetName(&quot;OrderIdTo&quot;)\r\n      def to
+        </td>
+      </tr><tr>
+        <td>
+          49
+        </td>
+        <td>
+          38
+        </td>
+        <td>
+          1238
+          -
+          1246
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def from
+        </td>
+      </tr><tr>
+        <td>
+          50
+        </td>
+        <td>
+          32
+        </td>
+        <td>
+          1314
+          -
+          1326
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          r
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;^HRS_.*$&quot;.r
+        </td>
+      </tr><tr>
+        <td>
+          50
+        </td>
+        <td>
+          31
+        </td>
+        <td>
+          1314
+          -
+          1324
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          augmentString
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;^HRS_.*$&quot;
+        </td>
+      </tr><tr>
+        <td>
+          51
+        </td>
+        <td>
+          35
+        </td>
+        <td>
+          1362
+          -
+          1371
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right(id)
+        </td>
+      </tr><tr>
+        <td>
+          51
+        </td>
+        <td>
+          34
+        </td>
+        <td>
+          1362
+          -
+          1367
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Right
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right
+        </td>
+      </tr><tr>
+        <td>
+          51
+        </td>
+        <td>
+          33
+        </td>
+        <td>
+          1337
+          -
+          1356
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          matches
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          pattern.matches(id)
+        </td>
+      </tr><tr>
+        <td>
+          52
+        </td>
+        <td>
+          37
+        </td>
+        <td>
+          1384
+          -
+          1408
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Left(InvalidHumanId(id))
+        </td>
+      </tr><tr>
+        <td>
+          52
+        </td>
+        <td>
+          36
+        </td>
+        <td>
+          1384
+          -
+          1388
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Left
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Left
+        </td>
+      </tr><tr>
+        <td>
+          56
+        </td>
+        <td>
+          39
+        </td>
+        <td>
+          1455
+          -
+          1501
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          @targetName(&quot;HumanResourceIdTo&quot;)\r\n      def to
+        </td>
+      </tr><tr>
+        <td>
+          61
+        </td>
+        <td>
+          47
+        </td>
+        <td>
+          1573
+          -
+          1581
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def from
+        </td>
+      </tr><tr>
+        <td>
+          62
+        </td>
+        <td>
+          41
+        </td>
+        <td>
+          1640
+          -
+          1652
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          r
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;^TSK_.*$&quot;.r
+        </td>
+      </tr><tr>
+        <td>
+          62
+        </td>
+        <td>
+          40
+        </td>
+        <td>
+          1640
+          -
+          1650
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          augmentString
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;^TSK_.*$&quot;
+        </td>
+      </tr><tr>
+        <td>
+          63
+        </td>
+        <td>
+          44
+        </td>
+        <td>
+          1688
+          -
+          1697
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right(id)
+        </td>
+      </tr><tr>
+        <td>
+          63
+        </td>
+        <td>
+          43
+        </td>
+        <td>
+          1688
+          -
+          1693
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Right
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right
+        </td>
+      </tr><tr>
+        <td>
+          63
+        </td>
+        <td>
+          42
+        </td>
+        <td>
+          1663
+          -
+          1682
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          matches
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          pattern.matches(id)
+        </td>
+      </tr><tr>
+        <td>
+          64
+        </td>
+        <td>
+          46
+        </td>
+        <td>
+          1710
+          -
+          1733
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Left(InvalidTaskId(id))
+        </td>
+      </tr><tr>
+        <td>
+          64
+        </td>
+        <td>
+          45
+        </td>
+        <td>
+          1710
+          -
+          1714
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Left
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Left
+        </td>
+      </tr><tr>
+        <td>
+          68
+        </td>
+        <td>
+          48
+        </td>
+        <td>
+          1771
+          -
+          1808
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          @targetName(&quot;TaskIdTo&quot;)\r\n      def to
+        </td>
+      </tr><tr>
+        <td>
+          73
+        </td>
+        <td>
+          57
+        </td>
+        <td>
+          1893
+          -
+          1901
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def from
+        </td>
+      </tr><tr>
+        <td>
+          74
+        </td>
+        <td>
+          50
+        </td>
+        <td>
+          1952
+          -
+          1972
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          toIntOption
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          quantity.toIntOption
+        </td>
+      </tr><tr>
+        <td>
+          74
+        </td>
+        <td>
+          49
+        </td>
+        <td>
+          1952
+          -
+          1960
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          augmentString
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          quantity
+        </td>
+      </tr><tr>
+        <td>
+          75
+        </td>
+        <td>
+          52
+        </td>
+        <td>
+          1998
+          -
+          2043
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          =&gt;\r\n          Left(InvalidQuantity(quantity))
+        </td>
+      </tr><tr>
+        <td>
+          76
+        </td>
+        <td>
+          51
+        </td>
+        <td>
+          2012
+          -
+          2016
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Left
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Left
+        </td>
+      </tr><tr>
+        <td>
+          77
+        </td>
+        <td>
+          54
+        </td>
+        <td>
+          2096
+          -
+          2141
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          =&gt;\r\n          Left(InvalidQuantity(quantity))
+        </td>
+      </tr><tr>
+        <td>
+          78
+        </td>
+        <td>
+          53
+        </td>
+        <td>
+          2110
+          -
+          2114
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Left
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Left
+        </td>
+      </tr><tr>
+        <td>
+          79
+        </td>
+        <td>
+          56
+        </td>
+        <td>
+          2174
+          -
+          2206
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          =&gt;\r\n          Right(quantityInt)
+        </td>
+      </tr><tr>
+        <td>
+          80
+        </td>
+        <td>
+          55
+        </td>
+        <td>
+          2188
+          -
+          2193
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Right
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right
+        </td>
+      </tr><tr>
+        <td>
+          84
+        </td>
+        <td>
+          58
+        </td>
+        <td>
+          2260
+          -
+          2304
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          @targetName(&quot;OrderQuantityTo&quot;)\r\n      def to
+        </td>
+      </tr><tr>
+        <td>
+          89
+        </td>
+        <td>
+          67
+        </td>
+        <td>
+          2383
+          -
+          2391
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def from
+        </td>
+      </tr><tr>
+        <td>
+          90
+        </td>
+        <td>
+          59
+        </td>
+        <td>
+          2433
+          -
+          2437
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          augmentString
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          time
+        </td>
+      </tr><tr>
+        <td>
+          90
+        </td>
+        <td>
+          60
+        </td>
+        <td>
+          2433
+          -
+          2449
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          toIntOption
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          time.toIntOption
+        </td>
+      </tr><tr>
+        <td>
+          91
+        </td>
+        <td>
+          62
+        </td>
+        <td>
+          2475
+          -
+          2512
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          =&gt;\r\n          Left(InvalidTime(time))
+        </td>
+      </tr><tr>
+        <td>
+          92
+        </td>
+        <td>
+          61
+        </td>
+        <td>
+          2489
+          -
+          2493
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Left
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Left
+        </td>
+      </tr><tr>
+        <td>
+          93
+        </td>
+        <td>
+          64
+        </td>
+        <td>
+          2557
+          -
+          2594
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          =&gt;\r\n          Left(InvalidTime(time))
+        </td>
+      </tr><tr>
+        <td>
+          94
+        </td>
+        <td>
+          63
+        </td>
+        <td>
+          2571
+          -
+          2575
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Left
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Left
+        </td>
+      </tr><tr>
+        <td>
+          95
+        </td>
+        <td>
+          66
+        </td>
+        <td>
+          2623
+          -
+          2651
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          =&gt;\r\n          Right(timeInt)
+        </td>
+      </tr><tr>
+        <td>
+          96
+        </td>
+        <td>
+          65
+        </td>
+        <td>
+          2637
+          -
+          2642
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Right
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right
+        </td>
+      </tr><tr>
+        <td>
+          100
+        </td>
+        <td>
+          68
+        </td>
+        <td>
+          2696
+          -
+          2735
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          @targetName(&quot;TaskTimeTo&quot;)\r\n      def to
+        </td>
+      </tr>
+    </table>
+          </div>
+        </div>
+      </body>
+    </html>

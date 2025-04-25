@@ -1,0 +1,1411 @@
+<scoverage 
+statement-count="372" statements-invoked="0" statement-rate="0.00" branch-rate="0.00" version="1.0" timestamp="1745081096709">
+    <packages>
+        <package name="pj.assessment" statement-count="4" statements-invoked="0" statement-rate="0.00">
+            <classes>
+                <class 
+                name="pj.assessment.AssessmentMS03" filename="pj\assessment\AssessmentFacade.scala" statement-count="2" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                    <methods>
+                        <method 
+                        name="pj.assessment/AssessmentMS03/create" statement-count="2" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.assessment" class="AssessmentMS03" class-type="Object" full-class-name="pj.assessment.AssessmentMS03" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\assessment\AssessmentFacade.scala" method="create" start="331" end="355" line="11" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.assessment" class="AssessmentMS03" class-type="Object" full-class-name="pj.assessment.AssessmentMS03" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\assessment\AssessmentFacade.scala" method="create" start="293" end="303" line="11" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                    </methods>
+</class>
+                <class 
+                name="pj.assessment.AssessmentMS01" filename="pj\assessment\AssessmentFacade.scala" statement-count="2" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                    <methods>
+                        <method 
+                        name="pj.assessment/AssessmentMS01/create" statement-count="2" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.assessment" class="AssessmentMS01" class-type="Object" full-class-name="pj.assessment.AssessmentMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\assessment\AssessmentFacade.scala" method="create" start="184" end="194" line="8" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.assessment" class="AssessmentMS01" class-type="Object" full-class-name="pj.assessment.AssessmentMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\assessment\AssessmentFacade.scala" method="create" start="222" end="246" line="8" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                    </methods>
+</class>
+            </classes>
+        </package>
+        <package name="pj.domain.resources" statement-count="65" statements-invoked="0" statement-rate="0.00">
+            <classes>
+                <class 
+                name="pj.domain.resources.TaskId" filename="pj\domain\resources\Types.scala" statement-count="9" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                    <methods>
+                        <method 
+                        name="pj.domain.resources/TaskId/from" statement-count="8" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1640" end="1652" line="62" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1688" end="1697" line="63" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1573" end="1581" line="61" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1710" end="1733" line="64" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1640" end="1650" line="62" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1688" end="1693" line="63" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1710" end="1714" line="64" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1663" end="1682" line="63" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="pj.domain.resources/TaskId/to" statement-count="1" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="to" start="1771" end="1808" line="68" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                    </methods>
+</class>
+                <class 
+                name="pj.domain.resources.OrderId" filename="pj\domain\resources\Types.scala" statement-count="9" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                    <methods>
+                        <method 
+                        name="pj.domain.resources/OrderId/from" statement-count="8" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="977" end="989" line="38" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1025" end="1034" line="39" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="917" end="925" line="37" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="977" end="987" line="38" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1025" end="1030" line="39" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1047" end="1071" line="40" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1047" end="1051" line="40" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1000" end="1019" line="39" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="pj.domain.resources/OrderId/to" statement-count="1" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="to" start="1110" end="1148" line="44" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                    </methods>
+</class>
+                <class 
+                name="pj.domain.resources.OrderQuantity" filename="pj\domain\resources\Types.scala" statement-count="10" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                    <methods>
+                        <method 
+                        name="pj.domain.resources/OrderQuantity/from" statement-count="9" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1952" end="1972" line="74" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2110" end="2114" line="78" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2174" end="2206" line="79" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2188" end="2193" line="80" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1952" end="1960" line="74" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1998" end="2043" line="75" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2096" end="2141" line="77" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1893" end="1901" line="73" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2012" end="2016" line="76" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="pj.domain.resources/OrderQuantity/to" statement-count="1" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="to" start="2260" end="2304" line="84" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                    </methods>
+</class>
+                <class 
+                name="pj.domain.resources.TaskTime" filename="pj\domain\resources\Types.scala" statement-count="10" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                    <methods>
+                        <method 
+                        name="pj.domain.resources/TaskTime/from" statement-count="9" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2433" end="2437" line="90" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2475" end="2512" line="91" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2637" end="2642" line="96" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2557" end="2594" line="93" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2383" end="2391" line="89" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2489" end="2493" line="92" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2433" end="2449" line="90" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2571" end="2575" line="94" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2623" end="2651" line="95" branch="true" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="pj.domain.resources/TaskTime/to" statement-count="1" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="to" start="2696" end="2735" line="100" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                    </methods>
+</class>
+                <class 
+                name="pj.domain.resources.ProductId" filename="pj\domain\resources\Types.scala" statement-count="9" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                    <methods>
+                        <method 
+                        name="pj.domain.resources/ProductId/from" statement-count="8" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="350" end="359" line="15" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="239" end="247" line="13" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="302" end="314" line="14" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="302" end="312" line="14" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="350" end="355" line="15" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="372" end="398" line="16" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="372" end="376" line="16" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="325" end="344" line="15" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="pj.domain.resources/ProductId/to" statement-count="1" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="to" start="439" end="479" line="20" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                    </methods>
+</class>
+                <class 
+                name="pj.domain.resources.HumanResourceId" filename="pj\domain\resources\Types.scala" statement-count="9" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                    <methods>
+                        <method 
+                        name="pj.domain.resources/HumanResourceId/from" statement-count="8" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1314" end="1326" line="50" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1362" end="1371" line="51" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1238" end="1246" line="49" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1314" end="1324" line="50" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1362" end="1367" line="51" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1384" end="1408" line="52" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1384" end="1388" line="52" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1337" end="1356" line="51" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="pj.domain.resources/HumanResourceId/to" statement-count="1" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="to" start="1455" end="1501" line="56" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                    </methods>
+</class>
+                <class 
+                name="pj.domain.resources.PhysicalResourceId" filename="pj\domain\resources\Types.scala" statement-count="9" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                    <methods>
+                        <method 
+                        name="pj.domain.resources/PhysicalResourceId/from" statement-count="8" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="695" end="704" line="27" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="575" end="583" line="25" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="647" end="659" line="26" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="647" end="657" line="26" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="695" end="700" line="27" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="717" end="744" line="28" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="717" end="721" line="28" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="670" end="689" line="27" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="pj.domain.resources/PhysicalResourceId/to" statement-count="1" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="to" start="794" end="843" line="32" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                    </methods>
+</class>
+            </classes>
+        </package>
+        <package name="pj.domain.schedule" statement-count="149" statements-invoked="0" statement-rate="0.00">
+            <classes>
+                <class 
+                name="pj.domain.schedule.ScheduleMS01" filename="pj\domain\schedule\ScheduleMS01.scala" statement-count="147" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                    <methods>
+                        <method 
+                        name="pj.domain.schedule/ScheduleMS01/allocateHumanResources" statement-count="7" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="allocateHumanResources" start="2268" end="2271" line="59" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="allocateHumanResources" start="2201" end="2691" line="66" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="allocateHumanResources" start="2261" end="2266" line="59" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="allocateHumanResources" start="2273" end="2282" line="59" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="allocateHumanResources" start="2273" end="2276" line="59" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="allocateHumanResources" start="2034" end="2068" line="54" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="allocateHumanResources" start="2201" end="2673" line="59" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="pj.domain.schedule/ScheduleMS01/create" statement-count="6" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="create" start="6484" end="6567" line="147" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="create" start="6592" end="6615" line="148" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="create" start="6352" end="6378" line="145" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="create" start="6604" end="6608" line="149" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="create" start="6472" end="6567" line="146" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="create" start="6309" end="6319" line="144" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="pj.domain.schedule/ScheduleMS01/allocatePhysicalResources" statement-count="7" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="allocatePhysicalResources" start="1508" end="2028" line="52" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="allocatePhysicalResources" start="1599" end="1602" line="44" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="allocatePhysicalResources" start="1320" end="1357" line="39" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="allocatePhysicalResources" start="1592" end="1597" line="44" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="allocatePhysicalResources" start="1604" end="1613" line="44" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="allocatePhysicalResources" start="1508" end="2010" line="44" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="allocatePhysicalResources" start="1604" end="1607" line="44" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="pj.domain.schedule/ScheduleMS01/toXml" statement-count="7" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="toXml" start="5288" end="5305" line="119" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="toXml" start="5488" end="5564" line="122" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="toXml" start="5574" end="6238" line="123" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="toXml" start="5574" end="6238" line="123" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="toXml" start="5488" end="5564" line="122" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="toXml" start="5351" end="6257" line="120" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="toXml" start="5574" end="5637" line="123" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="pj.domain.schedule/ScheduleMS01/generateSchedule" statement-count="5" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="generateSchedule" start="3084" end="3087" line="78" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="generateSchedule" start="3077" end="3082" line="78" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="generateSchedule" start="2697" end="2725" line="68" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="generateSchedule" start="3121" end="5149" line="80" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="generateSchedule" start="5157" end="5247" line="114" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="pj.domain.schedule/ScheduleMS01/scheduleDataRetriever" statement-count="3" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="scheduleDataRetriever" start="221" end="254" line="12" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="scheduleDataRetriever" start="444" end="482" line="21" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="scheduleDataRetriever" start="417" end="1314" line="20" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="pj.domain.schedule/ScheduleMS01/$anonfun" statement-count="112" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="2561" end="2570" line="63" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="1004" end="1314" line="32" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="1189" end="1219" line="35" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="6010" end="6015" line="131" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="3954" end="5116" line="89" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="5792" end="5807" line="126" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="744" end="778" line="26" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="3484" end="3508" line="85" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="4060" end="4089" line="91" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="1660" end="2003" line="45" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="1980" end="1992" line="50" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="1055" end="1084" line="32" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="2329" end="2666" line="60" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="2015" end="2019" line="52" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="5681" end="5697" line="124" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="3305" end="5133" line="81" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="607" end="645" line="23" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="845" end="1314" line="29" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="3748" end="5133" line="87" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="4293" end="4370" line="95" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="1720" end="1859" line="48" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="2381" end="2657" line="60" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="3338" end="3466" line="83" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="2393" end="2508" line="62" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="897" end="940" line="29" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="702" end="1314" line="26" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="1807" end="1836" line="47" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="490" end="1314" line="22" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="1144" end="1314" line="35" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="524" end="549" line="22" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="5681" end="5697" line="124" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="3652" end="5133" line="86" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="4230" end="5091" line="94" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="5997" end="6019" line="131" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="2678" end="2682" line="66" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="3439" end="3464" line="83" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="2393" end="2586" line="63" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="6099" end="6180" line="135" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="3853" end="3858" line="88" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="4425" end="4496" line="96" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="5216" end="5240" line="115" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="1768" end="1802" line="47" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="5597" end="5609" line="123" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="5916" end="6061" line="129" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="4060" end="4162" line="92" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="4036" end="5116" line="90" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="1961" end="1978" line="50" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="5947" end="6029" line="130" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="2480" end="2507" line="62" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="6150" end="6170" line="136" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="1167" end="1187" line="35" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="724" end="742" line="26" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="967" end="996" line="31" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="5792" end="5807" line="126" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="511" end="583" line="22" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="3479" end="3480" line="85" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="802" end="837" line="28" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="1029" end="1053" line="32" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="2636" end="2655" line="64" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="1657" end="2003" line="45" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="3230" end="5142" line="81" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="3655" end="5133" line="87" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="607" end="636" line="23" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="1720" end="1937" line="49" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="1109" end="1136" line="34" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="668" end="694" line="25" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="876" end="895" line="29" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="5837" end="5857" line="127" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="6162" end="6166" line="136" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="5947" end="6029" line="130" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="3745" end="5133" line="87" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="3540" end="3545" line="85" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="2610" end="2634" line="64" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="1708" end="1994" line="45" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="4151" end="4160" line="92" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="5735" end="5763" line="125" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="6010" end="6015" line="131" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="863" end="941" line="29" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="1095" end="1314" line="34" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="4398" end="5091" line="96" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="3338" end="3386" line="82" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="2393" end="2657" line="64" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="3802" end="5116" line="89" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="2326" end="2666" line="60" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="1720" end="1837" line="47" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="2015" end="2027" line="52" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="5661" end="6232" line="124" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="6071" end="6209" line="134" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="655" end="1314" line="25" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="951" end="1314" line="31" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="1154" end="1220" line="35" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="5053" end="5077" line="108" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="490" end="645" line="22" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="711" end="779" line="26" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="3479" end="3508" line="85" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="4060" end="5116" line="93" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="2432" end="2475" line="62" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="1912" end="1921" line="49" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="789" end="1314" line="28" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="1016" end="1085" line="32" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="655" end="1314" line="25" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="551" end="582" line="22" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="1720" end="1994" line="50" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="6071" end="6209" line="134" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="3478" end="5133" line="86" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="5206" end="5240" line="114" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="5885" end="5903" line="128" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="2678" end="2690" line="66" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="4591" end="4603" line="98" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="3957" end="5116" line="90" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="5916" end="6061" line="129" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS01" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS01" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS01.scala" method="$anonfun" start="6099" end="6180" line="135" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                    </methods>
+</class>
+                <class 
+                name="pj.domain.schedule.ScheduleMS03" filename="pj\domain\schedule\ScheduleMS03.scala" statement-count="2" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                    <methods>
+                        <method 
+                        name="pj.domain.schedule/ScheduleMS03/create" statement-count="2" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS03" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS03" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS03.scala" method="create" start="364" end="374" line="12" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.domain.schedule" class="ScheduleMS03" class-type="Object" full-class-name="pj.domain.schedule.ScheduleMS03" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\schedule\ScheduleMS03.scala" method="create" start="402" end="405" line="12" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                    </methods>
+</class>
+            </classes>
+        </package>
+        <package name="pj.io" statement-count="45" statements-invoked="0" statement-rate="0.00">
+            <classes>
+                <class 
+                name="pj.io.FileIO" filename="pj\io\FileIO.scala" statement-count="42" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                    <methods>
+                        <method 
+                        name="pj.io/FileIO/$anonfun" statement-count="22" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="$anonfun" start="1519" end="1533" line="49" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="$anonfun" start="959" end="971" line="34" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="$anonfun" start="1519" end="1524" line="49" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="$anonfun" start="940" end="944" line="34" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="$anonfun" start="1345" end="1349" line="46" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="$anonfun" start="666" end="678" line="26" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="$anonfun" start="1035" end="1050" line="36" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="$anonfun" start="1440" end="1455" line="48" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="$anonfun" start="442" end="447" line="18" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="$anonfun" start="1114" end="1119" line="37" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="$anonfun" start="1412" end="1428" line="47" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="$anonfun" start="1052" end="1101" line="36" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="$anonfun" start="1457" end="1506" line="48" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="$anonfun" start="647" end="651" line="26" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="$anonfun" start="1007" end="1023" line="35" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="$anonfun" start="419" end="431" line="18" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="$anonfun" start="689" end="694" line="26" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="$anonfun" start="1364" end="1376" line="46" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="$anonfun" start="400" end="404" line="18" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="$anonfun" start="1052" end="1056" line="36" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="$anonfun" start="1114" end="1128" line="37" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="$anonfun" start="1457" end="1461" line="48" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="pj.io/FileIO/loadError" statement-count="8" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="loadError" start="1314" end="1334" line="46" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="loadError" start="1314" end="1541" line="46" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="loadError" start="905" end="1136" line="34" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="loadError" start="909" end="928" line="34" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="loadError" start="853" end="866" line="33" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="loadError" start="1268" end="1281" line="45" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="loadError" start="1318" end="1333" line="46" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="loadError" start="905" end="929" line="34" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method name="pj.io/FileIO/save" statement-count="3" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="save" start="1742" end="1750" line="60" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="save" start="1806" end="1823" line="61" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="save" start="1806" end="1828" line="61" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+                        </method>
+                        <method 
+                        name="pj.io/FileIO/&lt;init&gt;" statement-count="1" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="&lt;init&gt;" start="1603" end="1628" line="53" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method name="pj.io/FileIO/load" statement-count="8" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="load" start="368" end="453" line="18" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="load" start="620" end="635" line="26" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="load" start="616" end="636" line="26" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="load" start="372" end="388" line="18" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="load" start="616" end="700" line="26" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="load" start="368" end="389" line="18" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="load" start="577" end="585" line="25" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="FileIO" class-type="Object" full-class-name="pj.io.FileIO" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="load" start="326" end="334" line="17" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+                        </method>
+                    </methods>
+</class>
+                <class 
+                name="pj.io.$anon" filename="pj\io\FileIO.scala" statement-count="3" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                    <methods>
+                        <method 
+                        name="pj.io/$anon/&lt;init&gt;" statement-count="3" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.io" class="$anon" class-type="Class" full-class-name="pj.io.$anon" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="&lt;init&gt;" start="1859" end="1910" line="62" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="$anon" class-type="Class" full-class-name="pj.io.$anon" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="&lt;init&gt;" start="1932" end="1939" line="62" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.io" class="$anon" class-type="Class" full-class-name="pj.io.$anon" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\io\FileIO.scala" method="&lt;init&gt;" start="1912" end="1930" line="62" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                    </methods>
+</class>
+            </classes>
+        </package>
+        <package name="pj.xml" statement-count="109" statements-invoked="0" statement-rate="0.00">
+            <classes>
+                <class 
+                name="pj.xml.XMLToDomain" filename="pj\xml\XMLToDomain.scala" statement-count="80" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                    <methods>
+                        <method 
+                        name="pj.xml/XMLToDomain/getProduct" statement-count="3" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="getProduct" start="269" end="829" line="12" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="getProduct" start="200" end="214" line="11" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="getProduct" start="286" end="314" line="13" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="pj.xml/XMLToDomain/getHumanResource" statement-count="3" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="getHumanResource" start="2675" end="2703" line="70" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="getHumanResource" start="2642" end="3372" line="69" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="getHumanResource" start="2543" end="2563" line="68" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="pj.xml/XMLToDomain/getOrder" statement-count="3" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="getOrder" start="906" end="1436" line="29" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="getOrder" start="835" end="847" line="28" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="getOrder" start="931" end="959" line="30" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="pj.xml/XMLToDomain/getTask" statement-count="3" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="getTask" start="1893" end="1921" line="52" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="getTask" start="1788" end="1799" line="50" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="getTask" start="1869" end="2537" line="51" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="pj.xml/XMLToDomain/$anonfun" statement-count="65" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="2936" end="2983" line="74" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="2167" end="2470" line="57" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="3158" end="3192" line="77" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="2355" end="2359" line="60" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="2778" end="3372" line="72" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="1606" end="1636" line="46" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="582" end="589" line="18" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="1992" end="2014" line="54" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="330" end="360" line="14" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="983" end="1015" line="31" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="1232" end="1239" line="36" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="711" end="715" line="22" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="3213" end="3258" line="78" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="407" end="829" line="16" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="2068" end="2537" line="56" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="2414" end="2459" line="61" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="2871" end="3279" line="73" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="1350" end="1354" line="40" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="1080" end="1436" line="33" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="1135" end="1166" line="34" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="474" end="772" line="17" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="1929" end="2537" line="53" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="3228" end="3233" line="79" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="2837" end="3372" line="73" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="433" end="448" line="16" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="2106" end="2130" line="56" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="2936" end="3269" line="74" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="1123" end="1436" line="34" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="2730" end="2770" line="71" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="2268" end="2310" line="58" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="967" end="1436" line="31" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="322" end="829" line="14" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="569" end="607" line="18" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="1582" end="1782" line="46" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="3124" end="3128" line="77" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="1982" end="2537" line="54" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="1216" end="1256" line="36" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="636" end="690" line="19" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="1666" end="1712" line="47" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="2034" end="2060" line="55" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="1296" end="1324" line="38" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="381" end="399" line="15" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="2429" end="2434" line="62" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="1038" end="1072" line="32" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="1644" end="1782" line="47" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="2022" end="2537" line="55" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="2799" end="2829" line="72" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="3109" end="3207" line="76" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="2340" end="2408" line="59" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="1296" end="1324" line="38" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="2884" end="2899" line="73" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="2093" end="2480" line="56" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="1091" end="1115" line="33" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="1350" end="1389" line="40" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="420" end="782" line="16" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="696" end="761" line="21" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="2711" end="3372" line="71" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="2167" end="2214" line="57" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="1944" end="1974" line="53" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="1174" end="1436" line="35" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="474" end="512" line="17" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="3037" end="3079" line="75" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="1023" end="1436" line="32" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="368" end="829" line="15" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="$anonfun" start="651" end="677" line="20" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method 
+                        name="pj.xml/XMLToDomain/getPhysicalResource" statement-count="3" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="getPhysicalResource" start="1442" end="1465" line="43" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="getPhysicalResource" start="1510" end="1782" line="44" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XMLToDomain" class-type="Object" full-class-name="pj.xml.XMLToDomain" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XMLToDomain.scala" method="getPhysicalResource" start="1546" end="1574" line="45" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                    </methods>
+</class>
+                <class 
+                name="pj.xml.XML" filename="pj\xml\XML.scala" statement-count="29" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                    <methods>
+                        <method name="pj.xml/XML/$anonfun" statement-count="7" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="$anonfun" start="953" end="983" line="30" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="$anonfun" start="913" end="983" line="27" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="$anonfun" start="923" end="983" line="28" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="$anonfun" start="976" end="983" line="31" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="$anonfun" start="995" end="1003" line="32" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="$anonfun" start="372" end="377" line="13" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="$anonfun" start="958" end="962" line="30" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+                        </method>
+                        <method 
+                        name="pj.xml/XML/fromAttribute" statement-count="9" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="fromAttribute" start="549" end="557" line="19" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="fromAttribute" start="595" end="645" line="20" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="fromAttribute" start="658" end="663" line="21" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="fromAttribute" start="581" end="647" line="20" branch="true" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="fromAttribute" start="475" end="492" line="18" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="fromAttribute" start="581" end="585" line="20" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="fromAttribute" start="567" end="579" line="20" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="fromAttribute" start="634" end="643" line="20" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="fromAttribute" start="658" end="669" line="21" branch="true" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+</method>
+                        <method name="pj.xml/XML/traverse" statement-count="6" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="traverse" start="848" end="1004" line="32" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="traverse" start="884" end="890" line="27" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="traverse" start="878" end="883" line="27" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="traverse" start="775" end="787" line="26" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="traverse" start="848" end="990" line="27" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="traverse" start="884" end="896" line="27" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+                        </method>
+                        <method name="pj.xml/XML/fromNode" statement-count="7" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                            <statements>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="fromNode" start="279" end="382" line="13" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="fromNode" start="351" end="360" line="13" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="fromNode" start="317" end="362" line="13" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="fromNode" start="186" end="198" line="11" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="fromNode" start="253" end="273" line="12" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="fromNode" start="254" end="261" line="12" branch="false" invocation-count="0" ignored="false">
+</statement>
+                                <statement 
+                                package="pj.xml" class="XML" class-type="Object" full-class-name="pj.xml.XML" source="C:\Users\Miguel\Desktop\Universidade\Mestrado Git Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\xml\XML.scala" method="fromNode" start="303" end="307" line="13" branch="false" invocation-count="0" ignored="false">
+</statement>
+                            </statements>
+                        </method>
+                    </methods>
+</class>
+            </classes>
+        </package>
+    </packages>
+</scoverage>

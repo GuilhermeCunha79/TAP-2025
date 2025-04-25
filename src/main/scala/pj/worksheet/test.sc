@@ -1,115 +1,29 @@
 import pj.domain.*
 import pj.domain.resources.Types.*
+import pj.domain.schedule.*
 import pj.io.FileIO
 import pj.xml.*
 
 //val filePath = "C:\\Users\\Utilizador\\Documents\\TAP_Project\\files\\assessment\\ms01\\validAgenda_01_in.xml"
-val filePath = "C:\\Users\\migue\\Desktop\\Universidade\\Mestrado GitHub Projects\\2 Ano\\2 Semestre\\TAP\\tap-pj-ncf-12\\files\\assessment\\ms01\\validAgenda_01_in.xml"
+//val filePath = "C:\\Users\\migue\\Desktop\\Universidade\\Mestrado GitHub Projects\\2 Ano\\2 Semestre\\TAP\\tap-pj-ncf-12\\files\\assessment\\ms01\\validAgenda_01_in.xml"
+// Caminho do arquivo XML
+val filePath = "C:\\Users\\Guilherme Cunha\\IdeaProjects\\tap-pj-ncf-12\\files\\assessment\\ms01\\invalidAgenda_02_in.xml"
 
-val xmlResult = FileIO.load(filePath)
+// Carregar o arquivo XML
+val result = FileIO.load(filePath)
 
-xmlResult match {
-  case Right(production) => {
-
-    val physicalResources = XML.fromNode(production, "PhysicalResources") match {
-      case Right(node) =>
-        XML.traverse((node \ "Physical"), { physical =>
-          XMLToDomain.getPhysicalResource(physical) match {
-            case Right(physical) => Right(physical)
-            case Left(error) => Left(error)
-          }
-        })
-      case Left(error) => Left(error)
+// Tratar o resultado: verificar se é um Right( Elem) ou Left(erro)
+result match {
+  case Right(xml) =>
+    // Se o XML foi carregado com sucesso, passar para a função create
+    val schedule = ScheduleMS01.create(xml)
+    schedule match {
+      case Right(s) => println(s"Agendamento criado com sucesso: $s")
+      case Left(error) => println(s"Erro ao criar o agendamento: $error")
     }
 
-    val physicalResourcesTypes: Result[List[PhysicalResourceType]] =
-      physicalResources.map(_.map(_.name).distinct)
-
-    val tasks = physicalResourcesTypes match {
-      case Right(resourceTypes) => // Extract the list from the Right
-        XML.fromNode(production, "Tasks") match {
-          case Right(node) =>
-            XML.traverse((node \ "Task"), { task =>
-              XMLToDomain.getTask(resourceTypes)(task) match {
-                case Right(task) => Right(task)
-                case Left(error) => Left(error)
-              }
-            })
-          case Left(error) => Left(error)
-        }
-      case Left(error) => Left(error)
-    }
-
-    val humanResources = physicalResourcesTypes match {
-      case Right(resourceTypes) =>
-        XML.fromNode(production, "HumanResources") match {
-          case Right(node) =>
-            XML.traverse((node \ "Human"), { human =>
-              XMLToDomain.getHumanResource(resourceTypes)(human) match {
-                case Right(human) => Right(human)
-                case Left(error) => Left(error)
-              }
-            })
-          case Left(error) => Left(error)
-        }
-      case Left(error) => Left(error)
-    }
-
-    val products = tasks match {
-      case Right(tasks) =>
-        XML.fromNode(production, "Products") match {
-          case Right(node) =>
-            XML.traverse((node \ "Product"), { product =>
-              XMLToDomain.getProduct(tasks)(product) match {
-                case Right(product) => Right(product)
-                case Left(error) => Left(error)
-              }
-            })
-          case Left(error) => Left(error)
-        }
-      case Left(error) => Left(error)
-    }
-
-    val orders = products match {
-      case Right(products) =>
-       XML.fromNode(production, "Orders") match {
-          case Right(node) =>
-            XML.traverse((node \ "Order"), { order =>
-              XMLToDomain.getOrder(products)(order) match {
-                case Right(order) => Right(order)
-                case Left(error) => Left(error)
-              }
-            })
-          case Left(error) => Left(error)
-        }
-      case Left(error) => Left(error)
-    }
-
-    physicalResources match {
-      case Right(resources) => println(s"Successfully parsed resources: $resources")
-      case Left(error) => println(s"Error parsing resources: $error")
-    }
-
-    humanResources match {
-      case Right(resources) => println(s"Successfully parsed resources: $resources")
-      case Left(error) => println(s"Error parsing resources: $error")
-    }
-
-    tasks match {
-      case Right(resources) => println(s"Successfully parsed resources: $resources")
-      case Left(error) => println(s"Error parsing resources: $error")
-    }
-
-    products match {
-      case Right(products) => println(s"Successfully parsed resources: $products")
-      case Left(error) => println(s"Error parsing resources: $error")
-    }
-
-    orders match {
-      case Right(orders) => println(s"Successfully parsed resources: $orders")
-      case Left(error) => println(s"Error parsing resources: $error")
-    }
-  }
-  case Left(error) => println(s"Failed to load XML file: $error")
+  case Left(error) =>
+    // Caso haja erro ao carregar o XML
+    println(s"Erro ao carregar o arquivo XML: $error")
 }
 
