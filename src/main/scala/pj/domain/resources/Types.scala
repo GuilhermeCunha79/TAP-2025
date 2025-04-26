@@ -4,7 +4,6 @@ import pj.domain.DomainError.*
 import pj.domain.Result
 
 import scala.annotation.targetName
-import scala.util.matching.Regex
 
 object Types :
 
@@ -35,7 +34,7 @@ object Types :
   opaque type OrderId = String
   object OrderId:
     def from(id: String): Result[OrderId] =
-      val pattern= "^ORD_.*$".r
+      val pattern = "^ORD_.*$".r
       if pattern.matches(id) then Right(id)
       else Left(InvalidOrderId(id))
 
@@ -47,7 +46,7 @@ object Types :
   opaque type HumanResourceId = String
   object HumanResourceId:
     def from(id: String): Result[HumanResourceId] =
-      val pattern: Regex = "^HRS_.*$".r
+      val pattern = "^HRS_.*$".r
       if pattern.matches(id) then Right(id)
       else Left(InvalidHumanId(id))
 
@@ -59,7 +58,7 @@ object Types :
   opaque type TaskId = String
   object TaskId:
     def from(id: String): Result[TaskId] =
-      val pattern: Regex = "^TSK_.*$".r
+      val pattern = "^TSK_.*$".r
       if pattern.matches(id) then Right(id)
       else Left(InvalidTaskId(id))
 
