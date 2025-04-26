@@ -1,5 +1,5 @@
 <scoverage 
-statement-count="391" statements-invoked="379" statement-rate="96.93" branch-rate="97.92" version="1.0" timestamp="1745600943835">
+statement-count="391" statements-invoked="379" statement-rate="96.93" branch-rate="97.92" version="1.0" timestamp="1745685452719">
     <packages>
         <package name="pj.assessment" statement-count="2" statements-invoked="2" statement-rate="100.00">
             <classes>
@@ -30,28 +30,28 @@ statement-count="391" statements-invoked="379" statement-rate="96.93" branch-rat
                         name="pj.domain.resources/TaskId/from" statement-count="8" statements-invoked="8" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1688" end="1693" line="63" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1641" end="1646" line="62" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1710" end="1733" line="64" branch="true" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1663" end="1686" line="63" branch="true" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1640" end="1650" line="62" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1593" end="1603" line="61" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1663" end="1682" line="63" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1616" end="1635" line="62" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1710" end="1714" line="64" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1663" end="1667" line="63" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1573" end="1581" line="61" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1533" end="1541" line="60" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1640" end="1652" line="62" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1593" end="1605" line="61" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1688" end="1697" line="63" branch="true" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1641" end="1650" line="62" branch="true" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
@@ -59,7 +59,7 @@ statement-count="391" statements-invoked="379" statement-rate="96.93" branch-rat
                         name="pj.domain.resources/TaskId/to" statement-count="1" statements-invoked="1" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="to" start="1771" end="1808" line="68" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="TaskId" class-type="Object" full-class-name="pj.domain.resources.TaskId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="to" start="1724" end="1761" line="67" branch="false" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
@@ -72,28 +72,28 @@ statement-count="391" statements-invoked="379" statement-rate="96.93" branch-rat
                         name="pj.domain.resources/OrderId/from" statement-count="8" statements-invoked="8" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1025" end="1030" line="39" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="992" end="997" line="38" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1047" end="1071" line="40" branch="true" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1014" end="1038" line="39" branch="true" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="977" end="987" line="38" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="944" end="954" line="37" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1000" end="1019" line="39" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="967" end="986" line="38" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1047" end="1051" line="40" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1014" end="1018" line="39" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="917" end="925" line="37" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="883" end="891" line="36" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="977" end="989" line="38" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="944" end="956" line="37" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1025" end="1034" line="39" branch="true" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="992" end="1001" line="38" branch="true" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
@@ -101,7 +101,7 @@ statement-count="391" statements-invoked="379" statement-rate="96.93" branch-rat
                         name="pj.domain.resources/OrderId/to" statement-count="1" statements-invoked="1" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="to" start="1110" end="1148" line="44" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="OrderId" class-type="Object" full-class-name="pj.domain.resources.OrderId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="to" start="1077" end="1115" line="43" branch="false" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
@@ -114,31 +114,31 @@ statement-count="391" statements-invoked="379" statement-rate="96.93" branch-rat
                         name="pj.domain.resources/OrderQuantity/from" statement-count="9" statements-invoked="9" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1998" end="2043" line="75" branch="true" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1951" end="1996" line="74" branch="true" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2188" end="2193" line="80" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2141" end="2146" line="79" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1952" end="1960" line="74" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1905" end="1913" line="73" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1893" end="1901" line="73" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1846" end="1854" line="72" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2012" end="2016" line="76" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1965" end="1969" line="75" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2096" end="2141" line="77" branch="true" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2049" end="2094" line="76" branch="true" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2174" end="2206" line="79" branch="true" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2127" end="2159" line="78" branch="true" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1952" end="1972" line="74" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1905" end="1925" line="73" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2110" end="2114" line="78" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2063" end="2067" line="77" branch="false" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
@@ -146,7 +146,7 @@ statement-count="391" statements-invoked="379" statement-rate="96.93" branch-rat
                         name="pj.domain.resources/OrderQuantity/to" statement-count="1" statements-invoked="1" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="to" start="2260" end="2304" line="84" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="OrderQuantity" class-type="Object" full-class-name="pj.domain.resources.OrderQuantity" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="to" start="2213" end="2257" line="83" branch="false" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
@@ -159,31 +159,31 @@ statement-count="391" statements-invoked="379" statement-rate="96.93" branch-rat
                         name="pj.domain.resources/TaskTime/from" statement-count="9" statements-invoked="9" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2489" end="2493" line="92" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2442" end="2446" line="91" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2557" end="2594" line="93" branch="true" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2510" end="2547" line="92" branch="true" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2383" end="2391" line="89" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2336" end="2344" line="88" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2623" end="2651" line="95" branch="true" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2576" end="2604" line="94" branch="true" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2433" end="2449" line="90" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2386" end="2402" line="89" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2571" end="2575" line="94" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2524" end="2528" line="93" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2475" end="2512" line="91" branch="true" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2428" end="2465" line="90" branch="true" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2637" end="2642" line="96" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2590" end="2595" line="95" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2433" end="2437" line="90" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2386" end="2390" line="89" branch="false" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
@@ -191,7 +191,7 @@ statement-count="391" statements-invoked="379" statement-rate="96.93" branch-rat
                         name="pj.domain.resources/TaskTime/to" statement-count="1" statements-invoked="1" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="to" start="2696" end="2735" line="100" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="TaskTime" class-type="Object" full-class-name="pj.domain.resources.TaskTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="to" start="2649" end="2688" line="99" branch="false" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
@@ -204,28 +204,28 @@ statement-count="391" statements-invoked="379" statement-rate="96.93" branch-rat
                         name="pj.domain.resources/ProductId/from" statement-count="8" statements-invoked="8" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="372" end="398" line="16" branch="true" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="338" end="364" line="15" branch="true" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="302" end="312" line="14" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="268" end="278" line="13" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="350" end="355" line="15" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="316" end="321" line="14" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="325" end="344" line="15" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="291" end="310" line="14" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="372" end="376" line="16" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="338" end="342" line="15" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="239" end="247" line="13" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="205" end="213" line="12" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="302" end="314" line="14" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="268" end="280" line="13" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="350" end="359" line="15" branch="true" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="316" end="325" line="14" branch="true" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
@@ -233,7 +233,7 @@ statement-count="391" statements-invoked="379" statement-rate="96.93" branch-rat
                         name="pj.domain.resources/ProductId/to" statement-count="1" statements-invoked="1" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="to" start="439" end="479" line="20" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="ProductId" class-type="Object" full-class-name="pj.domain.resources.ProductId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="to" start="405" end="445" line="19" branch="false" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
@@ -246,19 +246,19 @@ statement-count="391" statements-invoked="379" statement-rate="96.93" branch-rat
                         name="pj.domain.resources/TaskScheduleTime/from" statement-count="5" statements-invoked="5" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="pj.domain.resources" class="TaskScheduleTime" class-type="Object" full-class-name="pj.domain.resources.TaskScheduleTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="3201" end="3209" line="117" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="TaskScheduleTime" class-type="Object" full-class-name="pj.domain.resources.TaskScheduleTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="3154" end="3162" line="116" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="TaskScheduleTime" class-type="Object" full-class-name="pj.domain.resources.TaskScheduleTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="3304" end="3360" line="119" branch="true" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="TaskScheduleTime" class-type="Object" full-class-name="pj.domain.resources.TaskScheduleTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="3257" end="3313" line="118" branch="true" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="TaskScheduleTime" class-type="Object" full-class-name="pj.domain.resources.TaskScheduleTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="3304" end="3308" line="119" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="TaskScheduleTime" class-type="Object" full-class-name="pj.domain.resources.TaskScheduleTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="3257" end="3261" line="118" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="TaskScheduleTime" class-type="Object" full-class-name="pj.domain.resources.TaskScheduleTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="3373" end="3396" line="120" branch="true" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="TaskScheduleTime" class-type="Object" full-class-name="pj.domain.resources.TaskScheduleTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="3326" end="3349" line="119" branch="true" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="TaskScheduleTime" class-type="Object" full-class-name="pj.domain.resources.TaskScheduleTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="3373" end="3378" line="120" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="TaskScheduleTime" class-type="Object" full-class-name="pj.domain.resources.TaskScheduleTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="3326" end="3331" line="119" branch="false" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
@@ -266,7 +266,7 @@ statement-count="391" statements-invoked="379" statement-rate="96.93" branch-rat
                         name="pj.domain.resources/TaskScheduleTime/to" statement-count="1" statements-invoked="1" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="pj.domain.resources" class="TaskScheduleTime" class-type="Object" full-class-name="pj.domain.resources.TaskScheduleTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="to" start="3461" end="3508" line="124" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="TaskScheduleTime" class-type="Object" full-class-name="pj.domain.resources.TaskScheduleTime" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="to" start="3414" end="3461" line="123" branch="false" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
@@ -279,19 +279,19 @@ statement-count="391" statements-invoked="379" statement-rate="96.93" branch-rat
                         name="pj.domain.resources/ProductNumber/from" statement-count="5" statements-invoked="5" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="pj.domain.resources" class="ProductNumber" class-type="Object" full-class-name="pj.domain.resources.ProductNumber" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2915" end="2965" line="107" branch="true" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="ProductNumber" class-type="Object" full-class-name="pj.domain.resources.ProductNumber" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2868" end="2918" line="106" branch="true" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="ProductNumber" class-type="Object" full-class-name="pj.domain.resources.ProductNumber" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2820" end="2828" line="105" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="ProductNumber" class-type="Object" full-class-name="pj.domain.resources.ProductNumber" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2773" end="2781" line="104" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="ProductNumber" class-type="Object" full-class-name="pj.domain.resources.ProductNumber" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2915" end="2919" line="107" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="ProductNumber" class-type="Object" full-class-name="pj.domain.resources.ProductNumber" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2868" end="2872" line="106" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="ProductNumber" class-type="Object" full-class-name="pj.domain.resources.ProductNumber" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2978" end="2998" line="108" branch="true" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="ProductNumber" class-type="Object" full-class-name="pj.domain.resources.ProductNumber" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2931" end="2951" line="107" branch="true" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="ProductNumber" class-type="Object" full-class-name="pj.domain.resources.ProductNumber" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2978" end="2983" line="108" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="ProductNumber" class-type="Object" full-class-name="pj.domain.resources.ProductNumber" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="2931" end="2936" line="107" branch="false" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
@@ -299,7 +299,7 @@ statement-count="391" statements-invoked="379" statement-rate="96.93" branch-rat
                         name="pj.domain.resources/ProductNumber/to" statement-count="1" statements-invoked="1" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="pj.domain.resources" class="ProductNumber" class-type="Object" full-class-name="pj.domain.resources.ProductNumber" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="to" start="3057" end="3101" line="112" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="ProductNumber" class-type="Object" full-class-name="pj.domain.resources.ProductNumber" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="to" start="3010" end="3054" line="111" branch="false" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
@@ -312,28 +312,28 @@ statement-count="391" statements-invoked="379" statement-rate="96.93" branch-rat
                         name="pj.domain.resources/HumanResourceId/from" statement-count="8" statements-invoked="8" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1362" end="1367" line="51" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1322" end="1327" line="50" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1384" end="1408" line="52" branch="true" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1344" end="1368" line="51" branch="true" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1314" end="1324" line="50" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1274" end="1284" line="49" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1337" end="1356" line="51" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1297" end="1316" line="50" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1384" end="1388" line="52" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1344" end="1348" line="51" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1238" end="1246" line="49" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1205" end="1213" line="48" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1314" end="1326" line="50" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1274" end="1286" line="49" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1362" end="1371" line="51" branch="true" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="1322" end="1331" line="50" branch="true" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
@@ -341,7 +341,7 @@ statement-count="391" statements-invoked="379" statement-rate="96.93" branch-rat
                         name="pj.domain.resources/HumanResourceId/to" statement-count="1" statements-invoked="1" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="to" start="1455" end="1501" line="56" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="HumanResourceId" class-type="Object" full-class-name="pj.domain.resources.HumanResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="to" start="1415" end="1461" line="55" branch="false" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
@@ -354,28 +354,28 @@ statement-count="391" statements-invoked="379" statement-rate="96.93" branch-rat
                         name="pj.domain.resources/PhysicalResourceId/from" statement-count="8" statements-invoked="8" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="717" end="744" line="28" branch="true" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="683" end="710" line="27" branch="true" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="647" end="657" line="26" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="613" end="623" line="25" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="695" end="700" line="27" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="661" end="666" line="26" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="670" end="689" line="27" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="636" end="655" line="26" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="717" end="721" line="28" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="683" end="687" line="27" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="575" end="583" line="25" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="541" end="549" line="24" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="647" end="659" line="26" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="613" end="625" line="25" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="695" end="704" line="27" branch="true" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="from" start="661" end="670" line="26" branch="true" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
@@ -383,7 +383,7 @@ statement-count="391" statements-invoked="379" statement-rate="96.93" branch-rat
                         name="pj.domain.resources/PhysicalResourceId/to" statement-count="1" statements-invoked="1" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="to" start="794" end="843" line="32" branch="false" invocation-count="1" ignored="false">
+                                package="pj.domain.resources" class="PhysicalResourceId" class-type="Object" full-class-name="pj.domain.resources.PhysicalResourceId" source="C:\Users\migue\Desktop\Universidade\Mestrado GitHub Projects\2 Ano\2 Semestre\TAP\tap-pj-ncf-12\src\main\scala\pj\domain\resources\Types.scala" method="to" start="760" end="809" line="31" branch="false" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
