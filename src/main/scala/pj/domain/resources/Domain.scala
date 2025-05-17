@@ -2,16 +2,16 @@ package pj.domain.resources
 
 import pj.domain.resources.Types.*
 
-final case class Product(id: ProductId, name: String, tasksList: List[TaskId])
+final case class Product(id: ProductId, name: ProductName, tasksList: List[TaskId])
 
 final case class Order(id: OrderId, quantity: OrderQuantity, productId: ProductId)
 
-final case class Task(id: TaskId, time: TaskTime, physicalResourceTypes: List[String])
+final case class Task(id: TaskId, time: TaskTime, physicalResourceTypes: List[PhysicalResourceType])
 
-final case class HumanResource(id: HumanResourceId, name: String, physicalResourceTypes: List[String] )
+final case class HumanResource(id: HumanResourceId, name: HumanResourceName, physicalResourceTypes: List[PhysicalResourceType] )
 
-final case class PhysicalResource(id: PhysicalResourceId, name: String)
+final case class PhysicalResource(id: PhysicalResourceId, physical_type: PhysicalResourceType)
 
 final case class TaskSchedule(orderId: OrderId, productNumber: ProductNumber, taskId:TaskId, 
                               start:TaskScheduleTime, end:TaskScheduleTime,
-                              physicalResourceIds: List[PhysicalResourceId], humanResourceNames: List[String])
+                              physicalResourceIds: List[PhysicalResourceId], humanResourceNames: List[HumanResourceName])

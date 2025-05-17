@@ -13,6 +13,7 @@ object XMLToDomain :
       id <- XML.fromAttribute(xml, "id")
       name <- XML.fromAttribute(xml, "name")
       productId <- ProductId.from(id)
+      productName <- ProductName.from(name)
       tasksList <- XML.traverse(xml \ "Process", { tasksNode =>
         XML.fromAttribute(tasksNode, "tskref").flatMap { taskRefString =>
           val isValidType = tasks.exists(_.id.to == taskRefString)
@@ -23,7 +24,7 @@ object XMLToDomain :
           }
         }
       })
-    yield Product(productId, name, tasksList)
+    yield Product(productId, productName, tasksList)
 
   def getOrder(products: List[Product])(xml: Node): Result[Order] =
     for
@@ -43,41 +44,42 @@ object XMLToDomain :
   def getPhysicalResource(xml: Node): Result[PhysicalResource] =
     for
       rawPhysicalResourceId <- XML.fromAttribute(xml, "id")
-      physicalResourceType <- XML.fromAttribute(xml, "type")
+      rawPhysicalResourceType <- XML.fromAttribute(xml, "type")
       physicalResourceId <- PhysicalResourceId.from(rawPhysicalResourceId)
+      physicalResourceType <- PhysicalResourceType.from(rawPhysicalResourceType)
     yield PhysicalResource(physicalResourceId, physicalResourceType)
 
-  def getTask(physicalResourceTypes: List[String])(xml: Node): Result[Task] =
+  def getTask(validPhysicalResourceTypes: List[PhysicalResourceType])(xml: Node): Result[Task] =
     for
       rawTaskId <- XML.fromAttribute(xml, "id")
       rawTaskTime <- XML.fromAttribute(xml, "time")
       taskId <- TaskId.from(rawTaskId)
       taskTime <- TaskTime.from(rawTaskTime)
       taskPhysicalResources <- XML.traverse(xml \ "PhysicalResource", { physicalResourceNode =>
-        XML.fromAttribute(physicalResourceNode, "type").flatMap { typeString =>
-          val isValidType = physicalResourceTypes.contains(typeString)
-          if (!isValidType) {
-            Left(TaskUsesNonExistentPRT(typeString))
-          } else {
-            Right(typeString)
-          }
-        }
+        for
+          rawType <- XML.fromAttribute(physicalResourceNode, "type")
+          prt <- PhysicalResourceType.from(rawType)
+          _ <-
+            if validPhysicalResourceTypes.contains(prt) then Right(())
+            else Left(TaskUsesNonExistentPRT(prt.to))
+        yield prt
       })
     yield Task(taskId, taskTime, taskPhysicalResources)
 
-  def getHumanResource(physicalResourceTypes: List[String])(xml: Node): Result[HumanResource] =
+
+  def getHumanResource(validPhysicalResourceTypes: List[PhysicalResourceType])(xml: Node): Result[HumanResource] =
     for
       rawHumanResourceId <- XML.fromAttribute(xml, "id")
       humanResourceId <- HumanResourceId.from(rawHumanResourceId)
-      humanResourceName <- XML.fromAttribute(xml, "name")
-      humanResourcePhysicalResources <- XML.traverse(xml \ "Handles", { physicalResourceNode =>
-        XML.fromAttribute(physicalResourceNode, "type").flatMap { typeString =>
-          val isValidType = physicalResourceTypes.contains(typeString)
-          if (!isValidType) {
-            Left(PhysicalResourceTypeNotFound(rawHumanResourceId,typeString))
-          } else {
-            Right(typeString)
-          }
-        }
+      rawName <- XML.fromAttribute(xml, "name")
+      humanResourceName <- HumanResourceName.from(rawName)
+      handledPRTs <- XML.traverse(xml \ "Handles", { physicalResourceNode =>
+        for
+          rawType <- XML.fromAttribute(physicalResourceNode, "type")
+          prt <- PhysicalResourceType.from(rawType)
+          _ <-
+            if validPhysicalResourceTypes.contains(prt) then Right(())
+            else Left(PhysicalResourceTypeNotFound(rawHumanResourceId, prt.to))
+        yield prt
       })
-    yield HumanResource(humanResourceId, humanResourceName, humanResourcePhysicalResources)
+    yield HumanResource(humanResourceId, humanResourceName, handledPRTs)
