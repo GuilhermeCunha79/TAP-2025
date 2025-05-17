@@ -170,3 +170,81 @@ class TypesTest extends AnyFunSuite:
   test("TaskScheduleTime.from with negative number returns Left"):
     val result = TaskScheduleTime.from(-1)
     assert(result == Left(InvalidTaskScheduleTime("-1")))
+
+  test("ProductName.from with non-empty string returns Right"):
+    val result = ProductName.from("Widget")
+    assert(result.fold(_ => false, name => name.to == "Widget"))
+
+  test("ProductName.from with empty string returns Left"):
+    val result = ProductName.from("")
+    assert(result == Left(EmptyProductName("")))
+
+  test("ProductName.equal returns true for equal names"):
+    val result =
+      for
+        name1 <- ProductName.from("Gadget")
+        name2 <- ProductName.from("Gadget")
+      yield name1.equal(name2)
+
+    assert(result.contains(true))
+
+  test("ProductName.equal returns false for different names"):
+    val result =
+      for
+        name1 <- ProductName.from("Gadget")
+        name2 <- ProductName.from("Widget")
+      yield name1.equal(name2)
+
+    assert(result.contains(false))
+
+  test("HumanResourceName.from with valid name returns Right"):
+    val result = HumanResourceName.from("Alice")
+    assert(result.fold(_ => false, name => name.to == "Alice"))
+
+  test("HumanResourceName.from with empty string returns Left"):
+    val result = HumanResourceName.from("")
+    assert(result == Left(EmptyHumanResourceName("")))
+
+  test("HumanResourceName.equal returns true for equal names"):
+    val result =
+      for
+        name1 <- HumanResourceName.from("Bob")
+        name2 <- HumanResourceName.from("Bob")
+      yield name1.equal(name2)
+
+    assert(result.contains(true))
+
+  test("HumanResourceName.equal returns false for different names"):
+    val result =
+      for
+        name1 <- HumanResourceName.from("Alice")
+        name2 <- HumanResourceName.from("Bob")
+      yield name1.equal(name2)
+
+    assert(result.contains(false))
+
+  test("PhysicalResourceType.from with valid type returns Right"):
+    val result = PhysicalResourceType.from("Drill")
+    assert(result.fold(_ => false, t => t.to == "Drill"))
+
+  test("PhysicalResourceType.from with empty string returns Left"):
+    val result = PhysicalResourceType.from("")
+    assert(result == Left(EmptyPhysicalResourceType("")))
+
+  test("PhysicalResourceType.equal returns true for equal types"):
+    val result =
+      for
+        t1 <- PhysicalResourceType.from("Cutter")
+        t2 <- PhysicalResourceType.from("Cutter")
+      yield t1.equal(t2)
+
+    assert(result.contains(true))
+
+  test("PhysicalResourceType.equal returns false for different types"):
+    val result =
+      for
+        t1 <- PhysicalResourceType.from("Cutter")
+        t2 <- PhysicalResourceType.from("Welder")
+      yield t1.equal(t2)
+
+    assert(result.contains(false))

@@ -13,12 +13,13 @@ class DomainTest extends AnyFunSuite:
         productId <- ProductId.from("PRD_1")
         task1 <- TaskId.from("TSK_1")
         task2 <- TaskId.from("TSK_2")
-      yield Product(productId, "Widget", List(task1, task2))
+        name <- ProductName.from("Widget")
+      yield Product(productId, name, List(task1, task2))
 
     result match
       case Right(product) =>
         assert(product.id.to == "PRD_1")
-        assert(product.name == "Widget")
+        assert(product.name.to == "Widget")
         assert(product.tasksList.map(_.to) == List("TSK_1", "TSK_2"))
       case Left(err) => fail(s"Expected Product, but got error: $err")
 
@@ -42,38 +43,44 @@ class DomainTest extends AnyFunSuite:
       for
         taskId <- TaskId.from("TSK_5")
         time <- TaskTime.from("30")
-      yield Task(taskId, time, List("Drill", "Weld"))
+        type1 <- PhysicalResourceType.from("Drill")
+        type2 <- PhysicalResourceType.from("Weld")
+      yield Task(taskId, time, List(type1, type2))
 
     result match
       case Right(task) =>
         assert(task.id.to == "TSK_5")
         assert(task.time.to == 30)
-        assert(task.physicalResourceTypes == List("Drill", "Weld"))
+        assert(task.physicalResourceTypes.map(_.to) == List("Drill", "Weld"))
       case Left(err) => fail(s"Expected Task, but got error: $err")
 
   test("HumanResource should be created successfully with valid HumanResourceId"):
     val result =
       for
         hrId <- HumanResourceId.from("HRS_42")
-      yield HumanResource(hrId, "Alice", List("Weld", "Assemble"))
+        name <- HumanResourceName.from("Alice")
+        type1 <- PhysicalResourceType.from("Weld")
+        type2 <- PhysicalResourceType.from("Assemble")
+      yield HumanResource(hrId, name, List(type1, type2))
 
     result match
       case Right(hr) =>
         assert(hr.id.to == "HRS_42")
-        assert(hr.name == "Alice")
-        assert(hr.physicalResourceTypes == List("Weld", "Assemble"))
+        assert(hr.name.to == "Alice")
+        assert(hr.physicalResourceTypes.map(_.to) == List("Weld", "Assemble"))
       case Left(err) => fail(s"Expected HumanResource, but got error: $err")
 
   test("PhysicalResource should be created successfully with valid PhysicalResourceId"):
     val result =
       for
         prId <- PhysicalResourceId.from("PRS_99")
-      yield PhysicalResource(prId, "Laser Cutter")
+        prType <- PhysicalResourceType.from("Laser Cutter")
+      yield PhysicalResource(prId, prType)
 
     result match
       case Right(pr) =>
         assert(pr.id.to == "PRS_99")
-        assert(pr.name == "Laser Cutter")
+        assert(pr.physical_type.to == "Laser Cutter")
       case Left(err) => fail(s"Expected PhysicalResource, but got error: $err")
 
   test("Product creation should fail with invalid ProductId"):
@@ -81,7 +88,8 @@ class DomainTest extends AnyFunSuite:
       for
         productId <- ProductId.from("INVALID")
         task1 <- TaskId.from("TSK_1")
-      yield Product(productId, "Faulty", List(task1))
+        name <- ProductName.from("Faulty")
+      yield Product(productId, name, List(task1))
 
     assert(result == Left(InvalidProductId("INVALID")))
 
@@ -91,7 +99,8 @@ class DomainTest extends AnyFunSuite:
         productId <- ProductId.from("PRD_5")
         task1 <- TaskId.from("TSK_1")
         task2 <- TaskId.from("BAD_ID")
-      yield Product(productId, "MultiTask", List(task1, task2))
+        name <- ProductName.from("MultiTask")
+      yield Product(productId, name, List(task1, task2))
 
     assert(result == Left(InvalidTaskId("BAD_ID")))
 
@@ -120,7 +129,9 @@ class DomainTest extends AnyFunSuite:
       for
         taskId <- TaskId.from("TSK_9")
         time <- TaskTime.from("-1")
-      yield Task(taskId, time, List("Cut", "Weld"))
+        type1 <- PhysicalResourceType.from("Cut")
+        type2 <- PhysicalResourceType.from("Weld")
+      yield Task(taskId, time, List(type1, type2))
 
     assert(result == Left(InvalidTime("-1")))
 
@@ -129,7 +140,8 @@ class DomainTest extends AnyFunSuite:
       for
         taskId <- TaskId.from("XXX")
         time <- TaskTime.from("10")
-      yield Task(taskId, time, List("Assemble"))
+        type1 <- PhysicalResourceType.from("Assemble")
+      yield Task(taskId, time, List(type1))
 
     assert(result == Left(InvalidTaskId("XXX")))
 
@@ -137,7 +149,9 @@ class DomainTest extends AnyFunSuite:
     val result =
       for
         hrId <- HumanResourceId.from("ID_999")
-      yield HumanResource(hrId, "Bob", List("Drill"))
+        name <- HumanResourceName.from("Bob")
+        type1 <- PhysicalResourceType.from("Drill")
+      yield HumanResource(hrId, name, List(type1))
 
     assert(result == Left(InvalidHumanId("ID_999")))
 
@@ -145,7 +159,8 @@ class DomainTest extends AnyFunSuite:
     val result =
       for
         prId <- PhysicalResourceId.from("BADPRS")
-      yield PhysicalResource(prId, "Faulty Tool")
+        type1 <- PhysicalResourceType.from("Faulty Tool")
+      yield PhysicalResource(prId, type1)
 
     assert(result == Left(InvalidPhysicalId("BADPRS")))
 
@@ -156,6 +171,8 @@ class DomainTest extends AnyFunSuite:
         taskId <- TaskId.from("TSK_10")
         pr1 <- PhysicalResourceId.from("PRS_1")
         pr2 <- PhysicalResourceId.from("PRS_2")
+        name1 <- HumanResourceName.from("Alice")
+        name2 <- HumanResourceName.from("Bob")
         productNumber <- ProductNumber.from(1)
         start <- TaskScheduleTime.from(0)
         end <- TaskScheduleTime.from(10)
@@ -166,7 +183,7 @@ class DomainTest extends AnyFunSuite:
         start = start,
         end = end,
         physicalResourceIds = List(pr1, pr2),
-        humanResourceNames = List("Alice", "Bob")
+        humanResourceNames = List(name1, name2)
       )
 
     result match
@@ -178,7 +195,7 @@ class DomainTest extends AnyFunSuite:
             schedule.start.to == 0 &&
             schedule.end.to == 10 &&
             schedule.physicalResourceIds.map(_.to) == List("PRS_1", "PRS_2") &&
-            schedule.humanResourceNames == List("Alice", "Bob")
+            schedule.humanResourceNames.map(_.to) == List("Alice", "Bob")
         )
       case Left(err) => fail(s"Expected TaskSchedule, but got error: $err")
 
@@ -188,10 +205,11 @@ class DomainTest extends AnyFunSuite:
         orderId <- OrderId.from("INVALID")
         taskId <- TaskId.from("TSK_10")
         pr <- PhysicalResourceId.from("PRS_1")
+        name <- HumanResourceName.from("Alice")
         productNumber <- ProductNumber.from(1)
         start <- TaskScheduleTime.from(0)
         end <- TaskScheduleTime.from(10)
-      yield TaskSchedule(orderId, productNumber, taskId, start, end, List(pr), List("Alice"))
+      yield TaskSchedule(orderId, productNumber, taskId, start, end, List(pr), List(name))
 
     assert(result == Left(InvalidOrderId("INVALID")))
 
@@ -201,10 +219,11 @@ class DomainTest extends AnyFunSuite:
         orderId <- OrderId.from("ORD_1")
         taskId <- TaskId.from("WRONG")
         pr <- PhysicalResourceId.from("PRS_1")
+        name <- HumanResourceName.from("Bob")
         productNumber <- ProductNumber.from(1)
         start <- TaskScheduleTime.from(0)
         end <- TaskScheduleTime.from(10)
-      yield TaskSchedule(orderId, productNumber, taskId, start, end, List(pr), List("Bob"))
+      yield TaskSchedule(orderId, productNumber, taskId, start, end, List(pr), List(name))
 
     assert(result == Left(InvalidTaskId("WRONG")))
 
