@@ -66,7 +66,7 @@ object ScheduleMS01 extends Schedule:
     }.map(_._1.reverse)
 
 
-  private def generateSchedule(
+  def generateSchedule(
       physicalResources: List[PhysicalResource],
       physicalTypes: List[PhysicalResourceType],
       allTasks: List[Task],
@@ -88,7 +88,7 @@ object ScheduleMS01 extends Schedule:
     result.map((schedules, _) => toXml(schedules))
 
 
-  private def scheduleOrder(
+  def scheduleOrder(
        order: Order,
        startTime: Int,
        scheduled: List[TaskSchedule],
@@ -113,7 +113,7 @@ object ScheduleMS01 extends Schedule:
     } yield result
 
 
-  private def scheduleProduct(
+  def scheduleProduct(
        orderId: OrderId,
        product: Product,
        productInstance: Int,
@@ -135,7 +135,7 @@ object ScheduleMS01 extends Schedule:
         } yield (scheduledTask :: scheduledSoFar, endTime)
 
 
-  private def scheduleTask(
+  def scheduleTask(
                             orderId: OrderId,
                             task: Task,
                             productInstance: Int,
