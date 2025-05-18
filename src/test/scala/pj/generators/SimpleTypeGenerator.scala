@@ -10,7 +10,7 @@ object SimpleTypeGenerator extends Properties("SimpleTypes"):
     rest <- Gen.listOf(Gen.alphaNumChar)
   } yield (firstChar :: rest).mkString
 
-  //Product Domain
+  //Product
   def ProductIdGenerator: Gen[ProductId] =
     suffixGen.flatMap(id => ProductId.from(s"PRD_$id") match
       case Right(pId) => Gen.const(pId)
@@ -29,7 +29,7 @@ object SimpleTypeGenerator extends Properties("SimpleTypes"):
       case Left(_) => Gen.fail
     )
 
-  //Order Domain
+  //Order
   def OrderIdGenerator: Gen[OrderId] =
     suffixGen.flatMap(id => OrderId.from(s"ORD_$id") match
       case Right(ordId) => Gen.const(ordId)
@@ -42,7 +42,7 @@ object SimpleTypeGenerator extends Properties("SimpleTypes"):
       case Left(_) => Gen.fail
     )
 
-  //Task Domain
+  //Task
   def TaskIdGenerator: Gen[TaskId] =
     suffixGen.flatMap(id => TaskId.from(s"TSK_$id") match
       case Right(tId) => Gen.const(tId)
