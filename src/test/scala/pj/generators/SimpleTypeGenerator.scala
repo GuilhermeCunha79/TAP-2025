@@ -55,7 +55,7 @@ object SimpleTypeGenerator extends Properties("SimpleTypes"):
       case Left(_) => Gen.fail
     )
 
-  def TaskScheduleTimeGenerator: Gen[TaskScheduleTime] =
+  def TaskScheduleTimeGenerator(initial: Int): Gen[TaskScheduleTime] =
     Gen.posNum[Int].flatMap(tskSchedTime => TaskScheduleTime.from(tskSchedTime) match
       case Right(tskSchTime) => Gen.const(tskSchTime)
       case Left(_) => Gen.fail
