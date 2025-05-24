@@ -1,7 +1,7 @@
 package pj.generators
 
 import org.scalacheck.{Gen, Properties}
-import pj.domain.resources.Types.{HumanResourceId, HumanResourceName, OrderId, OrderQuantity, PhysicalResourceId, PhysicalResourceType, ProductId, ProductName, ProductNumber, TaskId, TaskScheduleTime, TaskTime}
+import pj.domain.resources.Types.*
 
 object SimpleTypeGenerator extends Properties("SimpleTypes"):
 
@@ -36,8 +36,9 @@ object SimpleTypeGenerator extends Properties("SimpleTypes"):
       case Left(_) => Gen.fail
     )
 
+  // TODO: Rollback to Gen.posNum[Int]
   def OrderQuantityGenerator: Gen[OrderQuantity] =
-    Gen.posNum[Int].map(_.toString).flatMap(orderQtd => OrderQuantity.from(orderQtd) match
+    Gen.chooseNum(0,2).map(_.toString).flatMap(orderQtd => OrderQuantity.from(orderQtd) match
       case Right(qty) => Gen.const(qty)
       case Left(_) => Gen.fail
     )

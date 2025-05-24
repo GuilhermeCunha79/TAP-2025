@@ -11,5 +11,9 @@ object TaskGenerator extends Properties("Task"):
     for {
       taskId <- TaskIdGenerator
       taskTime <- TaskTimeGenerator
-      requiredTypes <- Gen.someOf(availableTypes).map(_.toList).suchThat(_.nonEmpty)
+      requiredTypes <- Gen.nonEmptyListOf(Gen.oneOf(availableTypes))
     } yield Task(taskId, taskTime, requiredTypes)
+  
+
+  def generateTaskList: List[PhysicalResourceType] => Gen[List[Task]] =
+    (types) => Gen.nonEmptyListOf(generateTask(types))
