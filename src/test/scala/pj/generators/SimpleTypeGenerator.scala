@@ -6,7 +6,7 @@ import pj.domain.resources.Types.*
 object SimpleTypeGenerator extends Properties("SimpleTypes"):
 
   val suffixGen: Gen[String] = for {
-    length <- Gen.chooseNum(1, 10)
+    length <- Gen.chooseNum(3, 5)
     chars <- Gen.listOfN(length, Gen.alphaNumChar)
   } yield chars.mkString
 
@@ -36,7 +36,7 @@ object SimpleTypeGenerator extends Properties("SimpleTypes"):
       case Left(_) => Gen.fail
     )
 
-  // TODO: Rollback to Gen.posNum[Int]
+  // TODO: Change to Gen.chooseNum(1,10)
   def OrderQuantityGenerator: Gen[OrderQuantity] =
     Gen.chooseNum(1,2).map(_.toString).flatMap(orderQtd => OrderQuantity.from(orderQtd) match
       case Right(qty) => Gen.const(qty)

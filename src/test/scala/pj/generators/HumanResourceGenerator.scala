@@ -15,4 +15,14 @@ object HumanResourceGenerator extends Properties("HumanResource"):
     } yield HumanResource(hrId, name, canOperate)
 
   def generateHumanResourcesList: List[PhysicalResourceType] => Gen[List[HumanResource]] =
-    (types) => Gen.nonEmptyListOf(generateHumanResource(types))
+    (types) => Gen.listOfN(types.size, generateHumanResource(types))
+
+
+  def generateDeterministicHumanResource(availableTypes: List[PhysicalResourceType]): Gen[HumanResource] =
+    for {
+      hrId <- HumanResourceIdGenerator
+      name <- HumanResourceNameGenerator
+    } yield HumanResource(hrId, name, availableTypes)
+  
+  def generateDeterministicHumanResourcesList: List[PhysicalResourceType] => Gen[List[HumanResource]] =
+    (types) => Gen.listOfN(types.size, generateDeterministicHumanResource(types))

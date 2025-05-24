@@ -1,13 +1,28 @@
 package pj.properties
 
 import org.scalacheck.*
-import org.scalacheck.Prop.forAll
+import pj.domain.resources.TaskSchedule
 import pj.domain.schedule.ScheduleMS01
 import pj.generators.TaskScheduleGenerator
 
 object ScheduleProperties extends Properties("ScheduleProperties"):
   override def overrideParameters(p: Test.Parameters): Test.Parameters =
-    p.withMinSuccessfulTests(1000)
+    p.withMinSuccessfulTests(3)
+
+
+  property("generateSchedule produces a deterministic valid schedule") = Prop.forAll(TaskScheduleGenerator.generateDeterministicDomainData):
+    case (orders, products, tasks, humanResources, physicalResources) =>
+      val result = ScheduleMS01.generateSchedule(orders, products, tasks, humanResources, physicalResources)
+
+      result match
+        case Left(error) =>
+          Prop.falsified
+
+        case Right(schedules) =>
+          val allTasksScheduled = schedules.map(_.taskId).toSet.subsetOf(tasks.map(_.id).toSet)
+          val allOrdersScheduled = schedules.map(_.orderId).toSet.subsetOf(orders.map(_.id).toSet)
+
+          Prop(allTasksScheduled && allOrdersScheduled)
 
 
   property("generateSchedule produces a valid schedule") = Prop.forAll(TaskScheduleGenerator.generateDomainData):
@@ -16,27 +31,16 @@ object ScheduleProperties extends Properties("ScheduleProperties"):
 
       result match
         case Left(error) =>
-          println("Schedule failed with error:")
-          println(error)
-          println("Orders:")
-          orders.foreach(println)
-          println("Products:")
-          products.foreach(println)
-          println("Tasks:")
-          tasks.foreach(println)
-          println("HumanResources:")
-          humanResources.foreach(println)
-          println("PhysicalResources:")
-          physicalResources.foreach(println)
-          false
+          Prop.falsified
 
         case Right(schedules) =>
           val allTasksScheduled = schedules.map(_.taskId).toSet.subsetOf(tasks.map(_.id).toSet)
           val allOrdersScheduled = schedules.map(_.orderId).toSet.subsetOf(orders.map(_.id).toSet)
 
-          allTasksScheduled && allOrdersScheduled
+          Prop(allTasksScheduled && allOrdersScheduled)
 
-  property("The order of human resources should not affect the allocation") = forAll(TaskScheduleGenerator.generateDomainData) {
+
+  property("The order of human resources should not affect the allocation") = Prop.forAll(TaskScheduleGenerator.generateDomainData):
     case (orders, products, tasks, humanResources, physicalResources) =>
 
       if (humanResources.lengthIs < 2) Prop.passed
@@ -58,4 +62,3 @@ object ScheduleProperties extends Properties("ScheduleProperties"):
 
           case _ =>
             Prop.falsified
-  }

@@ -15,3 +15,15 @@ object TaskScheduleGenerator extends Properties("TaskSchedule"):
       products <- ProductGenerator.generateProductsList(tasks)
       orders <- OrderGenerator.generateOrdersList(products)
     } yield (orders, products, tasks, humanResources, physicalResources)
+
+
+  def generateDeterministicDomainData: Gen[(List[Order], List[Product], List[Task], List[HumanResource], List[PhysicalResource])] =
+    for {
+      physicalResources <- PhysicalResourceGenerator.generatePhysicalResourcesList
+      types = PhysicalResourceGenerator.generatePhysicalTypesListFromResources(physicalResources)
+
+      humanResources <- HumanResourceGenerator.generateHumanResourcesList(types)
+      tasks <- TaskGenerator.generateDeterministicTaskList(humanResources, physicalResources)
+      products <- ProductGenerator.generateProductsList(tasks)
+      orders <- OrderGenerator.generateOrdersList(products)
+    } yield (orders, products, tasks, humanResources, physicalResources)
