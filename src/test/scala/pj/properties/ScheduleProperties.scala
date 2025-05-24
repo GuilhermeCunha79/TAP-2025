@@ -1,6 +1,7 @@
 package pj.properties
 
 import org.scalacheck.*
+import org.scalacheck.Prop.forAll
 import pj.domain.schedule.ScheduleMS01
 import pj.generators.TaskScheduleGenerator
 
@@ -34,3 +35,27 @@ object ScheduleProperties extends Properties("ScheduleProperties"):
           val allOrdersScheduled = schedules.map(_.orderId).toSet.subsetOf(orders.map(_.id).toSet)
 
           allTasksScheduled && allOrdersScheduled
+
+  property("The order of human resources should not affect the allocation") = forAll(TaskScheduleGenerator.generateDomainData) {
+    case (orders, products, tasks, humanResources, physicalResources) =>
+
+      if (humanResources.lengthIs < 2) Prop.passed
+      else
+        val originalOrder = humanResources
+        val reversedOrder = humanResources.reverse
+
+        val resultOriginal = ScheduleMS01.generateSchedule(orders, products, tasks, originalOrder, physicalResources)
+        val resultReversed = ScheduleMS01.generateSchedule(orders, products, tasks, reversedOrder, physicalResources)
+
+        (resultOriginal, resultReversed) match
+          case (Right(scheduleOriginal), Right(scheduleReversed)) =>
+            val allocOriginal = scheduleOriginal.flatMap(_.humanResourceNames).map(_.to).toSet
+            val allocReversed = scheduleReversed.flatMap(_.humanResourceNames).map(_.to).toSet
+            Prop(allocOriginal == allocReversed)
+
+          case (Left(_), Left(_)) =>
+            Prop.passed
+
+          case _ =>
+            Prop.falsified
+  }

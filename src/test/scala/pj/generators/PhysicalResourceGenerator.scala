@@ -14,7 +14,8 @@ object PhysicalResourceGenerator extends Properties("PhysicalResource"):
     } yield PhysicalResource(prId, prType)
 
   def generatePhysicalResourcesList: Gen[List[PhysicalResource]] =
-    Gen.nonEmptyListOf(PhysicalResourceGenerator.generatePhysicalResource)
+    Gen.nonEmptyListOf(generatePhysicalResource)
 
-  def generatePhysicalTypesListFromResources: List[PhysicalResource] => List[PhysicalResourceType] =
-    _.map(_.physical_type).distinct
+  def generatePhysicalTypesListFromResources(resources: List[PhysicalResource]): List[PhysicalResourceType] =
+    resources.map(_.physical_type).distinct
+
