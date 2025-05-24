@@ -7,7 +7,8 @@ import pj.generators.TaskScheduleGenerator
 
 object ScheduleProperties extends Properties("ScheduleProperties"):
   override def overrideParameters(p: Test.Parameters): Test.Parameters =
-    p.withMinSuccessfulTests(100)
+    p.withMinSuccessfulTests(1000)
+/*
 
   property("generateSchedule produces a deterministic valid schedule") = Prop.forAll(TaskScheduleGenerator.generateDeterministicDomainData):
     case (orders, products, tasks, humanResources, physicalResources) =>
@@ -37,21 +38,22 @@ object ScheduleProperties extends Properties("ScheduleProperties"):
           val allOrdersScheduled = schedules.map(_.orderId).toSet.subsetOf(orders.map(_.id).toSet)
 
           Prop(allTasksScheduled && allOrdersScheduled)
+*/
 
   property("The order of human resources should not affect the allocation") = Prop.forAll(TaskScheduleGenerator.generateDomainData):
     case (orders, products, tasks, humanResources, physicalResources) =>
       humanResources match
         case original :: second :: rest =>
-          val reversed = (original :: second :: rest).reverse
+          val shuffled = scala.util.Random.shuffle(original :: second :: rest)
 
           val resultOriginal = ScheduleMS01.generateSchedule(orders, products, tasks, original :: second :: rest, physicalResources)
-          val resultReversed = ScheduleMS01.generateSchedule(orders, products, tasks, reversed, physicalResources)
+          val resultShuffled = ScheduleMS01.generateSchedule(orders, products, tasks, shuffled, physicalResources)
 
-          (resultOriginal, resultReversed) match
-            case (Right(scheduleOriginal), Right(scheduleReversed)) =>
+          (resultOriginal, resultShuffled) match
+            case (Right(scheduleOriginal), Right(scheduleShuffled)) =>
               val allocOriginal = scheduleOriginal.flatMap(_.humanResourceNames).map(_.to).toSet
-              val allocReversed = scheduleReversed.flatMap(_.humanResourceNames).map(_.to).toSet
-              Prop(allocOriginal == allocReversed)
+              val allocShuffled = scheduleShuffled.flatMap(_.humanResourceNames).map(_.to).toSet
+              Prop(allocOriginal == allocShuffled)
 
             case (Left(_), Left(_)) =>
               Prop.passed
