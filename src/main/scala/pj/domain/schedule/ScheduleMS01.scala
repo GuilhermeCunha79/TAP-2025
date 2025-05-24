@@ -10,12 +10,11 @@ import scala.xml.Elem
 object ScheduleMS01 extends Schedule:
 
   def scheduleDataRetriever(xml: Elem): Result[(
-    List[PhysicalResource],
-      List[PhysicalResourceType],
+      List[Order],
+      List[Product],
       List[Task],
       List[HumanResource],
-      List[Product],
-      List[Order]
+      List[PhysicalResource]
     )] =
     for {
       physicalNode <- XML.fromNode(xml, "PhysicalResources")
@@ -33,7 +32,7 @@ object ScheduleMS01 extends Schedule:
 
       ordersNode <- XML.fromNode(xml, "Orders")
       orders <- XML.traverse(ordersNode \ "Order", XMLToDomain.getOrder(products))
-    } yield (physicalResources, physicalTypes, tasks, humanResources, products, orders)
+    } yield (orders, products, tasks, humanResources, physicalResources)
 
 
   def allocatePhysicalResources(
@@ -67,25 +66,22 @@ object ScheduleMS01 extends Schedule:
 
 
   def generateSchedule(
-      physicalResources: List[PhysicalResource],
-      physicalTypes: List[PhysicalResourceType],
-      allTasks: List[Task],
+      orders: List[Order],
+      products: List[Product],
+      tasks: List[Task],
       humanResources: List[HumanResource],
-      allProducts: List[Product],
-      allOrders: List[Order]
-    ): Result[Elem] =
-    val initial: Result[(List[TaskSchedule], Int)] = Right((Nil, 0))
-
-    val result = allOrders.foldLeft(initial) { (acc, order) =>
+      physicalResources: List[PhysicalResource]
+    ): Result[List[TaskSchedule]] =
+    val result = orders.foldLeft(Right((List.empty[TaskSchedule], 0)): Result[(List[TaskSchedule], Int)]) { (acc, order) =>
       for {
         (scheduledSoFar, globalTime) <- acc
         (newSchedules, newTime) <- scheduleOrder(
-          order, globalTime, scheduledSoFar, allProducts, allTasks, physicalResources, humanResources
+          order, globalTime, scheduledSoFar, products, tasks, physicalResources, humanResources
         )
       } yield (newSchedules, newTime)
     }
 
-    result.map((schedules, _) => toXml(schedules))
+    result.map(_._1)
 
 
   def scheduleOrder(
@@ -136,13 +132,13 @@ object ScheduleMS01 extends Schedule:
 
 
   def scheduleTask(
-                            orderId: OrderId,
-                            task: Task,
-                            productInstance: Int,
-                            startTime: Int,
-                            physicalResources: List[PhysicalResource],
-                            humanResources: List[HumanResource]
-                          ): Result[(TaskSchedule, Int)] = for {
+      orderId: OrderId,
+      task: Task,
+      productInstance: Int,
+      startTime: Int,
+      physicalResources: List[PhysicalResource],
+      humanResources: List[HumanResource]
+    ): Result[(TaskSchedule, Int)] = for {
     physical <- allocatePhysicalResources(task.id, task.physicalResourceTypes, physicalResources)
     humans <- allocateHumanResources(task.id, task.physicalResourceTypes, humanResources)
     productNum <- ProductNumber.from(productInstance)
@@ -177,8 +173,7 @@ object ScheduleMS01 extends Schedule:
     </Schedule>
 
   def create(xml: Elem): Result[Elem] =
-    scheduleDataRetriever(xml) match
-      case Right((physResources, physTypes, tasks, humanResources, products, orders)) =>
-        generateSchedule(physResources, physTypes, tasks, humanResources, products, orders)
-      case Left(error) =>
-        Left(error)
+    for {
+      (orders, products, tasks, humanResources, physicalResources) <- scheduleDataRetriever(xml)
+      schedules <- generateSchedule(orders, products, tasks, humanResources, physicalResources)
+    } yield toXml(schedules)

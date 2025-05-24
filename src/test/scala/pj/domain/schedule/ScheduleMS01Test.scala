@@ -15,12 +15,11 @@ class ScheduleMS01Test extends AnyFunSuite:
 
   test("scheduleDataRetriever"):
     val result: Result[(
-      List[PhysicalResource],
-        List[String],
-        List[Task],
-        List[HumanResource],
-        List[Product],
-        List[Order]
+      List[Order],
+      List[Product],
+      List[Task],
+      List[HumanResource],
+      List[PhysicalResource]
       )] = for {
       physicalResources <- for {
         id1 <- PhysicalResourceId.from("PRS_1")
@@ -96,12 +95,11 @@ class ScheduleMS01Test extends AnyFunSuite:
         Order(ord2, qty2, prod2Id)
       )
     } yield (
-      physicalResources,
-      physicalTypes,
+      orders,
+      products,
       tasks,
       humanResources,
-      products,
-      orders
+      physicalResources
     )
 
     val filePath = "src/test/scala/files/test/ms01/validAgenda_01_in.xml"
@@ -395,7 +393,7 @@ class ScheduleMS01Test extends AnyFunSuite:
       physicalResources = List(PhysicalResource(pId, p))
       humanResources = List(HumanResource(hId, hName, List(p)))
 
-      xmlResult = generateSchedule(physicalResources, List(p), List(task), humanResources, List(product), List(order))
+      xmlResult = generateSchedule(List(order),List(product), List(task),humanResources, physicalResources)
     } yield xmlResult
 
     result match
@@ -432,7 +430,7 @@ class ScheduleMS01Test extends AnyFunSuite:
       physicalResources = List(PhysicalResource(pid, p))
       humanResources = List(HumanResource(hid, hnm, List(p)))
 
-      xmlResult = generateSchedule(physicalResources, List(p), List(task), humanResources, List.empty, List(order))
+      xmlResult = generateSchedule(List(order),List.empty, List(task),humanResources, physicalResources)
     } yield xmlResult
 
     result match
