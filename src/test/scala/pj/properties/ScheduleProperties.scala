@@ -197,8 +197,6 @@ object ScheduleProperties extends Properties("ScheduleProperties"):
       )
     )
 
-
-
   // *** SIMPLE TYPES ***
 
   property("ProductIdGenerator generates valid ProductIds with correct prefix") =
@@ -229,15 +227,29 @@ object ScheduleProperties extends Properties("ScheduleProperties"):
       }
     )
 
+  property("TaskIdGenerator generates valid Task IDs with prefix") =
+    Prop.forAll(TaskIdGenerator) { id =>
+      id.to.startsWith("TSK_") && TaskId.from(id.to).isRight
+    }
+
   property("TaskTimeGenerator generates valid positive TaskTimes") =
     Prop.forAll(TaskTimeGenerator)(
       time => time.to.toString.forall(_.isDigit) && time.to > 0 && TaskTime.from(time.to.toString).isRight
     )
 
+  property("PhysicalResourceIdGenerator generates valid Physical Resource IDs with prefix") =
+    Prop.forAll(PhysicalResourceIdGenerator):
+      id => id.to.startsWith("PRS_") && PhysicalResourceId.from(id.to).isRight
+
   property("PhysicalResourceIdGenerator generates valid IDs with prefix") =
     Prop.forAll(PhysicalResourceIdGenerator)(
       id => id.to.startsWith("PRS_") && PhysicalResourceId.from(id.to).isRight
     )
+
+  property("HumanResourceIdGenerator generates valid Human Resource IDs with prefix") =
+    Prop.forAll(HumanResourceIdGenerator) { id =>
+      id.to.startsWith("HRS_") && HumanResourceId.from(id.to).isRight
+    }
 
   property("HumanResourceNameGenerator generates non-empty names") =
     Prop.forAll(HumanResourceNameGenerator)(
