@@ -11,7 +11,7 @@ import pj.generators.TaskScheduleGenerator
 object ScheduleProperties extends Properties("ScheduleProperties"):
   override def overrideParameters(p: Test.Parameters): Test.Parameters =
     p.withMinSuccessfulTests(1000)
-/*
+
 
   property("generateSchedule produces a deterministic valid schedule") = Prop.forAll(TaskScheduleGenerator.generateDeterministicDomainData):
     case (orders, products, tasks, humanResources, physicalResources) =>
@@ -41,9 +41,9 @@ object ScheduleProperties extends Properties("ScheduleProperties"):
           val allOrdersScheduled = schedules.map(_.orderId).toSet.subsetOf(orders.map(_.id).toSet)
 
           Prop(allTasksScheduled && allOrdersScheduled)
-*/
 
-  /*property("The order of human resources should not affect the allocation") = Prop.forAll(TaskScheduleGenerator.generateDomainData):
+
+  property("The order of human resources should not affect the allocation") = Prop.forAll(TaskScheduleGenerator.generateDomainData):
     case (orders, products, tasks, humanResources, physicalResources) =>
       humanResources match
         case original :: second :: rest =>
@@ -66,8 +66,8 @@ object ScheduleProperties extends Properties("ScheduleProperties"):
 
         case _ =>
           Prop.undecided
-    */
-/*
+
+
   property("The generated task schedules need to be unique") = Prop.forAll(TaskScheduleGenerator.generateDeterministicDomainData):
     case (orders, products, tasks, humanResources, physicalResources) =>
       ScheduleMS01.generateSchedule(orders, products, tasks, humanResources, physicalResources) match
@@ -78,7 +78,40 @@ object ScheduleProperties extends Properties("ScheduleProperties"):
           )
           Prop(seenKeys.distinct.sizeIs == seenKeys.sizeIs)
 
-*/
+
+  property("Tasks are only scheduled when physical resources are available and properly allocated") =
+    Prop.forAll(TaskScheduleGenerator.generateDomainData):
+      case (orders, products, tasks, humanResources, physicalResources) =>
+        ScheduleMS01.generateSchedule(orders, products, tasks, humanResources, physicalResources) match
+          case Left(_) => Prop.undecided
+          case Right(schedules) =>
+            val allPhysicalValid = schedules.forall: schedule =>
+              tasks.find(_.id == schedule.taskId) match
+                case Some(task) =>
+                  val physicalTypesAssigned = schedule.physicalResourceIds.flatMap(id =>
+                    physicalResources.find(_.id == id).map(_.physical_type)
+                  )
+                  task.physicalResourceTypes.sizeIs == schedule.physicalResourceIds.size &&
+                    task.physicalResourceTypes.forall(physicalTypesAssigned.contains)
+                case None => false
+            Prop(allPhysicalValid)
+
+
+  property("Tasks are only scheduled when human resources are available and properly allocated") =
+    Prop.forAll(TaskScheduleGenerator.generateDomainData):
+      case (orders, products, tasks, humanResources, physicalResources) =>
+        ScheduleMS01.generateSchedule(orders, products, tasks, humanResources, physicalResources) match
+          case Left(_) => Prop.undecided
+          case Right(schedules) =>
+            val allHumanValid = schedules.forall: schedule =>
+              tasks.find(_.id == schedule.taskId) match
+                case Some(task) =>
+                  schedule.humanResourceNames.forall: name =>
+                    humanResources.find(_.name == name).exists: human =>
+                      task.physicalResourceTypes.exists(human.physicalResourceTypes.contains)
+                case None => false
+            Prop(allHumanValid)
+
 
   property("generateTask assigns only available types") =
     Prop.forAll(Gen.nonEmptyListOf(PhysicalResourceTypeGenerator))(
