@@ -121,3 +121,48 @@ object Types :
     extension (taskScheduleTimeInt: TaskScheduleTime)
       @targetName("TaskScheduleTimeTo")
       def to: Int = taskScheduleTimeInt
+
+
+  opaque type ProductName = String
+  object ProductName:
+    def from(resourceType: String): Result[ProductName] =
+      if (resourceType.isEmpty)
+        Left(EmptyProductName(resourceType))
+      else
+        Right(resourceType)
+
+    extension (resourceType: ProductName)
+      @targetName("ProductNameTo")
+      def to: String = resourceType
+      def equal(otherProductName: ProductName): Boolean =
+        resourceType.equals(otherProductName)
+
+  opaque type HumanResourceName = String
+  object HumanResourceName:
+    def from(resourceType: String): Result[HumanResourceName] =
+      if (resourceType.isEmpty)
+        Left(EmptyHumanResourceName(resourceType))
+      else
+        Right(resourceType)
+
+    extension (resourceType: HumanResourceName)
+      @targetName("HumanResourceNameTo")
+      def to: String = resourceType
+      def equal(otherHumanResourceName: HumanResourceName): Boolean =
+        resourceType.equals(otherHumanResourceName)
+
+
+  opaque type PhysicalResourceType = String
+  object PhysicalResourceType:
+    def from(resourceType: String): Result[PhysicalResourceType] =
+      if (resourceType.isEmpty)
+        Left(EmptyPhysicalResourceType(resourceType))
+      else
+        Right(resourceType)
+
+    extension (resourceType: PhysicalResourceType)
+      @targetName("PhysicalResourceTypeTo")
+      def to: String = resourceType
+      def equal(otherPhysicalResourceType: PhysicalResourceType): Boolean =
+        resourceType.equals(otherPhysicalResourceType)
+

@@ -14,6 +14,8 @@ enum DomainError:
   case InvalidTaskScheduleTime(error: String)
 
   case EmptyPhysicalResourceType(error: String)
+  case EmptyProductName(error: String)
+  case EmptyHumanResourceName(error: String)
   case PhysicalResourceTypeNotFound(humanResourceId: String, physicalResourceType: String)
 
   case ProductDoesNotExist(error: String)
