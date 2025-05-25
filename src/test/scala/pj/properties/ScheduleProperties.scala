@@ -65,10 +65,10 @@ object ScheduleProperties extends Properties("ScheduleProperties"):
           Prop.undecided
     */
 
-  property("The generated task schedules need to be unique") = Prop.forAll(TaskScheduleGenerator.generateDomainData):
+  property("The generated task schedules need to be unique") = Prop.forAll(TaskScheduleGenerator.generateDeterministicDomainData):
     case (orders, products, tasks, humanResources, physicalResources) =>
       ScheduleMS01.generateSchedule(orders, products, tasks, humanResources, physicalResources) match
-        case Left(_) => Prop.passed
+        case Left(_) => Prop.undecided
         case Right(scheduleList) =>
           val seenKeys = scheduleList.map(s =>
             (s.orderId.to, s.productNumber.to, s.taskId.to, s.start.to, s.end.to)
