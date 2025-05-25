@@ -9,7 +9,7 @@ import pj.generators.TaskScheduleGenerator
 
 object ScheduleProperties extends Properties("ScheduleProperties"):
   override def overrideParameters(p: Test.Parameters): Test.Parameters =
-    p.withMinSuccessfulTests(100)
+    p.withMinSuccessfulTests(1000)
 
 
   property("generateSchedule produces a deterministic valid schedule") =
@@ -18,14 +18,34 @@ object ScheduleProperties extends Properties("ScheduleProperties"):
         val result = ScheduleMS01.generateSchedule(orders, products, tasks, humanResources, physicalResources)
 
         result match
-          case Left(error) =>
-            Prop.falsified
+          case Left(_) => Prop.falsified
 
           case Right(schedules) =>
-            val allTasksScheduled = schedules.map(_.taskId).toSet.subsetOf(tasks.map(_.id).toSet)
-            val allOrdersScheduled = schedules.map(_.orderId).toSet.subsetOf(orders.map(_.id).toSet)
+            val groupedSchedules = schedules.groupBy(_.orderId)
 
-            Prop(allTasksScheduled && allOrdersScheduled)
+            val allOrdersCorrect = orders.forall { order =>
+              products.find(_.id == order.productId).exists { product =>
+                val expectedTaskIds = product.tasksList
+                val expectedTotalTasks = expectedTaskIds.size * order.quantity.to
+
+                val scheduledForOrder = groupedSchedules.getOrElse(order.id, Nil)
+
+                val correctCount = scheduledForOrder.sizeIs == expectedTotalTasks
+
+                val groupedByProductInstance =
+                  scheduledForOrder.groupBy(_.productNumber).values.toList
+
+                val allInstancesHaveCorrectTasks =
+                  groupedByProductInstance.forall { taskSchedules =>
+                    val actualTaskIds = taskSchedules.map(_.taskId).toSet
+                    actualTaskIds == expectedTaskIds.toSet
+                  }
+
+                correctCount && allInstancesHaveCorrectTasks
+              }
+            }
+
+            Prop(allOrdersCorrect)
 
 
   property("generateSchedule produces a valid schedule") =
