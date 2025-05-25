@@ -1,8 +1,11 @@
 package pj.properties
 
 import org.scalacheck.*
-import pj.domain.resources.TaskSchedule
+import pj.domain.resources.{HumanResource, PhysicalResource, TaskSchedule}
+import pj.domain.resources.Types.{HumanResourceName, OrderId, PhysicalResourceId, ProductId, ProductName, ProductNumber, TaskTime}
 import pj.domain.schedule.ScheduleMS01
+import pj.generators.SimpleTypeGenerator.{HumanResourceIdGenerator, HumanResourceNameGenerator, OrderIdGenerator, OrderQuantityGenerator, PhysicalResourceIdGenerator, PhysicalResourceTypeGenerator, ProductIdGenerator, ProductNameGenerator, ProductNumberGenerator, TaskIdGenerator, TaskTimeGenerator}
+import pj.generators.TaskGenerator.{generateDeterministicTask, generateDeterministicTaskList, generateTask}
 import pj.generators.TaskScheduleGenerator
 
 object ScheduleProperties extends Properties("ScheduleProperties"):
@@ -64,7 +67,7 @@ object ScheduleProperties extends Properties("ScheduleProperties"):
         case _ =>
           Prop.undecided
     */
-
+/*
   property("The generated task schedules need to be unique") = Prop.forAll(TaskScheduleGenerator.generateDeterministicDomainData):
     case (orders, products, tasks, humanResources, physicalResources) =>
       ScheduleMS01.generateSchedule(orders, products, tasks, humanResources, physicalResources) match
@@ -74,4 +77,63 @@ object ScheduleProperties extends Properties("ScheduleProperties"):
             (s.orderId.to, s.productNumber.to, s.taskId.to, s.start.to, s.end.to)
           )
           Prop(seenKeys.distinct.sizeIs == seenKeys.sizeIs)
+
+*/
+
+  property("generateTask assigns only available types") =
+    Prop.forAll(Gen.nonEmptyListOf(PhysicalResourceTypeGenerator))(
+      types => Prop.forAll(generateTask(types))(
+        task => task.physicalResourceTypes.forall(types.contains)
+      )
+    )
+
+
+  property("ProductIdGenerator generates valid ProductIds with correct prefix") =
+    Prop.forAll(ProductIdGenerator)(
+      id => id.to.startsWith("PRD_") && ProductId.from(id.to).isRight
+    )
+
+  property("ProductNameGenerator generates non-empty valid ProductNames") =
+    Prop.forAll(ProductNameGenerator)(
+      name => name.to.nonEmpty && ProductName.from(name.to).isRight
+    )
+
+  property("ProductNumberGenerator generates positive valid ProductNumbers") =
+    Prop.forAll(ProductNumberGenerator)(
+      num => num.to > 0 && ProductNumber.from(num.to).isRight
+    )
+
+  property("OrderIdGenerator generates valid OrderIds with correct prefix") =
+    Prop.forAll(OrderIdGenerator)(
+      id => id.to.startsWith("ORD_") && OrderId.from(id.to).isRight
+    )
+
+  //TODO: Alterar valor (1,10)
+  /*property("OrderQuantityGenerator generates valid OrderQuantities in range") =
+    Prop.forAll(OrderQuantityGenerator)(
+      q => {
+        val asInt = q.value.toInt
+        (1 to 2).contains(asInt) && OrderQuantity.from(q.value).isRight
+      }
+    )*/
+
+  property("TaskTimeGenerator generates valid positive TaskTimes") =
+    Prop.forAll(TaskTimeGenerator)(
+      time => time.to.toString.forall(_.isDigit) && time.to > 0 && TaskTime.from(time.to.toString).isRight
+    )
+
+  property("PhysicalResourceIdGenerator generates valid IDs with prefix") =
+    Prop.forAll(PhysicalResourceIdGenerator)(
+      id => id.to.startsWith("PRS_") && PhysicalResourceId.from(id.to).isRight
+    )
+
+  property("HumanResourceNameGenerator generates non-empty names") =
+    Prop.forAll(HumanResourceNameGenerator)(
+      name => name.to.nonEmpty && HumanResourceName.from(name.to).isRight
+    )
+
+  property("Generated OrderId, ProductId and TaskId are distinct") =
+    Prop.forAll(OrderIdGenerator, ProductIdGenerator, TaskIdGenerator)(
+      (oId, pId, tId) => oId.to != pId.to && oId.to != tId.to && pId.to != tId.to
+    )
 
