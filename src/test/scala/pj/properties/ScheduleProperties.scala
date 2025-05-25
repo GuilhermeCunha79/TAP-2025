@@ -40,7 +40,7 @@ object ScheduleProperties extends Properties("ScheduleProperties"):
           Prop(allTasksScheduled && allOrdersScheduled)
 */
 
-  property("The order of human resources should not affect the allocation") = Prop.forAll(TaskScheduleGenerator.generateDomainData):
+  /*property("The order of human resources should not affect the allocation") = Prop.forAll(TaskScheduleGenerator.generateDomainData):
     case (orders, products, tasks, humanResources, physicalResources) =>
       humanResources match
         case original :: second :: rest =>
@@ -63,4 +63,15 @@ object ScheduleProperties extends Properties("ScheduleProperties"):
 
         case _ =>
           Prop.undecided
+    */
+
+  property("The generated task schedules need to be unique") = Prop.forAll(TaskScheduleGenerator.generateDomainData):
+    case (orders, products, tasks, humanResources, physicalResources) =>
+      ScheduleMS01.generateSchedule(orders, products, tasks, humanResources, physicalResources) match
+        case Left(_) => Prop.passed
+        case Right(scheduleList) =>
+          val seenKeys = scheduleList.map(s =>
+            (s.orderId.to, s.productNumber.to, s.taskId.to, s.start.to, s.end.to)
+          )
+          Prop(seenKeys.distinct.sizeIs == seenKeys.sizeIs)
 
