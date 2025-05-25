@@ -15,8 +15,10 @@ object TaskGenerator extends Properties("Task"):
     } yield Task(taskId, taskTime, requiredTypes)
   
 
-  def generateTaskList: List[PhysicalResourceType] => Gen[List[Task]] =
-    (types) => Gen.nonEmptyListOf(generateTask(types))
+  def generateTaskList(types: List[PhysicalResourceType]): Gen[List[Task]] =
+    Gen.chooseNum(1, 5).flatMap { numberOfTasks =>
+      Gen.listOfN(numberOfTasks, generateTask(types))
+    }
 
   def generateDeterministicTask(humanResources: List[HumanResource], physicalResources: List[PhysicalResource]): Gen[Task] =
     val availableTypes: Set[PhysicalResourceType] = physicalResources.map(_.physical_type).toSet
@@ -37,5 +39,8 @@ object TaskGenerator extends Properties("Task"):
     } yield Task(id, time, selectedTypes.toList)
 
 
-  def generateDeterministicTaskList(humanResources: List[HumanResource], physicalResources: List[PhysicalResource]): Gen[List[Task]] =
-    Gen.nonEmptyListOf(generateDeterministicTask(humanResources, physicalResources))
+  def generateDeterministicTaskList(humanResources: List[HumanResource], physicalResources: List[PhysicalResource]): Gen[List[Task]] = {
+    Gen.chooseNum(1, 5).flatMap { numberOfTasks =>
+      Gen.listOfN(numberOfTasks, generateDeterministicTask(humanResources, physicalResources))
+    }
+  }
