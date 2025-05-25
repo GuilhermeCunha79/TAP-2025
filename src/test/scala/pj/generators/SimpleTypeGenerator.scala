@@ -36,9 +36,8 @@ object SimpleTypeGenerator extends Properties("SimpleTypes"):
       case Left(_) => Gen.fail
     )
 
-  // TODO: Change to Gen.chooseNum(1,10)
   def OrderQuantityGenerator: Gen[OrderQuantity] =
-    Gen.chooseNum(1,2).map(_.toString).flatMap(orderQtd => OrderQuantity.from(orderQtd) match
+    Gen.chooseNum(1,5).map(_.toString).flatMap(orderQtd => OrderQuantity.from(orderQtd) match
       case Right(qty) => Gen.const(qty)
       case Left(_) => Gen.fail
     )
