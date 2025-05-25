@@ -22,7 +22,7 @@ object TaskScheduleGenerator extends Properties("TaskSchedule"):
       physicalResources <- PhysicalResourceGenerator.generatePhysicalResourcesList
       types = PhysicalResourceGenerator.generatePhysicalTypesListFromResources(physicalResources)
 
-      humanResources <- HumanResourceGenerator.generateHumanResourcesList(types)
+      humanResources <- HumanResourceGenerator.generateDeterministicHumanResourcesList(types)
       tasks <- TaskGenerator.generateDeterministicTaskList(humanResources, physicalResources)
       products <- ProductGenerator.generateProductsList(tasks)
       orders <- OrderGenerator.generateOrdersList(products)

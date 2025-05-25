@@ -6,7 +6,7 @@ import pj.domain.resources.Types.*
 object SimpleTypeGenerator extends Properties("SimpleTypes"):
 
   val suffixGen: Gen[String] = for {
-    length <- Gen.chooseNum(3, 5)
+    length <- Gen.chooseNum(10, 15)
     chars <- Gen.listOfN(length, Gen.alphaNumChar)
   } yield chars.mkString
 
