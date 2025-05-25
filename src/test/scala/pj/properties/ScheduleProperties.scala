@@ -208,8 +208,13 @@ object ScheduleProperties extends Properties("ScheduleProperties"):
 
             Prop(allLinear)
 
+  
+  property("Order references only existing products") =
+    Prop.forAll(TaskScheduleGenerator.generateDeterministicDomainData):
+      case (orders, products, _, _, _) =>
+        orders.forall(o => products.exists(_.id == o.productId))
 
-
+  
   property("generateTask assigns only available types") =
     Prop.forAll(Gen.nonEmptyListOf(PhysicalResourceTypeGenerator))(
       types => Prop.forAll(generateTask(types))(
@@ -217,6 +222,7 @@ object ScheduleProperties extends Properties("ScheduleProperties"):
       )
     )
 
+  
   // *** SIMPLE TYPES ***
 
   property("ProductIdGenerator generates valid ProductIds with correct prefix") =
@@ -246,11 +252,6 @@ object ScheduleProperties extends Properties("ScheduleProperties"):
         (1 to 5).contains(asInt) && OrderQuantity.from(q.toString).isRight
       }
     )
-
-  property("Order references only existing products") =
-    Prop.forAll(TaskScheduleGenerator.generateDeterministicDomainData):
-      case (orders, products, _, _, _) =>
-        orders.forall(o => products.exists(_.id == o.productId))
 
   property("TaskIdGenerator generates valid Task IDs with prefix") =
     Prop.forAll(TaskIdGenerator) { id =>
