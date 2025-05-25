@@ -247,6 +247,11 @@ object ScheduleProperties extends Properties("ScheduleProperties"):
       }
     )
 
+  property("Order references only existing products") =
+    Prop.forAll(TaskScheduleGenerator.generateDeterministicDomainData):
+      case (orders, products, _, _, _) =>
+        orders.forall(o => products.exists(_.id == o.productId))
+
   property("TaskIdGenerator generates valid Task IDs with prefix") =
     Prop.forAll(TaskIdGenerator) { id =>
       id.to.startsWith("TSK_") && TaskId.from(id.to).isRight
@@ -265,6 +270,11 @@ object ScheduleProperties extends Properties("ScheduleProperties"):
     Prop.forAll(PhysicalResourceIdGenerator)(
       id => id.to.startsWith("PRS_") && PhysicalResourceId.from(id.to).isRight
     )
+    
+  property("PhysicalResourceTypeGenerator generates non-empty types") =
+      Prop.forAll(PhysicalResourceTypeGenerator)(
+        t => t.to.nonEmpty && PhysicalResourceType.from(t.to).isRight
+      )
 
   property("HumanResourceIdGenerator generates valid Human Resource IDs with prefix") =
     Prop.forAll(HumanResourceIdGenerator) { id =>
