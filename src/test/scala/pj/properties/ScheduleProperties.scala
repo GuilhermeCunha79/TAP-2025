@@ -2,7 +2,7 @@ package pj.properties
 
 import org.scalacheck.*
 import pj.domain.resources.{HumanResource, PhysicalResource, TaskSchedule}
-import pj.domain.resources.Types.{HumanResourceName, OrderId, PhysicalResourceId, ProductId, ProductName, ProductNumber, TaskTime}
+import pj.domain.resources.Types.{HumanResourceId, HumanResourceName, OrderId, PhysicalResourceId, ProductId, ProductName, ProductNumber, TaskId, TaskTime}
 import pj.domain.schedule.ScheduleMS01
 import pj.generators.SimpleTypeGenerator.{HumanResourceIdGenerator, HumanResourceNameGenerator, OrderIdGenerator, OrderQuantityGenerator, PhysicalResourceIdGenerator, PhysicalResourceTypeGenerator, ProductIdGenerator, ProductNameGenerator, ProductNumberGenerator, TaskIdGenerator, TaskTimeGenerator}
 import pj.generators.TaskGenerator.{generateDeterministicTask, generateDeterministicTaskList, generateTask}
@@ -159,6 +159,28 @@ object ScheduleProperties extends Properties("ScheduleProperties"):
     Prop.forAll(PhysicalResourceIdGenerator)(
       id => id.to.startsWith("PRS_") && PhysicalResourceId.from(id.to).isRight
     )
+
+  property("ProductIdGenerator generates valid Product IDs with prefix") =
+    Prop.forAll(ProductIdGenerator):
+      id => id.to.startsWith("PRD_") && ProductId.from(id.to).isRight
+
+  property("OrderIdGenerator generates valid Order IDs with prefix") =
+    Prop.forAll(OrderIdGenerator):
+      id => id.to.startsWith("ORD_") && OrderId.from(id.to).isRight
+
+  property("TaskIdGenerator generates valid Task IDs with prefix") =
+    Prop.forAll(TaskIdGenerator) { id =>
+      id.to.startsWith("TSK_") && TaskId.from(id.to).isRight
+    }
+
+  property("PhysicalResourceIdGenerator generates valid Physical Resource IDs with prefix") =
+    Prop.forAll(PhysicalResourceIdGenerator):
+      id => id.to.startsWith("PRS_") && PhysicalResourceId.from(id.to).isRight
+
+  property("HumanResourceIdGenerator generates valid Human Resource IDs with prefix") =
+    Prop.forAll(HumanResourceIdGenerator) { id =>
+      id.to.startsWith("HRS_") && HumanResourceId.from(id.to).isRight
+    }
 
   property("HumanResourceNameGenerator generates non-empty names") =
     Prop.forAll(HumanResourceNameGenerator)(
