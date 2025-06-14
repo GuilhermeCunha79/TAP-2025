@@ -15,3 +15,9 @@ final case class PhysicalResource(id: PhysicalResourceId, physical_type: Physica
 final case class TaskSchedule(orderId: OrderId, productNumber: ProductNumber, taskId:TaskId, 
                               start:TaskScheduleTime, end:TaskScheduleTime,
                               physicalResourceIds: List[PhysicalResourceId], humanResourceNames: List[HumanResourceName])
+
+final case class TaskInfo(orderId: OrderId, productNumber: ProductNumber, taskId: TaskId,
+                          task: Task, earliestStart: Int, productTaskIndex: Int)
+
+final case class SchedulingState(readyTasks: List[TaskInfo], resourceAvailability: Map[String, Int],
+                                 schedules: List[TaskSchedule], productProgress: Map[(OrderId, ProductNumber), Int])
