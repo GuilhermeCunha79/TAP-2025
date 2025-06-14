@@ -1,4 +1,3 @@
-/*
 package pj.domain.schedule
 
 import scala.xml.Elem
@@ -11,4 +10,3 @@ object ScheduleMS03 extends Schedule:
   //       Use the xml.XML code to handle the xml elements
   //       Refer to https://github.com/scala/scala-xml/wiki/XML-Processing for xml creation  
   def create(xml: Elem): Result[Elem] = ???
-*/
