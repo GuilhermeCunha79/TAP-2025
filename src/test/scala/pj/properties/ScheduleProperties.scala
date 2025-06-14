@@ -109,7 +109,7 @@ object ScheduleProperties extends Properties("ScheduleProperties"):
                 Prop(allocOriginal == allocShuffled)
 
               case (Left(_), Left(_)) =>
-                Prop.passed
+                Prop.undecided
 
               case _ =>
                 Prop.falsified

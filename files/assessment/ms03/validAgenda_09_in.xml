@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Production xmlns="http://www.dei.isep.ipp.pt/tap-2025" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../production.xsd ">
+  <PhysicalResources>
+    <Physical id="PRS_1" type="PRST 1"/>
+	<Physical id="PRS_2" type="PRST 2"/>
+    <Physical id="PRS_3" type="PRST 3"/>
+    <Physical id="PRS_4" type="PRST 4"/>
+    <Physical id="PRS_5" type="PRST 5"/>
+    <Physical id="PRS_6" type="PRST 4"/>
+  </PhysicalResources>
+  <Tasks>
+    <Task id="TSK_1" time="5">
+      <PhysicalResource type="PRST 1"/>
+      <PhysicalResource type="PRST 4"/>
+    </Task>
+    <Task id="TSK_2" time="3">
+      <PhysicalResource type="PRST 2"/>
+    </Task>
+    <Task id="TSK_3" time="2">
+      <PhysicalResource type="PRST 2"/>
+    </Task>
+    <Task id="TSK_4" time="4">
+      <PhysicalResource type="PRST 4"/>
+    </Task>
+    <Task id="TSK_5" time="10">
+      <PhysicalResource type="PRST 3"/>
+    </Task>
+    <Task id="TSK_6" time="1">
+      <PhysicalResource type="PRST 5"/>
+    </Task>
+  </Tasks>    
+  <HumanResources>
+    <Human id="HRS_1" name="Antonio">
+      <Handles type="PRST 1"/>
+      <Handles type="PRST 3"/>
+    </Human>
+    <Human id="HRS_2" name="Maria">
+      <Handles type="PRST 2"/>
+      <Handles type="PRST 4"/>
+    </Human>
+    <Human id="HRS_3" name="Joao">
+      <Handles type="PRST 4"/>
+      <Handles type="PRST 5"/>
+    </Human>
+    <Human id="HRS_4" name="Manuela">
+      <Handles type="PRST 1"/>
+      <Handles type="PRST 2"/>
+      <Handles type="PRST 4"/>
+      <Handles type="PRST 5"/>
+    </Human>
+  </HumanResources>
+  <Products>
+    <Product id="PRD_1" name="Product 1">
+      <Process tskref="TSK_1"/>
+      <Process tskref="TSK_2"/>
+    </Product>
+    <Product id="PRD_2" name="Product 2">
+      <Process tskref="TSK_3"/>
+      <Process tskref="TSK_4"/>
+    </Product>
+    <Product id="PRD_3" name="Product 3">
+      <Process tskref="TSK_5"/>
+      <Process tskref="TSK_6"/>
+    </Product>
+  </Products>
+  <Orders>
+  	<Order id="ORD_1" prdref="PRD_1" quantity="1"/>
+  	<Order id="ORD_2" prdref="PRD_2" quantity="1"/>
+  	<Order id="ORD_3" prdref="PRD_3" quantity="1"/>
+  </Orders>
+</Production>
