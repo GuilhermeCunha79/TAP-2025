@@ -166,3 +166,24 @@ object Types :
       def equal(otherPhysicalResourceType: PhysicalResourceType): Boolean =
         resourceType.equals(otherPhysicalResourceType)
 
+  opaque type EarliestStartTime = Int
+
+  object EarliestStartTime:
+    def from(value: Int): Result[EarliestStartTime] =
+      if value < 0 then Left(InvalidEarliestStartTime(value.toString))
+      else Right(value)
+
+    extension (t: EarliestStartTime)
+      @targetName("EarliestStartTimeTo")
+      def to: Int = t
+
+  opaque type ProductTaskIndex = Int
+
+  object ProductTaskIndex:
+    def from(value: Int): Result[ProductTaskIndex] =
+      if value < 0 then Left(InvalidProductTaskIndex(value.toString))
+      else Right(value)
+
+    extension (idx: ProductTaskIndex)
+      @targetName("ProductTaskIndexTo")
+      def to: Int = idx

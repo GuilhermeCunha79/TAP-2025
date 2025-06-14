@@ -81,10 +81,12 @@ object ScheduleMS03 extends Schedule:
       (taskId, taskIndex) <- product.tasksList.zipWithIndex
       task <- tasks if task.id == taskId
       productNum <- ProductNumber.from(productNumber).toOption
-    } yield TaskInfo(order.id, productNum, taskId, task, 0, taskIndex)
+      earliest <- EarliestStartTime.from(0).toOption
+      productTaskIndex <- ProductTaskIndex.from(taskIndex).toOption
+    } yield TaskInfo(order.id, productNum, taskId, task, earliest, productTaskIndex)
 
   def getInitialReadyTasks(allTasks: List[TaskInfo]): List[TaskInfo] =
-    allTasks.filter(_.productTaskIndex == 0)
+    allTasks.filter(_.productTaskIndex.to == 0)
 
   def initializeResourceAvailability(
     physicalResources: List[PhysicalResource],
@@ -111,12 +113,15 @@ object ScheduleMS03 extends Schedule:
           if (updatedTasks.schedules.lengthIs > state.schedules.length)
             scheduleAllTasks(updatedTasks, allTasks, physicalResources, humanResources, tasks)
           else
-            val minEarliestStart = state.readyTasks.map(_.earliestStart).minOption.getOrElse(0)
+            val minEarliestStart = state.readyTasks.map(_.earliestStart.to).minOption.getOrElse(0)
             val nextResourceTime = state.resourceAvailability.values.filter(_ > minEarliestStart).minOption
 
             nextResourceTime match
               case Some(nextTime) =>
-                val advancedTasks = state.readyTasks.map(t => t.copy(earliestStart = nextTime))
+                val advancedTasks = state.readyTasks.map { t =>
+                  val newStart = EarliestStartTime.from(nextTime).getOrElse(t.earliestStart)
+                  t.copy(earliestStart = newStart)
+                }
                 val advancedState = state.copy(readyTasks = advancedTasks)
                 scheduleAllTasks(advancedState, allTasks, physicalResources, humanResources, tasks)
               case None =>
@@ -130,8 +135,8 @@ object ScheduleMS03 extends Schedule:
   ): Result[SchedulingState] =
 
     val currentTime = math.max(findNextAvailableTime(state),
-      state.readyTasks.map(_.earliestStart).minOption.getOrElse(0))
-    val availableAtCurrentTime = state.readyTasks.filter(_.earliestStart <= currentTime)
+      state.readyTasks.map(_.earliestStart.to).minOption.getOrElse(0))
+    val availableAtCurrentTime = state.readyTasks.filter(_.earliestStart.to <= currentTime)
 
     if (availableAtCurrentTime.isEmpty)
       Right(state)
@@ -160,7 +165,7 @@ object ScheduleMS03 extends Schedule:
   def prioritizeTasks(tasks: List[TaskInfo]): List[TaskInfo] =
     tasks.sortBy(task => (
       task.task.time.to,
-      task.productTaskIndex,
+      task.productTaskIndex.to,
       task.orderId.to,
       task.productNumber.to
     ))
@@ -344,7 +349,7 @@ object ScheduleMS03 extends Schedule:
       val progressKey = (task.orderId, task.productNumber)
       val completedTasks = state.productProgress.getOrElse(progressKey, 0)
 
-      task.productTaskIndex == completedTasks &&
+      task.productTaskIndex.to == completedTasks &&
         !state.readyTasks.exists(rt =>
           rt.orderId == task.orderId &&
             rt.productNumber == task.productNumber &&
