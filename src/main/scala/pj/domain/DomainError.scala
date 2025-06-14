@@ -26,4 +26,5 @@ enum DomainError:
 
   case TaskUsesNonExistentPRT(error: String)
   case ResourceUnavailable(task: String, physicalResource: String)
+  case ImpossibleSchedule;
 
