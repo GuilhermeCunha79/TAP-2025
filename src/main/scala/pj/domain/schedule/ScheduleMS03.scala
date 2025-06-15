@@ -3,6 +3,7 @@ package pj.domain.schedule
 import pj.domain.*
 import pj.domain.resources.*
 import pj.domain.resources.Types.*
+import pj.io.FileIO
 import pj.xml.{XML, XMLToDomain}
 
 import scala.xml.Elem
@@ -104,29 +105,30 @@ object ScheduleMS03 extends Schedule:
     tasks: List[Task]
   ): Result[SchedulingState] =
 
-    if (state.readyTasks.isEmpty) Right(state)
-    else
-      scheduleNextBatch(state, physicalResources, humanResources) match
-        case Right(nextState) =>
-          val updatedTasks = updateReadyTasks(nextState, allTasks)
+    state.readyTasks match
+      case Nil => Right(state)
+      case _ =>
+        for {
+          nextState <- scheduleNextBatch(state, physicalResources, humanResources)
+          updatedTasks = updateReadyTasks(nextState, allTasks)
+          finalState <- (updatedTasks.schedules.lengthIs > state.schedules.length) match
+            case true =>
+              scheduleAllTasks(updatedTasks, allTasks, physicalResources, humanResources, tasks)
+            case false =>
+              val minEarliestStart = state.readyTasks.map(_.earliestStart.to).minOption.getOrElse(0)
+              val nextResourceTime = state.resourceAvailability.values.filter(_ > minEarliestStart).minOption
 
-          if (updatedTasks.schedules.lengthIs > state.schedules.length)
-            scheduleAllTasks(updatedTasks, allTasks, physicalResources, humanResources, tasks)
-          else
-            val minEarliestStart = state.readyTasks.map(_.earliestStart.to).minOption.getOrElse(0)
-            val nextResourceTime = state.resourceAvailability.values.filter(_ > minEarliestStart).minOption
-
-            nextResourceTime match
-              case Some(nextTime) =>
-                val advancedTasks = state.readyTasks.map { t =>
-                  val newStart = EarliestStartTime.from(nextTime).getOrElse(t.earliestStart)
-                  t.copy(earliestStart = newStart)
-                }
-                val advancedState = state.copy(readyTasks = advancedTasks)
-                scheduleAllTasks(advancedState, allTasks, physicalResources, humanResources, tasks)
-              case None =>
-                Left(DomainError.ImpossibleSchedule)
-        case Left(error) => Left(error)
+              nextResourceTime match
+                case Some(nextTime) =>
+                  val advancedTasks = state.readyTasks.map { t =>
+                    val newStart = EarliestStartTime.from(nextTime).getOrElse(t.earliestStart)
+                    t.copy(earliestStart = newStart)
+                  }
+                  val advancedState = state.copy(readyTasks = advancedTasks)
+                  scheduleAllTasks(advancedState, allTasks, physicalResources, humanResources, tasks)
+                case None =>
+                  Left(DomainError.ImpossibleSchedule)
+        } yield finalState
 
   def scheduleNextBatch(
     state: SchedulingState,
@@ -138,10 +140,9 @@ object ScheduleMS03 extends Schedule:
       state.readyTasks.map(_.earliestStart.to).minOption.getOrElse(0))
     val availableAtCurrentTime = state.readyTasks.filter(_.earliestStart.to <= currentTime)
 
-    if (availableAtCurrentTime.isEmpty)
-      Right(state)
-    else
+    availableAtCurrentTime.headOption.fold[Result[SchedulingState]](Right(state)) { _ =>
       scheduleTasksAtTime(state, availableAtCurrentTime, currentTime, physicalResources, humanResources)
+    }
 
   def findNextAvailableTime(state: SchedulingState): Int =
     val resourceTimes = state.resourceAvailability.values.filter(_ > 0)
@@ -199,7 +200,7 @@ object ScheduleMS03 extends Schedule:
     physicalResources: List[PhysicalResource],
     humanResources: List[HumanResource]
   ): Result[SchedulingState] =
-  
+
     for {
       physicalIds <- allocatePhysicalResourcesAtTime(taskInfo.task, physicalResources, state.resourceAvailability, currentTime)
       humanNames <- allocateHumanResourcesAtTime(taskInfo.task, humanResources, state.resourceAvailability, currentTime)
@@ -222,7 +223,7 @@ object ScheduleMS03 extends Schedule:
       currentTime: Int,
       allocatedIds: List[PhysicalResourceId],
       usedIds: Set[PhysicalResourceId]
-    ): Result[List[PhysicalResourceId]] = 
+    ): Result[List[PhysicalResourceId]] =
     requiredTypes match
       case Nil => Right(allocatedIds.reverse)
       case requiredType :: remainingTypes =>
@@ -242,7 +243,7 @@ object ScheduleMS03 extends Schedule:
             )
           case None =>
             Left(DomainError.ImpossibleSchedule)
-  
+
   def allocateHumanResourcesAtTime(
         task: Task,
         humanResources: List[HumanResource],
@@ -298,7 +299,7 @@ object ScheduleMS03 extends Schedule:
       physicalIds,
       humanNames
     )
-  
+
   def updateStateAfterScheduling(
     state: SchedulingState,
     scheduledTask: TaskInfo,
@@ -344,7 +345,7 @@ object ScheduleMS03 extends Schedule:
     state: SchedulingState,
     allTasks: List[TaskInfo]
   ): SchedulingState =
-  
+
     val newReadyTasks = allTasks.filter { task =>
       val progressKey = (task.orderId, task.productNumber)
       val completedTasks = state.productProgress.getOrElse(progressKey, 0)
@@ -393,7 +394,7 @@ object ScheduleMS03 extends Schedule:
     <Schedule xmlns="http://www.dei.isep.ipp.pt/tap-2025"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd ">
-      {schedules.sortBy(s => (s.orderId.to, s.productNumber.to, s.start.to)).map { sched =>
+      {schedules.sortBy(_.start.to).map { sched =>
       <TaskSchedule order={sched.orderId.to}
                     productNumber={sched.productNumber.to.toString}
                     task={sched.taskId.to}
@@ -417,4 +418,6 @@ object ScheduleMS03 extends Schedule:
     for {
       (orders, products, tasks, humanResources, physicalResources) <- scheduleDataRetriever(xml)
       schedules <- generateSchedule(orders, products, tasks, humanResources, physicalResources)
+      outputXml = toXml(schedules)
+      _ = FileIO.save("output.xml", outputXml)
     } yield toXml(schedules)
