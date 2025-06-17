@@ -5,7 +5,6 @@ import pj.domain.resources.*
 import pj.domain.resources.Types.*
 import pj.io.FileIO
 import pj.xml.{XML, XMLToDomain}
-
 import scala.xml.Elem
 
 object ScheduleMS03 extends Schedule:
@@ -20,55 +19,37 @@ object ScheduleMS03 extends Schedule:
 
     for {
       _ <- validateResourceRequirements(tasks, physicalResources, humanResources)
-
       taskMap = tasks.map(t => t.id -> t).toMap
       productTaskMap = products.map(p => p.id -> p.tasksList).toMap
       allProductInstances = createAllProductInstances(orders, productTaskMap, taskMap)
-      initialReadyTasks = getInitialReadyTasks(allProductInstances)
-      initialResourceAvailability = initializeResourceAvailability(physicalResources, humanResources)
-      initialState = SchedulingState(
-        readyTasks = initialReadyTasks,
-        resourceAvailability = initialResourceAvailability,
-        schedules = List.empty,
-        productProgress = Map.empty
-      )
+      initialState = createInitialState(allProductInstances, physicalResources, humanResources)
       result <- scheduleAllTasks(initialState, allProductInstances, physicalResources, humanResources)
       _ = println(s"Final scheduling result: $result")
     } yield result.schedules.reverse
 
+  private def createInitialState(
+    allProductInstances: List[TaskInfo],
+    physicalResources: List[PhysicalResource],
+    humanResources: List[HumanResource]
+  ): SchedulingState =
+    val initialReadyTasks = allProductInstances.filter(_.productTaskIndex.to == 0)
+    val initialResourceAvailability = (
+      physicalResources.map(r => s"PHYS_${r.id.to}" -> 0) ++
+        humanResources.map(r => s"HUMAN_${r.name.to}" -> 0)
+      ).toMap
 
-  def validateTask(
-    task: Task,
-    physicalResourceCounts: Map[PhysicalResourceType, Int],
-    humanResourceTypes: Set[PhysicalResourceType]
-  ): Result[Unit] =
+    SchedulingState(
+      readyTasks = initialReadyTasks,
+      resourceAvailability = initialResourceAvailability,
+      schedules = List.empty,
+      productProgress = Map.empty
+    )
 
-    val requiredResourceCounts = task.physicalResourceTypes.groupBy(identity).view.mapValues(_.size)
-
-    val resourceValidation = requiredResourceCounts.find { case (resourceType, requiredCount) =>
-      val availableCount = physicalResourceCounts.getOrElse(resourceType, 0)
-      availableCount < requiredCount
-    } match
-      case Some((resourceType, requiredCount)) =>
-        Left(DomainError.ImpossibleSchedule)
-      case None => Right(())
-
-    resourceValidation.flatMap { _ =>
-
-      task.physicalResourceTypes.find { resourceType =>
-        !humanResourceTypes.contains(resourceType)
-      } match
-        case Some(resourceType) =>
-          Left(DomainError.ImpossibleSchedule)
-        case None => Right(())
-    }
-
-  def validateResourceRequirements(
+  private def validateResourceRequirements(
     tasks: List[Task],
     physicalResources: List[PhysicalResource],
     humanResources: List[HumanResource]
   ): Result[Unit] =
-    
     val physicalResourceCounts = physicalResources.groupBy(_.physical_type).view.mapValues(_.size).toMap
     val humanResourceTypes = humanResources.flatMap(_.physicalResourceTypes).toSet
 
@@ -76,8 +57,25 @@ object ScheduleMS03 extends Schedule:
       acc.flatMap(_ => validateTask(task, physicalResourceCounts, humanResourceTypes))
     }
 
+  private def validateTask(
+    task: Task,
+    physicalResourceCounts: Map[PhysicalResourceType, Int],
+    humanResourceTypes: Set[PhysicalResourceType]
+  ): Result[Unit] =
+    val requiredResourceCounts = task.physicalResourceTypes.groupBy(identity).view.mapValues(_.size)
 
-  def createAllProductInstances(
+    requiredResourceCounts.find { case (resourceType, requiredCount) =>
+      physicalResourceCounts.getOrElse(resourceType, 0) < requiredCount
+    }.fold[Result[Unit]](Right(())) { _ =>
+      Left(DomainError.ImpossibleSchedule)
+    }.flatMap { _ =>
+      task.physicalResourceTypes.find(!humanResourceTypes.contains(_))
+        .fold[Result[Unit]](Right(())) { _ =>
+          Left(DomainError.ImpossibleSchedule)
+        }
+    }
+
+  private def createAllProductInstances(
     orders: List[Order],
     productTaskMap: Map[ProductId, List[TaskId]],
     taskMap: Map[TaskId, Task]
@@ -93,123 +91,90 @@ object ScheduleMS03 extends Schedule:
       productTaskIndex <- ProductTaskIndex.from(taskIndex).toOption
     } yield TaskInfo(order.id, productNum, taskId, task, earliest, productTaskIndex)
 
-  def getInitialReadyTasks(allTasks: List[TaskInfo]): List[TaskInfo] =
-    allTasks.filter(_.productTaskIndex.to == 0)
-
-
-  def initializeResourceAvailability(
-    physicalResources: List[PhysicalResource],
-    humanResources: List[HumanResource]
-  ): Map[String, Int] =
-    val resourceKeys = physicalResources.map(r => s"PHYS_${r.id.to}") ++
-      humanResources.map(r => s"HUMAN_${r.name.to}")
-    resourceKeys.map(_ -> 0).toMap
-
-
-  def scheduleAllTasks(
+  private def scheduleAllTasks(
     state: SchedulingState,
     allTasks: List[TaskInfo],
     physicalResources: List[PhysicalResource],
     humanResources: List[HumanResource]
   ): Result[SchedulingState] =
-
     state.readyTasks match
       case Nil => Right(state)
       case _ =>
         for {
           nextState <- scheduleNextBatch(state, physicalResources, humanResources)
           updatedTasks = updateReadyTasks(nextState, allTasks)
-          finalState <- (updatedTasks.schedules.lengthIs > state.schedules.length) match
-            case true =>
-              scheduleAllTasks(updatedTasks, allTasks, physicalResources, humanResources)
-            case false =>
-              advanceTimeAndRetry(state, physicalResources, humanResources, allTasks)
+          finalState <- updatedTasks.schedules.lengthIs > state.schedules.length match
+            case true => scheduleAllTasks(updatedTasks, allTasks, physicalResources, humanResources)
+            case false => advanceTimeAndRetry(state, physicalResources, humanResources, allTasks)
         } yield finalState
 
-
-  def advanceTimeAndRetry(
-    state: SchedulingState,
-    physicalResources: List[PhysicalResource],
-    humanResources: List[HumanResource],
-    allTasks: List[TaskInfo]
-  ): Result[SchedulingState] =
+  private def advanceTimeAndRetry(
+                                   state: SchedulingState,
+                                   physicalResources: List[PhysicalResource],
+                                   humanResources: List[HumanResource],
+                                   allTasks: List[TaskInfo]
+                                 ): Result[SchedulingState] =
     val minEarliestStart = state.readyTasks.map(_.earliestStart.to).minOption.getOrElse(0)
     val nextResourceTime = state.resourceAvailability.values.filter(_ > minEarliestStart).minOption
 
-    nextResourceTime match
-      case Some(nextTime) =>
-        val advancedTasks = state.readyTasks.map { t =>
-          val newStart = EarliestStartTime.from(nextTime).getOrElse(t.earliestStart)
-          t.copy(earliestStart = newStart)
-        }
-        val advancedState = state.copy(readyTasks = advancedTasks)
-        scheduleAllTasks(advancedState, allTasks, physicalResources, humanResources)
-      case None =>
-        Left(DomainError.ImpossibleSchedule)
+    nextResourceTime.fold[Result[SchedulingState]](
+      Left(DomainError.ImpossibleSchedule)
+    ) { nextTime =>
+      val advancedTasks = state.readyTasks.map { t =>
+        val newStart = EarliestStartTime.from(nextTime).getOrElse(t.earliestStart)
+        t.copy(earliestStart = newStart)
+      }
+      val advancedState = state.copy(readyTasks = advancedTasks)
+      scheduleAllTasks(advancedState, allTasks, physicalResources, humanResources)
+    }
 
-
-  def scheduleNextBatch(
-    state: SchedulingState,
-    physicalResources: List[PhysicalResource],
-    humanResources: List[HumanResource]
-  ): Result[SchedulingState] =
-
-    val currentTime = math.max(findNextAvailableTime(state),
-      state.readyTasks.map(_.earliestStart.to).minOption.getOrElse(0))
+  private def scheduleNextBatch(
+     state: SchedulingState,
+     physicalResources: List[PhysicalResource],
+     humanResources: List[HumanResource]
+   ): Result[SchedulingState] =
+    val currentTime = math.max(
+      state.resourceAvailability.values.view.filter(_ > 0).minOption.getOrElse(0),
+      state.readyTasks.map(_.earliestStart.to).minOption.getOrElse(0)
+    )
     val availableAtCurrentTime = state.readyTasks.filter(_.earliestStart.to <= currentTime)
 
-    availableAtCurrentTime.headOption.fold[Result[SchedulingState]](Right(state)) { _ =>
+    availableAtCurrentTime.headOption.fold[Result[SchedulingState]](
+      Right(state)
+    ) { _ =>
       scheduleMaximumTasksAtTime(state, availableAtCurrentTime, currentTime, physicalResources, humanResources)
     }
 
+  private def prioritizeTasks(tasks: List[TaskInfo]): List[TaskInfo] =
+    tasks.sortBy(task => (
+      task.task.time.to,
+      task.task.physicalResourceTypes.size,
+      task.productTaskIndex.to,
+      task.orderId.to,
+      task.productNumber.to
+    ))
 
-  def findNextAvailableTime(state: SchedulingState): Int =
-    state.resourceAvailability.values.view.filter(_ > 0).minOption.getOrElse(0)
-
-
-  def scheduleMaximumTasksAtTime(
+  private def scheduleMaximumTasksAtTime(
     state: SchedulingState,
     candidateTasks: List[TaskInfo],
     currentTime: Int,
     physicalResources: List[PhysicalResource],
     humanResources: List[HumanResource]
   ): Result[SchedulingState] =
+    val eligibleTasks = filterEligibleTasksForTime(candidateTasks, state, currentTime)
+    val prioritizedTasks = prioritizeTasks(eligibleTasks)
+    val (availablePhysical, availableHuman) = getAvailableResourcesAtTime(
+      physicalResources, humanResources, state.resourceAvailability, currentTime
+    )
 
-    val prioritizedTasks = prioritizeTasks(candidateTasks)
-    // Try to schedule as many tasks as possible in parallel
-    scheduleTasksBatch(state, prioritizedTasks, currentTime, physicalResources, humanResources)
+    scheduleBatchRecursively(state, prioritizedTasks, currentTime, availablePhysical, availableHuman, Set.empty, Set.empty)
 
-
-  def prioritizeTasks(tasks: List[TaskInfo]): List[TaskInfo] =
-    // Sort by: shortest duration first (for better parallelization)
-    tasks.sortBy(task => (
-      task.task.time.to, // Shortest tasks first for better resource utilization
-      task.task.physicalResourceTypes.size, // Tasks requiring fewer resources first
-      task.productTaskIndex.to,
-      task.orderId.to,
-      task.productNumber.to
-    ))
-  
-  def scheduleTasksBatch(
-    state: SchedulingState,
-    tasks: List[TaskInfo],
-    currentTime: Int,
-    physicalResources: List[PhysicalResource],
-    humanResources: List[HumanResource]
-  ): Result[SchedulingState] =
-
-    // Pre-compute resource availability for this time slot
-    val resourcesAtTime = getAvailableResourcesAtTime(physicalResources, humanResources, state.resourceAvailability, currentTime)
-
-    scheduleBatchRecursively(state, tasks, currentTime, resourcesAtTime._1, resourcesAtTime._2, Set.empty, Set.empty)
-  
-  
-  def getAvailableResourcesAtTime(
-    physicalResources: List[PhysicalResource],
-    humanResources: List[HumanResource],
-    availability: Map[String, Int],
-    currentTime: Int
-  ): (List[PhysicalResource], List[HumanResource]) =
+  private def getAvailableResourcesAtTime(
+     physicalResources: List[PhysicalResource],
+     humanResources: List[HumanResource],
+     availability: Map[String, Int],
+     currentTime: Int
+   ): (List[PhysicalResource], List[HumanResource]) =
     val availablePhysical = physicalResources.filter { res =>
       availability.getOrElse(s"PHYS_${res.id.to}", 0) <= currentTime
     }
@@ -218,8 +183,7 @@ object ScheduleMS03 extends Schedule:
     }
     (availablePhysical, availableHuman)
 
-
-  def scheduleBatchRecursively(
+  private def scheduleBatchRecursively(
     state: SchedulingState,
     tasks: List[TaskInfo],
     currentTime: Int,
@@ -228,190 +192,104 @@ object ScheduleMS03 extends Schedule:
     usedPhysicalIds: Set[PhysicalResourceId],
     usedHumanNames: Set[HumanResourceName]
   ): Result[SchedulingState] =
-
     tasks match
       case Nil => Right(state)
       case taskInfo :: remainingTasks =>
-        tryScheduleTaskWithAvailableResources(
-          taskInfo, currentTime, availablePhysical, availableHuman, usedPhysicalIds, usedHumanNames
-        ) match
-          case Right((physicalIds, humanNames)) =>
-            // Successfully allocated resources, create schedule and continue
-            createTaskSchedule(taskInfo, currentTime, physicalIds, humanNames).flatMap { schedule =>
-              val newState = updateStateAfterScheduling(state, taskInfo, schedule, currentTime)
-              val updatedUsedPhysical = usedPhysicalIds ++ physicalIds.toSet
-              val updatedUsedHuman = usedHumanNames ++ humanNames.toSet
-              val filteredRemaining = remainingTasks.filterNot(t =>
-                t.orderId == taskInfo.orderId &&
-                  t.productNumber == taskInfo.productNumber &&
-                  t.taskId == taskInfo.taskId
-              )
-              scheduleBatchRecursively(
-                newState, filteredRemaining, currentTime, availablePhysical, availableHuman,
-                updatedUsedPhysical, updatedUsedHuman
-              )
-            }
-          case Left(_) =>
-            // Cannot schedule this task, try next one
-            scheduleBatchRecursively(
+        tryScheduleTask(taskInfo, currentTime, availablePhysical, availableHuman, usedPhysicalIds, usedHumanNames)
+          .fold(
+            _ => scheduleBatchRecursively(
               state, remainingTasks, currentTime, availablePhysical, availableHuman,
               usedPhysicalIds, usedHumanNames
-            )
+            ),
+            { case (physicalIds, humanNames) =>
+              createTaskSchedule(taskInfo, currentTime, physicalIds, humanNames).flatMap { schedule =>
+                val newState = updateStateAfterScheduling(state, taskInfo, schedule, currentTime)
+                val updatedUsedPhysical = usedPhysicalIds ++ physicalIds.toSet
+                val updatedUsedHuman = usedHumanNames ++ humanNames.toSet
+                val filteredRemaining = remainingTasks.filterNot(isMatchingTask(_, taskInfo))
 
+                scheduleBatchRecursively(
+                  newState, filteredRemaining, currentTime, availablePhysical, availableHuman,
+                  updatedUsedPhysical, updatedUsedHuman
+                )
+              }
+            }
+          )
 
-  def tryScheduleTaskWithAvailableResources(
-    taskInfo: TaskInfo,
-    currentTime: Int,
-    availablePhysical: List[PhysicalResource],
-    availableHuman: List[HumanResource],
-    usedPhysicalIds: Set[PhysicalResourceId],
-    usedHumanNames: Set[HumanResourceName]
-  ): Result[(List[PhysicalResourceId], List[HumanResourceName])] =
-
+  private def tryScheduleTask(
+   taskInfo: TaskInfo,
+   currentTime: Int,
+   availablePhysical: List[PhysicalResource],
+   availableHuman: List[HumanResource],
+   usedPhysicalIds: Set[PhysicalResourceId],
+   usedHumanNames: Set[HumanResourceName]
+ ): Result[(List[PhysicalResourceId], List[HumanResourceName])] =
     for {
-      physicalIds <- allocateResourcesFromAvailable(
-        taskInfo.task.physicalResourceTypes, availablePhysical, usedPhysicalIds
-      )
-      humanNames <- allocateHumansFromAvailable(
-        taskInfo.task.physicalResourceTypes, availableHuman, usedHumanNames
-      )
-    } yield (physicalIds, humanNames)
+      physicalIds <- allocateResources(taskInfo.task.physicalResourceTypes, availablePhysical, usedPhysicalIds)
+      humanNames <- allocateHumans(taskInfo.task.physicalResourceTypes, availableHuman, usedHumanNames)
+    } yield (physicalIds, humanNames)  
 
+  private def isMatchingTask(t1: TaskInfo, t2: TaskInfo): Boolean =
+    t1.orderId == t2.orderId && t1.productNumber == t2.productNumber && t1.taskId == t2.taskId
 
-  def allocateResourcesFromAvailable(
-    requiredTypes: List[PhysicalResourceType],
-    availablePhysical: List[PhysicalResource],
-    usedIds: Set[PhysicalResourceId]
-  ): Result[List[PhysicalResourceId]] =
-    allocatePhysicalRecursively(requiredTypes, availablePhysical, List.empty, usedIds)
-
-  
-  def allocatePhysicalRecursively(
-    requiredTypes: List[PhysicalResourceType],
-    availablePhysical: List[PhysicalResource],
-    allocatedIds: List[PhysicalResourceId],
-    usedIds: Set[PhysicalResourceId]
-  ): Result[List[PhysicalResourceId]] =
-    requiredTypes match
-      case Nil => Right(allocatedIds.reverse)
-      case requiredType :: remainingTypes =>
-        availablePhysical.find { res =>
-          res.physical_type == requiredType && !usedIds.contains(res.id)
-        } match
-          case Some(resource) =>
-            allocatePhysicalRecursively(
-              remainingTypes, availablePhysical, resource.id :: allocatedIds, usedIds + resource.id
-            )
-          case None =>
+  private def allocateResources[T, R](
+     requiredTypes: List[PhysicalResourceType],
+     availableResources: List[T],
+     usedIds: Set[R],
+     extractId: T => R,
+     matchesType: (T, PhysicalResourceType) => Boolean
+   ): Result[List[R]] =
+    def allocateRecursively(
+       remaining: List[PhysicalResourceType],
+       allocated: List[R],
+       used: Set[R]
+     ): Result[List[R]] =
+      remaining match
+        case Nil => Right(allocated.reverse)
+        case requiredType :: rest =>
+          availableResources.find { res =>
+            matchesType(res, requiredType) && !used.contains(extractId(res))
+          }.fold[Result[List[R]]](
             Left(DomainError.ImpossibleSchedule)
+          ) { resource =>
+            val id = extractId(resource)
+            allocateRecursively(rest, id :: allocated, used + id)
+          }
 
+    allocateRecursively(requiredTypes, List.empty, usedIds)
 
-  def allocateHumansFromAvailable(
+  private def allocateResources(
+                                 requiredTypes: List[PhysicalResourceType],
+                                 availablePhysical: List[PhysicalResource],
+                                 usedIds: Set[PhysicalResourceId]
+                               ): Result[List[PhysicalResourceId]] =
+    allocateResources(
+      requiredTypes,
+      availablePhysical,
+      usedIds,
+      (res: PhysicalResource) => res.id,
+      (res: PhysicalResource, reqType: PhysicalResourceType) => res.physical_type == reqType
+    )
+
+  private def allocateHumans(
     requiredTypes: List[PhysicalResourceType],
     availableHuman: List[HumanResource],
     usedNames: Set[HumanResourceName]
   ): Result[List[HumanResourceName]] =
-    allocateHumansRecursively(requiredTypes, availableHuman, List.empty, usedNames)
+    allocateResources(
+      requiredTypes,
+      availableHuman,
+      usedNames,
+      (res: HumanResource) => res.name,
+      (res: HumanResource, reqType: PhysicalResourceType) => res.physicalResourceTypes.contains(reqType)
+    )
 
-  def allocateHumansRecursively(
-    requiredTypes: List[PhysicalResourceType],
-    availableHuman: List[HumanResource],
-    allocatedNames: List[HumanResourceName],
-    usedNames: Set[HumanResourceName]
-  ): Result[List[HumanResourceName]] =
-    requiredTypes match
-      case Nil => Right(allocatedNames.reverse)
-      case requiredType :: remainingTypes =>
-        availableHuman.find { hr =>
-          hr.physicalResourceTypes.contains(requiredType) && !usedNames.contains(hr.name)
-        } match
-          case Some(human) =>
-            allocateHumansRecursively(
-              remainingTypes, availableHuman, human.name :: allocatedNames, usedNames + human.name
-            )
-          case None =>
-            Left(DomainError.ImpossibleSchedule)
-
-
-  def allocatePhysicalResourcesAtTime(
-    task: Task,
-    physicalResources: List[PhysicalResource],
-    availability: Map[String, Int],
-    currentTime: Int
-  ): Result[List[PhysicalResourceId]] =
-    allocateResourcesRecursively(task.physicalResourceTypes, physicalResources, availability, currentTime, List.empty, Set.empty)
-
-  def allocateResourcesRecursively(
-    requiredTypes: List[PhysicalResourceType],
-    physicalResources: List[PhysicalResource],
-    availability: Map[String, Int],
-    currentTime: Int,
-    allocatedIds: List[PhysicalResourceId],
-    usedIds: Set[PhysicalResourceId]
-  ): Result[List[PhysicalResourceId]] =
-    requiredTypes match
-      case Nil => Right(allocatedIds.reverse)
-      case requiredType :: remainingTypes =>
-        physicalResources.find { res =>
-          res.physical_type == requiredType &&
-            !usedIds.contains(res.id) &&
-            availability.getOrElse(s"PHYS_${res.id.to}", 0) <= currentTime
-        } match
-          case Some(resource) =>
-            allocateResourcesRecursively(
-              remainingTypes,
-              physicalResources,
-              availability,
-              currentTime,
-              resource.id :: allocatedIds,
-              usedIds + resource.id
-            )
-          case None =>
-            Left(DomainError.ImpossibleSchedule)
-
-  def allocateHumanResourcesAtTime(
-    task: Task,
-    humanResources: List[HumanResource],
-    availability: Map[String, Int],
-    currentTime: Int
-  ): Result[List[HumanResourceName]] =
-    allocateHumansRecursively(task.physicalResourceTypes, humanResources, availability, currentTime, List.empty, Set.empty)
-
-  def allocateHumansRecursively(
-    requiredTypes: List[PhysicalResourceType],
-    humanResources: List[HumanResource],
-    availability: Map[String, Int],
-    currentTime: Int,
-    allocatedNames: List[HumanResourceName],
-    usedNames: Set[HumanResourceName]
-  ): Result[List[HumanResourceName]] =
-    requiredTypes match
-      case Nil => Right(allocatedNames.reverse)
-      case requiredType :: remainingTypes =>
-        humanResources.find { hr =>
-          hr.physicalResourceTypes.contains(requiredType) &&
-            !usedNames.contains(hr.name) &&
-            availability.getOrElse(s"HUMAN_${hr.name.to}", 0) <= currentTime
-        } match
-          case Some(human) =>
-            allocateHumansRecursively(
-              remainingTypes,
-              humanResources,
-              availability,
-              currentTime,
-              human.name :: allocatedNames,
-              usedNames + human.name
-            )
-          case None =>
-            Left(DomainError.ImpossibleSchedule)
-
-  def createTaskSchedule(
+  private def createTaskSchedule(
     taskInfo: TaskInfo,
     startTime: Int,
     physicalIds: List[PhysicalResourceId],
     humanNames: List[HumanResourceName]
   ): Result[TaskSchedule] =
-
     for {
       start <- TaskScheduleTime.from(startTime)
       end <- TaskScheduleTime.from(startTime + taskInfo.task.time.to)
@@ -425,52 +303,34 @@ object ScheduleMS03 extends Schedule:
       humanNames
     )
 
-  def updateStateAfterScheduling(
+  private def filterEligibleTasksForTime(
+    candidateTasks: List[TaskInfo],
     state: SchedulingState,
-    scheduledTask: TaskInfo,
-    schedule: TaskSchedule,
     currentTime: Int
-  ): SchedulingState =
+  ): List[TaskInfo] =
+    candidateTasks.filter { task =>
+      val progressKey = (task.orderId, task.productNumber)
+      val completedTasks = state.productProgress.getOrElse(progressKey, 0)
 
-    val endTime = currentTime + scheduledTask.task.time.to
+      task.productTaskIndex.to == completedTasks &&
+        task.earliestStart.to <= currentTime &&
+        !isProductCurrentlyBeingProcessed(task.orderId, task.productNumber, state, currentTime)
+    }
 
-    val updatedAvailability = updateResourceAvailability(
-      state.resourceAvailability, schedule, endTime
-    )
-
-    val progressKey = (scheduledTask.orderId, scheduledTask.productNumber)
-    val currentProgress = state.productProgress.getOrElse(progressKey, 0)
-    val updatedProgress = state.productProgress.updated(progressKey, currentProgress + 1)
-
-    val remainingTasks = state.readyTasks.filterNot(t =>
-      t.orderId == scheduledTask.orderId &&
-        t.productNumber == scheduledTask.productNumber &&
-        t.taskId == scheduledTask.taskId
-    )
-
-    state.copy(
-      readyTasks = remainingTasks,
-      resourceAvailability = updatedAvailability,
-      schedules = schedule :: state.schedules,
-      productProgress = updatedProgress
-    )
-  
-  
-  def updateResourceAvailability(
-    availability: Map[String, Int],
-    schedule: TaskSchedule,
-    endTime: Int
-  ): Map[String, Int] =
-    val allUpdates = schedule.physicalResourceIds.map(id => s"PHYS_${id.to}" -> endTime) ++
-      schedule.humanResourceNames.map(name => s"HUMAN_${name.to}" -> endTime)
-    availability ++ allUpdates
-
-
-  def updateReadyTasks(
+  private def isProductCurrentlyBeingProcessed(
+    orderId: OrderId,
+    productNumber: ProductNumber,
     state: SchedulingState,
-    allTasks: List[TaskInfo]
-  ): SchedulingState =
-    
+    currentTime: Int
+  ): Boolean =
+    state.schedules.exists { schedule =>
+      schedule.orderId == orderId &&
+        schedule.productNumber == productNumber &&
+        schedule.start.to <= currentTime &&
+        schedule.end.to > currentTime
+    }
+
+  private def updateReadyTasks(state: SchedulingState, allTasks: List[TaskInfo]): SchedulingState =
     val scheduledTaskKeys = state.schedules.map(s => (s.orderId, s.productNumber, s.taskId)).toSet
     val readyTaskKeys = state.readyTasks.map(rt => (rt.orderId, rt.productNumber, rt.taskId)).toSet
 
@@ -485,6 +345,35 @@ object ScheduleMS03 extends Schedule:
     }
 
     state.copy(readyTasks = state.readyTasks ++ newReadyTasks)
+
+  private def updateStateAfterScheduling(
+    state: SchedulingState,
+    scheduledTask: TaskInfo,
+    schedule: TaskSchedule,
+    currentTime: Int
+  ): SchedulingState = 
+    val endTime = currentTime + scheduledTask.task.time.to
+    val updatedAvailability = updateResourceAvailability(state.resourceAvailability, schedule, endTime)
+    val progressKey = (scheduledTask.orderId, scheduledTask.productNumber)
+    val currentProgress = state.productProgress.getOrElse(progressKey, 0)
+    val updatedProgress = state.productProgress.updated(progressKey, currentProgress + 1)
+    val remainingTasks = state.readyTasks.filterNot(isMatchingTask(_, scheduledTask))
+
+    state.copy(
+      readyTasks = remainingTasks,
+      resourceAvailability = updatedAvailability,
+      schedules = schedule :: state.schedules,
+      productProgress = updatedProgress
+    )
+
+  private def updateResourceAvailability(
+    availability: Map[String, Int],
+    schedule: TaskSchedule,
+    endTime: Int
+  ): Map[String, Int] =
+    val allUpdates = schedule.physicalResourceIds.map(id => s"PHYS_${id.to}" -> endTime) ++
+      schedule.humanResourceNames.map(name => s"HUMAN_${name.to}" -> endTime)
+    availability ++ allUpdates
 
   def scheduleDataRetriever(xml: Elem): Result[(
     List[Order],
