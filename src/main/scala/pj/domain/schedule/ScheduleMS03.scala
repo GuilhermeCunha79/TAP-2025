@@ -431,3 +431,11 @@ object ScheduleMS03 extends Schedule:
       outputXml = toXml(schedules)
       _ = FileIO.save("output.xml", outputXml)
     } yield toXml(schedules)
+
+  def create(xml: Elem, fileName: String): Result[Elem] =
+    for {
+      (orders, products, tasks, humanResources, physicalResources) <- scheduleDataRetriever(xml)
+      schedules <- generateSchedule(orders, products, tasks, humanResources, physicalResources)
+      outputXml = toXml(schedules)
+      _ = FileIO.save(fileName, outputXml)
+    } yield toXml(schedules)

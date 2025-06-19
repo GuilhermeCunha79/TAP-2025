@@ -3,23 +3,31 @@ package pj.worksheet
 import pj.domain.*
 import pj.domain.schedule.*
 import pj.io.FileIO
+import java.io.File
 
 object DebugSchedule:
   def main(args: Array[String]): Unit =
-    // val filePath = "C:\\Users\\Utilizador\\Documents\\TAP_Project\\files\\assessment\\ms01\\validAgenda_01_in.xml"
-    //val filePath = "C:\\Users\\migue\\Desktop\\Universidade\\Mestrado GitHub Projects\\2 Ano\\2 Semestre\\TAP\\tap-pj-ncf-12\\files\\assessment\\ms03\\invalidPhysicalResourceUnavailable_in.xml"
-    // val filePath = "C:\\Users\\Guilherme Cunha\\IdeaProjects\\tap-pj-ncf-12\\files\\assessment\\ms01\\invalidAgenda_02_in.xml"
-    val filePath = "C:\\Users\\zpedr\\OneDrive\\Ambiente de Trabalho\\tap_proj\\tap-pj-ncf-12\\files\\assessment\\ms03\\invalidPhysicalResourceUnavailable_in.xml"
-    val result = FileIO.load(filePath)
+    val dirPath = "C:\\Users\\zpedr\\OneDrive\\Ambiente de Trabalho\\tap_proj\\tap-pj-ncf-12\\files\\assessment\\ms03"
+    val dir = new File(dirPath)
 
-    result match
-      case Right(xml) =>
-        val schedule = ScheduleMS03.create(xml)
-        schedule match
-          case Right(s) =>
-            println(s"Agendamento criado com sucesso: $s")
-          case Left(error) =>
-            println(s"Erro ao criar o agendamento: $error")
+    if dir.exists && dir.isDirectory then
+      val files = dir.listFiles().filter(f => f.getName.startsWith("validAgenda") && f.getName.endsWith("in.xml"))
 
-      case Left(error) =>
-        println(s"Erro ao carregar o arquivo XML: $error")
+      if files.isEmpty then
+        println("Nenhum ficheiro válido encontrado.")
+      else
+        files.foreach { file =>
+          println(s"\n🔍 A processar ficheiro: ${file.getName}")
+
+          FileIO.load(file.getAbsolutePath) match
+            case Right(xml) =>
+              val outputFileName = file.getName.replace("_in", "_out")
+              ScheduleMS03.create(xml,outputFileName) match
+                case Right(s) =>
+                  println(s"Agendamento criado com sucesso para ${file.getName}")
+                case Left(error) =>
+                  println(s"Erro ao criar o agendamento para ${file.getName}: $error")
+
+            case Left(error) =>
+              println(s"Erro ao carregar o ficheiro ${file.getName}: $error")
+        }
