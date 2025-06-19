@@ -106,7 +106,7 @@ class ScheduleMS01Test extends AnyFunSuite:
 
     FileIO.load(filePath) match
       case Right(xml) =>
-        assert(ScheduleMS01.scheduleDataRetriever(xml) == result)
+        assert(Shared.scheduleDataRetriever(xml) == result)
       case Left(error) =>
         fail(s"Erro ao carregar o arquivo XML: $error")
 

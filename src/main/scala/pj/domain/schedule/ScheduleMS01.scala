@@ -10,32 +10,6 @@ import scala.xml.Elem
 
 object ScheduleMS01 extends Schedule:
 
-  def scheduleDataRetriever(xml: Elem): Result[(
-      List[Order],
-      List[Product],
-      List[Task],
-      List[HumanResource],
-      List[PhysicalResource]
-    )] =
-    for {
-      physicalNode <- XML.fromNode(xml, "PhysicalResources")
-      physicalResources <- XML.traverse(physicalNode \ "Physical", XMLToDomain.getPhysicalResource)
-      physicalTypes = physicalResources.map(_.physical_type).distinct
-
-      tasksNode <- XML.fromNode(xml, "Tasks")
-      tasks <- XML.traverse(tasksNode \ "Task", XMLToDomain.getTask(physicalTypes))
-
-      humanNode <- XML.fromNode(xml, "HumanResources")
-      humanResources <- XML.traverse(humanNode \ "Human", XMLToDomain.getHumanResource(physicalTypes))
-
-      productsNode <- XML.fromNode(xml, "Products")
-      products <- XML.traverse(productsNode \ "Product", XMLToDomain.getProduct(tasks))
-
-      ordersNode <- XML.fromNode(xml, "Orders")
-      orders <- XML.traverse(ordersNode \ "Order", XMLToDomain.getOrder(products))
-    } yield (orders, products, tasks, humanResources, physicalResources)
-
-
   def allocatePhysicalResources(
        taskId: TaskId,
        requiredTypes: List[PhysicalResourceType],
@@ -155,42 +129,18 @@ object ScheduleMS01 extends Schedule:
                               ): String =
     humanResources.find(_.id == humanId).map(_.name.to).getOrElse(humanId.to)
 
-  def toXml(schedules: List[TaskSchedule], humanResources: List[HumanResource]): Elem =
-    <Schedule xmlns="http://www.dei.isep.ipp.pt/tap-2025"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd ">
-      {schedules.sortBy(_.start.to).map { sched =>
-      <TaskSchedule order={sched.orderId.to}
-                    productNumber={sched.productNumber.to.toString}
-                    task={sched.taskId.to}
-                    start={sched.start.to.toString}
-                    end={sched.end.to.toString}>
-        <PhysicalResources>
-          {sched.physicalResourceIds.map(id =>
-            <Physical id={id.to}/>
-        )}
-        </PhysicalResources>
-        <HumanResources>
-          {sched.humanResourceIds.map(humanId =>
-            <Human name={getHumanNameById(humanId, humanResources)}/>
-        )}
-        </HumanResources>
-      </TaskSchedule>
-    }}
-    </Schedule>
-
   def create(xml: Elem): Result[Elem] =
     for {
-      (orders, products, tasks, humanResources, physicalResources) <- scheduleDataRetriever(xml)
+      (orders, products, tasks, humanResources, physicalResources) <- Shared.scheduleDataRetriever(xml)
       schedules <- generateSchedule(orders, products, tasks, humanResources, physicalResources)
-      outputXml = toXml(schedules, humanResources)
+      outputXml = Shared.toXml(schedules, humanResources)
       _ = FileIO.save("output.xml", outputXml)
     } yield outputXml
 
   def create(xml: Elem, fileName: String): Result[Elem] =
     for {
-      (orders, products, tasks, humanResources, physicalResources) <- scheduleDataRetriever(xml)
+      (orders, products, tasks, humanResources, physicalResources) <- Shared.scheduleDataRetriever(xml)
       schedules <- generateSchedule(orders, products, tasks, humanResources, physicalResources)
-      outputXml = toXml(schedules, humanResources)
+      outputXml = Shared.toXml(schedules, humanResources)
       _ = FileIO.save(fileName, outputXml)
     } yield outputXml

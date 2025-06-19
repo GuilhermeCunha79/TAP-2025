@@ -166,8 +166,8 @@ object ScheduleProperties extends Properties("ScheduleProperties"):
             val allHumanValid = schedules.forall: schedule =>
               tasks.find(_.id == schedule.taskId) match
                 case Some(task) =>
-                  schedule.humanResourceIds.forall: name =>
-                    humanResources.find(_.name == name).exists: human =>
+                  schedule.humanResourceIds.forall: id =>
+                    humanResources.find(_.id == id).exists: human =>
                       task.physicalResourceTypes.exists(human.physicalResourceTypes.contains)
                 case None => false
             Prop(allHumanValid)
