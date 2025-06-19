@@ -17,7 +17,7 @@ object DebugSchedule:
         println("Nenhum ficheiro válido encontrado.")
       else
         files.foreach { file =>
-          println(s"\n🔍 A processar ficheiro: ${file.getName}")
+          println(s"A processar ficheiro: ${file.getName}")
 
           FileIO.load(file.getAbsolutePath) match
             case Right(xml) =>
