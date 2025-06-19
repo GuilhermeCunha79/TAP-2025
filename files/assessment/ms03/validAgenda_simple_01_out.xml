@@ -6,14 +6,16 @@
         <HumanResources>
             <Human name="Antonio"/>
         </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_2" productNumber="1" task="TSK_2" start="0" end="3">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_2" productNumber="1" task="TSK_2" start="0" end="3">
     <PhysicalResources>
         <Physical id="PRS_1"/>
     </PhysicalResources>
     <HumanResources>
         <Human name="Maria"/>
     </HumanResources>
-</TaskSchedule><TaskSchedule order="ORD_1" productNumber="1" task="TSK_1" start="3" end="8">
+</TaskSchedule>
+    <TaskSchedule order="ORD_1" productNumber="1" task="TSK_1" start="3" end="8">
     <PhysicalResources>
         <Physical id="PRS_1"/><Physical id="PRS_2"/>
     </PhysicalResources>

@@ -13,147 +13,168 @@
     <HumanResources>
         <Human name="name of 05"/>
     </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_05" productNumber="1" task="TSK_01" start="1" end="2">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_05" productNumber="1" task="TSK_01" start="1" end="2">
         <PhysicalResources>
             <Physical id="PRS_01"/><Physical id="PRS_06"/><Physical id="PRS_02"/><Physical id="PRS_04"/>
         </PhysicalResources>
         <HumanResources>
             <Human name="name of 01"/><Human name="name of 02"/><Human name="name of 03"/><Human name="name of 04"/>
         </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_05" productNumber="1" task="TSK_02" start="2" end="3">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_05" productNumber="1" task="TSK_02" start="2" end="3">
         <PhysicalResources>
             <Physical id="PRS_06"/><Physical id="PRS_01"/>
         </PhysicalResources>
         <HumanResources>
             <Human name="name of 02"/><Human name="name of 01"/>
         </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_05" productNumber="2" task="TSK_01" start="2" end="3">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_05" productNumber="2" task="TSK_01" start="2" end="3">
         <PhysicalResources>
             <Physical id="PRS_09"/><Physical id="PRS_08"/><Physical id="PRS_02"/><Physical id="PRS_04"/>
         </PhysicalResources>
         <HumanResources>
             <Human name="name of 04"/><Human name="name of 03"/><Human name="name of 07"/><Human name="name of 09"/>
         </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_05" productNumber="2" task="TSK_02" start="3" end="4">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_05" productNumber="2" task="TSK_02" start="3" end="4">
         <PhysicalResources>
             <Physical id="PRS_06"/><Physical id="PRS_01"/>
         </PhysicalResources>
         <HumanResources>
             <Human name="name of 02"/><Human name="name of 01"/>
         </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_04" productNumber="1" task="TSK_02" start="3" end="4">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_04" productNumber="1" task="TSK_02" start="3" end="4">
         <PhysicalResources>
             <Physical id="PRS_08"/><Physical id="PRS_09"/>
         </PhysicalResources>
         <HumanResources>
             <Human name="name of 03"/><Human name="name of 07"/>
         </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_06" productNumber="2" task="TSK_05" start="9" end="18">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_06" productNumber="2" task="TSK_05" start="9" end="18">
         <PhysicalResources>
             <Physical id="PRS_07"/>
         </PhysicalResources>
         <HumanResources>
             <Human name="name of 01"/>
         </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_06" productNumber="3" task="TSK_05" start="18" end="27">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_06" productNumber="3" task="TSK_05" start="18" end="27">
         <PhysicalResources>
             <Physical id="PRS_07"/>
         </PhysicalResources>
         <HumanResources>
             <Human name="name of 01"/>
         </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_06" productNumber="4" task="TSK_05" start="27" end="36">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_06" productNumber="4" task="TSK_05" start="27" end="36">
         <PhysicalResources>
             <Physical id="PRS_07"/>
         </PhysicalResources>
         <HumanResources>
             <Human name="name of 01"/>
         </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_06" productNumber="5" task="TSK_05" start="36" end="45">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_06" productNumber="5" task="TSK_05" start="36" end="45">
         <PhysicalResources>
             <Physical id="PRS_07"/>
         </PhysicalResources>
         <HumanResources>
             <Human name="name of 01"/>
         </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_05" productNumber="1" task="TSK_05" start="45" end="54">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_05" productNumber="1" task="TSK_05" start="45" end="54">
         <PhysicalResources>
             <Physical id="PRS_07"/>
         </PhysicalResources>
         <HumanResources>
             <Human name="name of 01"/>
         </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_05" productNumber="2" task="TSK_05" start="54" end="63">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_05" productNumber="2" task="TSK_05" start="54" end="63">
         <PhysicalResources>
             <Physical id="PRS_07"/>
         </PhysicalResources>
         <HumanResources>
             <Human name="name of 01"/>
         </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_07" productNumber="1" task="TSK_03" start="63" end="73">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_07" productNumber="1" task="TSK_03" start="63" end="73">
         <PhysicalResources>
             <Physical id="PRS_07"/>
         </PhysicalResources>
         <HumanResources>
             <Human name="name of 01"/>
         </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_07" productNumber="2" task="TSK_03" start="73" end="83">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_07" productNumber="2" task="TSK_03" start="73" end="83">
         <PhysicalResources>
             <Physical id="PRS_07"/>
         </PhysicalResources>
         <HumanResources>
             <Human name="name of 01"/>
         </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_07" productNumber="3" task="TSK_03" start="83" end="93">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_07" productNumber="3" task="TSK_03" start="83" end="93">
         <PhysicalResources>
             <Physical id="PRS_07"/>
         </PhysicalResources>
         <HumanResources>
             <Human name="name of 01"/>
         </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_07" productNumber="4" task="TSK_03" start="93" end="103">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_07" productNumber="4" task="TSK_03" start="93" end="103">
         <PhysicalResources>
             <Physical id="PRS_07"/>
         </PhysicalResources>
         <HumanResources>
             <Human name="name of 01"/>
         </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_07" productNumber="5" task="TSK_03" start="103" end="113">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_07" productNumber="5" task="TSK_03" start="103" end="113">
         <PhysicalResources>
             <Physical id="PRS_07"/>
         </PhysicalResources>
         <HumanResources>
             <Human name="name of 01"/>
         </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_02" productNumber="1" task="TSK_03" start="113" end="123">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_02" productNumber="1" task="TSK_03" start="113" end="123">
         <PhysicalResources>
             <Physical id="PRS_07"/>
         </PhysicalResources>
         <HumanResources>
             <Human name="name of 01"/>
         </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_01" productNumber="1" task="TSK_04" start="123" end="133">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_01" productNumber="1" task="TSK_04" start="123" end="133">
         <PhysicalResources>
             <Physical id="PRS_07"/><Physical id="PRS_01"/>
         </PhysicalResources>
         <HumanResources>
             <Human name="name of 01"/><Human name="name of 04"/>
         </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_03" productNumber="1" task="TSK_04" start="133" end="143">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_03" productNumber="1" task="TSK_04" start="133" end="143">
         <PhysicalResources>
             <Physical id="PRS_07"/><Physical id="PRS_01"/>
         </PhysicalResources>
         <HumanResources>
             <Human name="name of 01"/><Human name="name of 04"/>
         </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_04" productNumber="1" task="TSK_04" start="143" end="153">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_04" productNumber="1" task="TSK_04" start="143" end="153">
         <PhysicalResources>
             <Physical id="PRS_07"/><Physical id="PRS_01"/>
         </PhysicalResources>
         <HumanResources>
             <Human name="name of 01"/><Human name="name of 04"/>
         </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_04" productNumber="1" task="TSK_05" start="153" end="162">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_04" productNumber="1" task="TSK_05" start="153" end="162">
         <PhysicalResources>
             <Physical id="PRS_07"/>
         </PhysicalResources>

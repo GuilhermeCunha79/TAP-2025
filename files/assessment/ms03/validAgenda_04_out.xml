@@ -6,35 +6,40 @@
         <HumanResources>
             <Human name="Maria"/>
         </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_1" productNumber="1" task="TSK_1" start="0" end="5">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_1" productNumber="1" task="TSK_1" start="0" end="5">
     <PhysicalResources>
         <Physical id="PRS_1"/>
     </PhysicalResources>
     <HumanResources>
         <Human name="Antonio"/>
     </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_2" productNumber="1" task="TSK_4" start="2" end="6">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_2" productNumber="1" task="TSK_4" start="2" end="6">
         <PhysicalResources>
             <Physical id="PRS_4"/>
         </PhysicalResources>
         <HumanResources>
             <Human name="Maria"/>
         </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_3" productNumber="1" task="TSK_6" start="2" end="3">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_3" productNumber="1" task="TSK_6" start="2" end="3">
         <PhysicalResources>
             <Physical id="PRS_5"/>
         </PhysicalResources>
         <HumanResources>
             <Human name="Joao"/>
         </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_3" productNumber="1" task="TSK_5" start="5" end="15">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_3" productNumber="1" task="TSK_5" start="5" end="15">
         <PhysicalResources>
             <Physical id="PRS_3"/>
         </PhysicalResources>
         <HumanResources>
             <Human name="Antonio"/>
         </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_1" productNumber="1" task="TSK_2" start="6" end="9">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_1" productNumber="1" task="TSK_2" start="6" end="9">
         <PhysicalResources>
             <Physical id="PRS_2"/>
         </PhysicalResources>

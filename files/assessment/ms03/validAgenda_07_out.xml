@@ -13,7 +13,8 @@
     <HumanResources>
         <Human name="Antonio"/><Human name="Joao"/>
     </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_2" productNumber="1" task="TSK_4" start="2" end="6">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_2" productNumber="1" task="TSK_4" start="2" end="6">
         <PhysicalResources>
             <Physical id="PRS_4"/>
         </PhysicalResources>

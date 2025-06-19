@@ -6,7 +6,8 @@
         <HumanResources>
             <Human name="Antonio"/>
         </HumanResources>
-    </TaskSchedule><TaskSchedule order="ORD_1" productNumber="1" task="TSK_1" start="0" end="5">
+    </TaskSchedule>
+    <TaskSchedule order="ORD_1" productNumber="1" task="TSK_1" start="0" end="5">
     <PhysicalResources>
         <Physical id="PRS_1"/><Physical id="PRS_4"/>
     </PhysicalResources>
