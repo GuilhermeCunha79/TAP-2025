@@ -35,7 +35,7 @@ object ScheduleMS03 extends Schedule:
     val initialReadyTasks = allProductInstances.filter(_.productTaskIndex.to == 0)
     val initialResourceAvailability = (
       physicalResources.map(r => s"PHYS_${r.id.to}" -> 0) ++
-        humanResources.map(r => s"HUMAN_${r.name.to}" -> 0)
+        humanResources.map(r => s"HUMAN_${r.id.to}" -> 0)
       ).toMap
 
     SchedulingState(
@@ -193,7 +193,7 @@ object ScheduleMS03 extends Schedule:
     availablePhysical: List[PhysicalResource],
     availableHuman: List[HumanResource],
     usedPhysicalIds: Set[PhysicalResourceId],
-    usedHumanNames: Set[HumanResourceName]
+    usedHumanNames: Set[HumanResourceId]
   ): Result[SchedulingState] =
     tasks match
       case Nil => Right(state)
@@ -225,8 +225,8 @@ object ScheduleMS03 extends Schedule:
    availablePhysical: List[PhysicalResource],
    availableHuman: List[HumanResource],
    usedPhysicalIds: Set[PhysicalResourceId],
-   usedHumanNames: Set[HumanResourceName]
- ): Result[(List[PhysicalResourceId], List[HumanResourceName])] =
+   usedHumanNames: Set[HumanResourceId]
+ ): Result[(List[PhysicalResourceId], List[HumanResourceId])] =
     for {
       physicalIds <- allocateResources(taskInfo.task.physicalResourceTypes, availablePhysical, usedPhysicalIds)
       humanNames <- allocateHumans(taskInfo.task.physicalResourceTypes, availableHuman, usedHumanNames)
@@ -282,13 +282,13 @@ object ScheduleMS03 extends Schedule:
   private def allocateHumans(
     requiredTypes: List[PhysicalResourceType],
     availableHuman: List[HumanResource],
-    usedNames: Set[HumanResourceName]
-  ): Result[List[HumanResourceName]] =
+    usedNames: Set[HumanResourceId]
+  ): Result[List[HumanResourceId]] =
     allocateResources(
       requiredTypes,
       availableHuman,
       usedNames,
-      (res: HumanResource) => res.name,
+      (res: HumanResource) => res.id,
       (res: HumanResource, reqType: PhysicalResourceType) => res.physicalResourceTypes.contains(reqType)
     )
 
@@ -296,7 +296,7 @@ object ScheduleMS03 extends Schedule:
     taskInfo: TaskInfo,
     startTime: Int,
     physicalIds: List[PhysicalResourceId],
-    humanNames: List[HumanResourceName]
+    humanNames: List[HumanResourceId]
   ): Result[TaskSchedule] =
     for {
       start <- TaskScheduleTime.from(startTime)
@@ -380,7 +380,7 @@ object ScheduleMS03 extends Schedule:
     endTime: Int
   ): Map[String, Int] =
     val allUpdates = schedule.physicalResourceIds.map(id => s"PHYS_${id.to}" -> endTime) ++
-      schedule.humanResourceNames.map(name => s"HUMAN_${name.to}" -> endTime)
+      schedule.humanResourceIds.map(name => s"HUMAN_${name.to}" -> endTime)
     availability ++ allUpdates
 
   def scheduleDataRetriever(xml: Elem): Result[(
@@ -408,7 +408,13 @@ object ScheduleMS03 extends Schedule:
       orders <- XML.traverse(ordersNode \ "Order", XMLToDomain.getOrder(products))
     } yield (orders, products, tasks, humanResources, physicalResources)
 
-  def toXml(schedules: List[TaskSchedule]): Elem =
+  private def getHumanNameById(
+    humanId: HumanResourceId,
+    humanResources: List[HumanResource]
+  ): String =
+    humanResources.find(_.id == humanId).map(_.name.to).getOrElse(humanId.to)
+
+  def toXml(schedules: List[TaskSchedule], humanResources: List[HumanResource]): Elem =
     <Schedule xmlns="http://www.dei.isep.ipp.pt/tap-2025"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd ">
@@ -424,8 +430,8 @@ object ScheduleMS03 extends Schedule:
         )}
         </PhysicalResources>
         <HumanResources>
-          {sched.humanResourceNames.map(name =>
-            <Human name={name.to}/>
+          {sched.humanResourceIds.map(humanId =>
+            <Human name={getHumanNameById(humanId, humanResources)}/>
         )}
         </HumanResources>
       </TaskSchedule>
@@ -436,14 +442,14 @@ object ScheduleMS03 extends Schedule:
     for {
       (orders, products, tasks, humanResources, physicalResources) <- scheduleDataRetriever(xml)
       schedules <- generateSchedule(orders, products, tasks, humanResources, physicalResources)
-      outputXml = toXml(schedules)
+      outputXml = toXml(schedules, humanResources)
       _ = FileIO.save("output.xml", outputXml)
-    } yield toXml(schedules)
+    } yield outputXml
 
   def create(xml: Elem, fileName: String): Result[Elem] =
     for {
       (orders, products, tasks, humanResources, physicalResources) <- scheduleDataRetriever(xml)
       schedules <- generateSchedule(orders, products, tasks, humanResources, physicalResources)
-      outputXml = toXml(schedules)
+      outputXml = toXml(schedules, humanResources)
       _ = FileIO.save(fileName, outputXml)
-    } yield toXml(schedules)
+    } yield outputXml

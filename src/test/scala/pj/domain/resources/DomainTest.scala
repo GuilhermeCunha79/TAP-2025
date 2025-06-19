@@ -171,8 +171,8 @@ class DomainTest extends AnyFunSuite:
         taskId <- TaskId.from("TSK_10")
         pr1 <- PhysicalResourceId.from("PRS_1")
         pr2 <- PhysicalResourceId.from("PRS_2")
-        name1 <- HumanResourceName.from("Alice")
-        name2 <- HumanResourceName.from("Bob")
+        name1 <- HumanResourceId.from("HRS_1")
+        name2 <- HumanResourceId.from("HRS_2")
         productNumber <- ProductNumber.from(1)
         start <- TaskScheduleTime.from(0)
         end <- TaskScheduleTime.from(10)
@@ -183,7 +183,7 @@ class DomainTest extends AnyFunSuite:
         start = start,
         end = end,
         physicalResourceIds = List(pr1, pr2),
-        humanResourceNames = List(name1, name2)
+        humanResourceIds = List(name1, name2)
       )
 
     result match
@@ -195,7 +195,7 @@ class DomainTest extends AnyFunSuite:
             schedule.start.to == 0 &&
             schedule.end.to == 10 &&
             schedule.physicalResourceIds.map(_.to) == List("PRS_1", "PRS_2") &&
-            schedule.humanResourceNames.map(_.to) == List("Alice", "Bob")
+            schedule.humanResourceIds.map(_.to) == List("HRS_1", "HRS_2")
         )
       case Left(err) => fail(s"Expected TaskSchedule, but got error: $err")
 
@@ -205,11 +205,11 @@ class DomainTest extends AnyFunSuite:
         orderId <- OrderId.from("INVALID")
         taskId <- TaskId.from("TSK_10")
         pr <- PhysicalResourceId.from("PRS_1")
-        name <- HumanResourceName.from("Alice")
+        hr <- HumanResourceId.from("HRS_1")
         productNumber <- ProductNumber.from(1)
         start <- TaskScheduleTime.from(0)
         end <- TaskScheduleTime.from(10)
-      yield TaskSchedule(orderId, productNumber, taskId, start, end, List(pr), List(name))
+      yield TaskSchedule(orderId, productNumber, taskId, start, end, List(pr), List(hr))
 
     assert(result == Left(InvalidOrderId("INVALID")))
 
@@ -219,11 +219,11 @@ class DomainTest extends AnyFunSuite:
         orderId <- OrderId.from("ORD_1")
         taskId <- TaskId.from("WRONG")
         pr <- PhysicalResourceId.from("PRS_1")
-        name <- HumanResourceName.from("Bob")
+        hr <- HumanResourceId.from("HRS_1")
         productNumber <- ProductNumber.from(1)
         start <- TaskScheduleTime.from(0)
         end <- TaskScheduleTime.from(10)
-      yield TaskSchedule(orderId, productNumber, taskId, start, end, List(pr), List(name))
+      yield TaskSchedule(orderId, productNumber, taskId, start, end, List(pr), List(hr))
 
     assert(result == Left(InvalidTaskId("WRONG")))
 
@@ -251,6 +251,6 @@ class DomainTest extends AnyFunSuite:
         assert(
           schedule.orderId.to == "ORD_2" &&
             schedule.taskId.to == "TSK_2" &&
-            schedule.humanResourceNames.isEmpty
+            schedule.humanResourceIds.isEmpty
         )
       case Left(err) => fail(s"Expected TaskSchedule, but got error: $err")

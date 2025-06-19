@@ -85,7 +85,7 @@ object ScheduleProperties extends Properties("ScheduleProperties"):
                     &&
                     (
                       t1.physicalResourceIds.toSet.intersect(t2.physicalResourceIds.toSet).nonEmpty ||
-                      t1.humanResourceNames.toSet.intersect(t2.humanResourceNames.toSet).nonEmpty
+                      t1.humanResourceIds.toSet.intersect(t2.humanResourceIds.toSet).nonEmpty
                     )
                 case _ => false
 
@@ -104,8 +104,8 @@ object ScheduleProperties extends Properties("ScheduleProperties"):
 
             (resultOriginal, resultShuffled) match
               case (Right(scheduleOriginal), Right(scheduleShuffled)) =>
-                val allocOriginal = scheduleOriginal.flatMap(_.humanResourceNames).map(_.to).toSet
-                val allocShuffled = scheduleShuffled.flatMap(_.humanResourceNames).map(_.to).toSet
+                val allocOriginal = scheduleOriginal.flatMap(_.humanResourceIds).map(_.to).toSet
+                val allocShuffled = scheduleShuffled.flatMap(_.humanResourceIds).map(_.to).toSet
                 Prop(allocOriginal == allocShuffled)
 
               case (Left(_), Left(_)) =>
@@ -166,7 +166,7 @@ object ScheduleProperties extends Properties("ScheduleProperties"):
             val allHumanValid = schedules.forall: schedule =>
               tasks.find(_.id == schedule.taskId) match
                 case Some(task) =>
-                  schedule.humanResourceNames.forall: name =>
+                  schedule.humanResourceIds.forall: name =>
                     humanResources.find(_.name == name).exists: human =>
                       task.physicalResourceTypes.exists(human.physicalResourceTypes.contains)
                 case None => false

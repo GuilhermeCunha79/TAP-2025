@@ -12,9 +12,9 @@ final case class HumanResource(id: HumanResourceId, name: HumanResourceName, phy
 
 final case class PhysicalResource(id: PhysicalResourceId, physical_type: PhysicalResourceType)
 
-final case class TaskSchedule(orderId: OrderId, productNumber: ProductNumber, taskId:TaskId, 
+final case class TaskSchedule(orderId: OrderId, productNumber: ProductNumber, taskId:TaskId,
                               start:TaskScheduleTime, end:TaskScheduleTime,
-                              physicalResourceIds: List[PhysicalResourceId], humanResourceNames: List[HumanResourceName])
+                              physicalResourceIds: List[PhysicalResourceId], humanResourceIds: List[HumanResourceId])
 
 final case class TaskInfo(orderId: OrderId, productNumber: ProductNumber, taskId: TaskId,
                           task: Task, earliestStart: EarliestStartTime, productTaskIndex: ProductTaskIndex)

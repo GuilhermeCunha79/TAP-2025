@@ -3,6 +3,7 @@ package pj.domain.schedule
 import pj.domain.*
 import pj.domain.resources.*
 import pj.domain.resources.Types.*
+import pj.io.FileIO
 import pj.xml.{XML, XMLToDomain}
 
 import scala.xml.Elem
@@ -54,14 +55,14 @@ object ScheduleMS01 extends Schedule:
       taskId: TaskId,
       requiredTypes: List[PhysicalResourceType],
       availableHumans: List[HumanResource]
-    ): Result[List[HumanResourceName]] =
-    requiredTypes.foldLeft[Result[(List[HumanResourceName], Set[HumanResourceName])]](Right((Nil, Set.empty))) {
+    ): Result[List[HumanResourceId]] =
+    requiredTypes.foldLeft[Result[(List[HumanResourceId], Set[HumanResourceId])]](Right((Nil, Set.empty))) {
       case (accResult, requiredType) => for {
         (assignedNames, usedNames) <- accResult
         human <- availableHumans
-          .find(hr => hr.physicalResourceTypes.contains(requiredType) && !usedNames.contains(hr.name))
+          .find(hr => hr.physicalResourceTypes.contains(requiredType) && !usedNames.contains(hr.id))
           .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType.to))
-      } yield (human.name :: assignedNames, usedNames + human.name)
+      } yield (human.id :: assignedNames, usedNames + human.id)
     }.map(_._1.reverse)
 
 
@@ -148,11 +149,17 @@ object ScheduleMS01 extends Schedule:
     (TaskSchedule(orderId, productNum, task.id, start, end, physical, humans), end.to)
 
 
-  private def toXml(schedules: List[TaskSchedule]): Elem =
+  private def getHumanNameById(
+                                humanId: HumanResourceId,
+                                humanResources: List[HumanResource]
+                              ): String =
+    humanResources.find(_.id == humanId).map(_.name.to).getOrElse(humanId.to)
+
+  def toXml(schedules: List[TaskSchedule], humanResources: List[HumanResource]): Elem =
     <Schedule xmlns="http://www.dei.isep.ipp.pt/tap-2025"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd ">
-      {schedules.sortBy(s => (s.orderId.to, s.productNumber.to, s.start.to)).map { sched =>
+      {schedules.sortBy(_.start.to).map { sched =>
       <TaskSchedule order={sched.orderId.to}
                     productNumber={sched.productNumber.to.toString}
                     task={sched.taskId.to}
@@ -164,8 +171,8 @@ object ScheduleMS01 extends Schedule:
         )}
         </PhysicalResources>
         <HumanResources>
-          {sched.humanResourceNames.map(name =>
-            <Human name={name.to}/>
+          {sched.humanResourceIds.map(humanId =>
+            <Human name={getHumanNameById(humanId, humanResources)}/>
         )}
         </HumanResources>
       </TaskSchedule>
@@ -176,4 +183,14 @@ object ScheduleMS01 extends Schedule:
     for {
       (orders, products, tasks, humanResources, physicalResources) <- scheduleDataRetriever(xml)
       schedules <- generateSchedule(orders, products, tasks, humanResources, physicalResources)
-    } yield toXml(schedules)
+      outputXml = toXml(schedules, humanResources)
+      _ = FileIO.save("output.xml", outputXml)
+    } yield outputXml
+
+  def create(xml: Elem, fileName: String): Result[Elem] =
+    for {
+      (orders, products, tasks, humanResources, physicalResources) <- scheduleDataRetriever(xml)
+      schedules <- generateSchedule(orders, products, tasks, humanResources, physicalResources)
+      outputXml = toXml(schedules, humanResources)
+      _ = FileIO.save(fileName, outputXml)
+    } yield outputXml
