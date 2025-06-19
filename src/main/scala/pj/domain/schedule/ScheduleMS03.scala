@@ -146,14 +146,17 @@ object ScheduleMS03 extends Schedule:
     }
 
   private def prioritizeTasks(tasks: List[TaskInfo]): List[TaskInfo] =
-    tasks.sortBy(task => (
-      task.task.time.to,
-      task.task.physicalResourceTypes.size,
-      task.productTaskIndex.to,
-      task.orderId.to,
-      task.productNumber.to
-    ))
+    val rarityMap = tasks
+      .flatMap(_.task.physicalResourceTypes)
+      .groupBy(identity)
+      .view
+      .mapValues(_.size)
+      .toMap
 
+    tasks.sortBy(task =>
+      (-task.task.time.to, task.task.physicalResourceTypes.map(rarityMap.getOrElse(_, 0)).sum)
+    )
+  
   private def scheduleMaximumTasksAtTime(
     state: SchedulingState,
     candidateTasks: List[TaskInfo],
@@ -227,7 +230,7 @@ object ScheduleMS03 extends Schedule:
     for {
       physicalIds <- allocateResources(taskInfo.task.physicalResourceTypes, availablePhysical, usedPhysicalIds)
       humanNames <- allocateHumans(taskInfo.task.physicalResourceTypes, availableHuman, usedHumanNames)
-    } yield (physicalIds, humanNames)  
+    } yield (physicalIds, humanNames)
 
   private def isMatchingTask(t1: TaskInfo, t2: TaskInfo): Boolean =
     t1.orderId == t2.orderId && t1.productNumber == t2.productNumber && t1.taskId == t2.taskId
@@ -351,7 +354,7 @@ object ScheduleMS03 extends Schedule:
     scheduledTask: TaskInfo,
     schedule: TaskSchedule,
     currentTime: Int
-  ): SchedulingState = 
+  ): SchedulingState =
     val endTime = currentTime + scheduledTask.task.time.to
     val updatedAvailability = updateResourceAvailability(state.resourceAvailability, schedule, endTime)
     val progressKey = (scheduledTask.orderId, scheduledTask.productNumber)
