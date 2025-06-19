@@ -24,7 +24,7 @@ object ScheduleMS03 extends Schedule:
       allProductInstances = createAllProductInstances(orders, productTaskMap, taskMap)
       initialState = createInitialState(allProductInstances, physicalResources, humanResources)
       result <- scheduleAllTasks(initialState, allProductInstances, physicalResources, humanResources)
-      _ = println(s"Final scheduling result: $result")
+
     } yield result.schedules.reverse
 
   private def createInitialState(
@@ -247,7 +247,12 @@ object ScheduleMS03 extends Schedule:
        allocated: List[R],
        used: Set[R]
      ): Result[List[R]] =
-      remaining match
+      val sortedRemaining = remaining.sortBy { t =>
+        availableResources.count(res =>
+          matchesType(res, t) && !used.contains(extractId(res))
+        )
+      }
+      sortedRemaining match
         case Nil => Right(allocated.reverse)
         case requiredType :: rest =>
           availableResources.find { res =>
