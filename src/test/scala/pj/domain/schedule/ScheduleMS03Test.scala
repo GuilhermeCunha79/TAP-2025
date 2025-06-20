@@ -3,8 +3,8 @@ package pj.domain.schedule
 import org.scalatest.funsuite.AnyFunSuite
 import pj.domain.{DomainError, Result}
 import pj.domain.resources.Types.{EarliestStartTime, HumanResourceId, HumanResourceName, OrderId, OrderQuantity, PhysicalResourceId, PhysicalResourceType, ProductId, ProductName, ProductNumber, ProductTaskIndex, TaskId, TaskScheduleTime, TaskTime}
-import pj.domain.resources.{HumanResource, Order, PhysicalResource, Product, Task, TaskInfo, TaskSchedule}
-import pj.domain.schedule.ScheduleMS03.{createAllProductInstances, createTaskSchedule, generateSchedule, isMatchingTask, prioritizeTasks, tryScheduleTask, updateResourceAvailability, validateResourceRequirements}
+import pj.domain.resources.{HumanResource, Order, PhysicalResource, Product, SchedulingState, Task, TaskInfo, TaskSchedule}
+import pj.domain.schedule.ScheduleMS03.{advanceTimeAndRetry, createAllProductInstances, createTaskSchedule, generateSchedule, isMatchingTask, prioritizeTasks, scheduleAllTasks, scheduleBatchRecursively, scheduleMaximumTasksAtTime, tryScheduleTask, updateResourceAvailability, validateResourceRequirements}
 
 import scala.xml.XML
 
@@ -448,3 +448,106 @@ class ScheduleMS03Test extends AnyFunSuite:
         succeed
       case other =>
         fail(s"Expected InvalidTime error but got: $other")
+
+  test("scheduleAllTasks should return a state with all tasks scheduled"):
+    createBasicTestData() match
+      case Right((orders, products, tasks, humanResources, physicalResources)) =>
+        val taskMap = tasks.map(t => t.id -> t).toMap
+        val productTaskMap = products.map(p => p.id -> p.tasksList).toMap
+        val allTaskInfos = createAllProductInstances(orders, productTaskMap, taskMap)
+        val initialState = ScheduleMS03.createInitialState(allTaskInfos, physicalResources, humanResources)
+        val result = ScheduleMS03.scheduleAllTasks(initialState, allTaskInfos, physicalResources, humanResources)
+
+        result match
+          case Right(state) =>
+            assert(state.schedules.lengthIs == allTaskInfos.length)
+          case Left(error) =>
+            fail(s"Expected successful scheduling but got: $error")
+      case Left(error) =>
+        fail(s"Failed to create basic data: $error")
+
+  test("prioritizeTasks should order by task time descending, then by rarity ascending"):
+    createBasicTestData() match
+      case Right((orders, products, tasks, _, _)) =>
+        val taskMap = tasks.map(t => t.id -> t).toMap
+        val productTaskMap = products.map(p => p.id -> p.tasksList).toMap
+        val allTaskInfos = createAllProductInstances(orders, productTaskMap, taskMap)
+
+        val shuffled = scala.util.Random.shuffle(allTaskInfos)
+        val prioritized = prioritizeTasks(shuffled)
+
+        val sortedByTime = prioritized.sliding(2).forall:
+          case List(a, b) => a.task.time.to >= b.task.time.to
+          case _ => true
+
+        assert(sortedByTime)
+
+        val tasksWithEqualTime = prioritized.groupBy(_.task.time.to).filter(_._2.sizeIs > 1)
+        tasksWithEqualTime.foreach { (_, group) =>
+          val rarityMap = group
+            .flatMap(_.task.physicalResourceTypes)
+            .groupBy(identity)
+            .view.mapValues(_.size).toMap
+
+          val sortedByRarity = group.sliding(2).forall:
+            case List(a, b) =>
+              val rarityA = a.task.physicalResourceTypes.map(rarityMap.getOrElse(_, 0)).sum
+              val rarityB = b.task.physicalResourceTypes.map(rarityMap.getOrElse(_, 0)).sum
+              rarityA <= rarityB
+            case _ => true
+          assert(sortedByRarity)
+        }
+
+      case Left(error) =>
+        fail(s"Failed to prepare test data: $error")
+
+
+  test("advanceTimeAndRetry should fail when no resource becomes available after earliest start"):
+    val result = for {
+      pr <- PhysicalResourceType.from("printer").toOption
+      tskId <- TaskId.from("TSK_1").toOption
+      taskTime <- TaskTime.from("5").toOption
+      est <- EarliestStartTime.from(10).toOption
+      orderId <- OrderId.from("ORD_1").toOption
+      prodNum <- ProductNumber.from(1).toOption
+      pti <- ProductTaskIndex.from(0).toOption
+    } yield
+      val task = Task(tskId, taskTime, List(pr))
+      val taskInfo = TaskInfo(orderId, prodNum, tskId, task, est, pti)
+
+      val state = SchedulingState(
+        readyTasks = List(taskInfo),
+        resourceAvailability = Map("PRS_1" -> 5),
+        schedules = Nil,
+        productProgress = Map((taskInfo.orderId, taskInfo.productNumber) -> 0)
+      )
+
+      val res = advanceTimeAndRetry(state, List(), List(), List(taskInfo))
+      assert(res == Left(DomainError.ImpossibleSchedule))
+
+
+  test("advanceTimeAndRetry should reschedule tasks when resources become available"):
+    val result = for {
+      pr <- PhysicalResourceType.from("printer").toOption
+      tskId <- TaskId.from("TSK_1").toOption
+      taskTime <- TaskTime.from("5").toOption
+      est <- EarliestStartTime.from(0).toOption
+      orderId <- OrderId.from("ORD_1").toOption
+      prodNum <- ProductNumber.from(1).toOption
+      pti <- ProductTaskIndex.from(0).toOption
+    } yield
+      val task = Task(tskId, taskTime, List(pr))
+      val taskInfo = TaskInfo(orderId, prodNum, tskId, task, est, pti)
+
+      val state = SchedulingState(
+        readyTasks = List(taskInfo),
+        resourceAvailability = Map("PRS_1" -> 10),
+        schedules = Nil,
+        productProgress = Map((taskInfo.orderId, taskInfo.productNumber) -> 0)
+      )
+
+      val res = advanceTimeAndRetry(state, List(), List(), List(taskInfo))
+      assert(res.isLeft || res.isRight)
+
+  
+

@@ -188,7 +188,7 @@ object ScheduleMS03 extends Schedule:
   /**
    * Schedules the maximum number of tasks possible at the specified time
    */
-  private def scheduleMaximumTasksAtTime(
+  def scheduleMaximumTasksAtTime(
     state: SchedulingState,
     candidateTasks: List[TaskInfo],
     currentTime: Int,
@@ -223,7 +223,7 @@ object ScheduleMS03 extends Schedule:
   /**
    * Recursively schedules a batch of tasks, attempting each one sequentially
    */
-  private def scheduleBatchRecursively(
+  def scheduleBatchRecursively(
     state: SchedulingState,
     tasks: List[TaskInfo],
     currentTime: Int,
