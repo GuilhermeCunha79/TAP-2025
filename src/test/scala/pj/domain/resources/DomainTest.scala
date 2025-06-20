@@ -254,3 +254,55 @@ class DomainTest extends AnyFunSuite:
             schedule.humanResourceIds.isEmpty
         )
       case Left(err) => fail(s"Expected TaskSchedule, but got error: $err")
+
+  test("TaskInfo should be created successfully with valid data"):
+    val result = for {
+      orderId <- OrderId.from("ORD_1")
+      productNumber <- ProductNumber.from(1)
+      taskId <- TaskId.from("TSK_1")
+      taskTime <- TaskTime.from("15")
+      resType <- PhysicalResourceType.from("Paint")
+      earliestStart <- EarliestStartTime.from(0)
+      index <- ProductTaskIndex.from(0)
+    } yield
+      val task = Task(taskId, taskTime, List(resType))
+      TaskInfo(orderId, productNumber, taskId, task, earliestStart, index)
+  
+    result match
+      case Right(taskInfo) =>
+        assert(taskInfo.orderId.to == "ORD_1")
+        assert(taskInfo.productNumber.to == 1)
+        assert(taskInfo.taskId.to == "TSK_1")
+        assert(taskInfo.earliestStart.to == 0)
+        assert(taskInfo.productTaskIndex.to == 0)
+      case Left(err) => fail(s"Expected TaskInfo, but got error: $err")
+
+  test("SchedulingState should be created with initial data and empty progress"):
+    val result = for {
+      orderId <- OrderId.from("ORD_1")
+      productNumber <- ProductNumber.from(1)
+      taskId <- TaskId.from("TSK_1")
+      taskTime <- TaskTime.from("20")
+      resType <- PhysicalResourceType.from("Assemble")
+      earliestStart <- EarliestStartTime.from(5)
+      index <- ProductTaskIndex.from(0)
+    } yield
+      val task = Task(taskId, taskTime, List(resType))
+      val taskInfo = TaskInfo(orderId, productNumber, taskId, task, earliestStart, index)
+      val availability = Map("PHYS_PRS_1" -> 0, "HUMAN_HRS_1" -> 0)
+
+      SchedulingState(
+        readyTasks = List(taskInfo),
+        resourceAvailability = availability,
+        schedules = Nil,
+        productProgress = Map.empty
+      )
+
+    result match
+      case Right(state) =>
+        assert(state.readyTasks.nonEmpty)
+        assert(state.resourceAvailability.sizeIs == 2)
+        assert(state.schedules.isEmpty)
+        assert(state.productProgress.isEmpty)
+      case Left(err) => fail(s"Expected SchedulingState, but got error: $err")
+
