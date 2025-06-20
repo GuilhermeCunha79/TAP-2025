@@ -23,7 +23,10 @@ enum DomainError:
 
   case InvalidQuantity(error: String)
   case InvalidTime(error: String)
+  case InvalidEarliestStartTime (error: String)
+  case InvalidProductTaskIndex (error: String)
 
   case TaskUsesNonExistentPRT(error: String)
   case ResourceUnavailable(task: String, physicalResource: String)
+  case ImpossibleSchedule;
 

@@ -106,7 +106,7 @@ class ScheduleMS01Test extends AnyFunSuite:
 
     FileIO.load(filePath) match
       case Right(xml) =>
-        assert(ScheduleMS01.scheduleDataRetriever(xml) == result)
+        assert(Shared.scheduleDataRetriever(xml) == result)
       case Left(error) =>
         fail(s"Erro ao carregar o arquivo XML: $error")
 
@@ -268,7 +268,7 @@ class ScheduleMS01Test extends AnyFunSuite:
 
   test("allocateHumanResources should allocate matching and available humans"):
 
-    val result = for {
+    val result = for
       taskId <- TaskId.from("TSK_1")
       id1 <- HumanResourceId.from("HRS_1")
       id2 <- HumanResourceId.from("HRS_2")
@@ -278,7 +278,7 @@ class ScheduleMS01Test extends AnyFunSuite:
       name3 <- HumanResourceName.from("Charlie")
       prt <- PhysicalResourceType.from("printer")
       scn <- PhysicalResourceType.from("scanner")
-    } yield
+    yield
       val required = List(prt, scn)
       val humans = List(
         HumanResource(id1, name1, List(prt)),
@@ -287,7 +287,9 @@ class ScheduleMS01Test extends AnyFunSuite:
       )
       ScheduleMS01.allocateHumanResources(taskId, required, humans)
 
-    assert(result == Right(Right(List("Alice", "Bob"))))
+    val expected = Right(Right(List("HRS_1", "HRS_2")))
+
+    assert(result == expected)
 
 
   test("allocateHumanResources should fail if a required resource type is missing"):
@@ -361,7 +363,7 @@ class ScheduleMS01Test extends AnyFunSuite:
       )
       ScheduleMS01.allocateHumanResources(taskId, required, humans)
 
-    assert(result == Right(Right(List("Bob", "Alice"))))
+    assert(result == Right(Right(List("HRS_2", "HRS_1"))))
 
   test("generateSchedule should succeed with minimal valid input"):
     val prt = PhysicalResourceType.from("printer")
@@ -561,7 +563,7 @@ class ScheduleMS01Test extends AnyFunSuite:
         assert(taskSchedule.taskId.to == "TSK_1")
         assert(endTime == 3)
         assert(taskSchedule.physicalResourceIds == List("PRS_1"))
-        assert(taskSchedule.humanResourceNames == List("Alice"))
+        assert(taskSchedule.humanResourceIds == List("HRS_1"))
       case other =>
         fail(s"Expected successful scheduling, but got $other")
   }

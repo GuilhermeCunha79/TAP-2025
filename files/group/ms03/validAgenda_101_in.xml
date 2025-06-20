@@ -1,0 +1,46 @@
+<Production
+        xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../production.xsd "
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.dei.isep.ipp.pt/tap-2025">
+    <PhysicalResources>
+        <Physical id="PRS_01" type="PRST_MACHINE"/>
+        <Physical id="PRS_02" type="PRST_MACHINE"/>
+        <Physical id="PRS_03" type="PRST_ASSEMBLY"/>
+    </PhysicalResources>
+    <Tasks>
+        <Task id="TSK_01" time="15">
+            <PhysicalResource type="PRST_MACHINE"/>
+        </Task>
+        <Task id="TSK_02" time="8">
+            <PhysicalResource type="PRST_MACHINE"/>
+        </Task>
+        <Task id="TSK_03" time="5">
+            <PhysicalResource type="PRST_ASSEMBLY"/>
+        </Task>
+    </Tasks>
+    <HumanResources>
+        <Human id="HRS_01" name="Machine Operator 1">
+            <Handles type="PRST_MACHINE"/>
+        </Human>
+        <Human id="HRS_02" name="Machine Operator 2">
+            <Handles type="PRST_MACHINE"/>
+        </Human>
+        <Human id="HRS_03" name="Assembly Worker">
+            <Handles type="PRST_ASSEMBLY"/>
+        </Human>
+    </HumanResources>
+    <Products>
+        <Product id="PRD_01" name="Machined Product">
+            <Process tskref="TSK_01"/>
+            <Process tskref="TSK_03"/>
+        </Product>
+        <Product id="PRD_02" name="Alternative Product">
+            <Process tskref="TSK_02"/>
+            <Process tskref="TSK_03"/>
+        </Product>
+    </Products>
+    <Orders>
+        <Order id="ORD_01" prdref="PRD_01" quantity="3"/>
+        <Order id="ORD_02" prdref="PRD_02" quantity="2"/>
+    </Orders>
+</Production>

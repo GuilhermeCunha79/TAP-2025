@@ -1,0 +1,34 @@
+<Production
+        xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../production.xsd "
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.dei.isep.ipp.pt/tap-2025">
+    <PhysicalResources>
+        <Physical id="PRS_01" type="PRST_A"/>
+        <Physical id="PRS_02" type="PRST_B"/>
+    </PhysicalResources>
+    <Tasks>
+        <Task id="TSK_01" time="5">
+            <PhysicalResource type="PRST_A"/>
+        </Task>
+        <Task id="TSK_02" time="3">
+            <PhysicalResource type="PRST_B"/>
+        </Task>
+    </Tasks>
+    <HumanResources>
+        <Human id="HRS_01" name="Worker A">
+            <Handles type="PRST_A"/>
+        </Human>
+        <Human id="HRS_02" name="Worker B">
+            <Handles type="PRST_B"/>
+        </Human>
+    </HumanResources>
+    <Products>
+        <Product id="PRD_01" name="Simple Product">
+            <Process tskref="TSK_01"/>
+            <Process tskref="TSK_02"/>
+        </Product>
+    </Products>
+    <Orders>
+        <Order id="ORD_01" prdref="PRD_01" quantity="2"/>
+    </Orders>
+</Production>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Production xmlns="http://www.dei.isep.ipp.pt/tap-2025" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../production.xsd ">
+  <PhysicalResources>
+    <Physical id="PRS_1" type="PRST 1"/>
+  </PhysicalResources>
+  <Tasks>
+    <Task id="TSK_1" time="10">
+      <PhysicalResource type="PRST 1"/>
+    </Task>
+  </Tasks>    
+  <HumanResources>
+    <Human id="HRS_1" name="QuantityOrderTester">
+      <Handles type="PRST 1"/>
+    </Human>
+  </HumanResources>
+  <Products>
+    <Product id="PRD_1" name="Basic Product">
+      <Process tskref="TSK_1"/>
+    </Product>
+  </Products>
+  <Orders>
+    <!-- Quantidade zero não é válida -->
+    <Order id="ORD_1" prdref="PRD_1" quantity="0"/>
+    <!-- Quantidade negativa não é válida -->
+    <Order id="ORD_2" prdref="PRD_1" quantity="-5"/>
+    <!-- Quantidade não numérica não é válida -->
+    <Order id="ORD_3" prdref="PRD_1" quantity="abc"/>
+  </Orders>
+</Production> 

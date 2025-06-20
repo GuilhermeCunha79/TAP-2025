@@ -3,37 +3,10 @@ package pj.domain.schedule
 import pj.domain.*
 import pj.domain.resources.*
 import pj.domain.resources.Types.*
-import pj.xml.{XML, XMLToDomain}
 
 import scala.xml.Elem
 
 object ScheduleMS01 extends Schedule:
-
-  def scheduleDataRetriever(xml: Elem): Result[(
-      List[Order],
-      List[Product],
-      List[Task],
-      List[HumanResource],
-      List[PhysicalResource]
-    )] =
-    for {
-      physicalNode <- XML.fromNode(xml, "PhysicalResources")
-      physicalResources <- XML.traverse(physicalNode \ "Physical", XMLToDomain.getPhysicalResource)
-      physicalTypes = physicalResources.map(_.physical_type).distinct
-
-      tasksNode <- XML.fromNode(xml, "Tasks")
-      tasks <- XML.traverse(tasksNode \ "Task", XMLToDomain.getTask(physicalTypes))
-
-      humanNode <- XML.fromNode(xml, "HumanResources")
-      humanResources <- XML.traverse(humanNode \ "Human", XMLToDomain.getHumanResource(physicalTypes))
-
-      productsNode <- XML.fromNode(xml, "Products")
-      products <- XML.traverse(productsNode \ "Product", XMLToDomain.getProduct(tasks))
-
-      ordersNode <- XML.fromNode(xml, "Orders")
-      orders <- XML.traverse(ordersNode \ "Order", XMLToDomain.getOrder(products))
-    } yield (orders, products, tasks, humanResources, physicalResources)
-
 
   def allocatePhysicalResources(
        taskId: TaskId,
@@ -54,14 +27,14 @@ object ScheduleMS01 extends Schedule:
       taskId: TaskId,
       requiredTypes: List[PhysicalResourceType],
       availableHumans: List[HumanResource]
-    ): Result[List[HumanResourceName]] =
-    requiredTypes.foldLeft[Result[(List[HumanResourceName], Set[HumanResourceName])]](Right((Nil, Set.empty))) {
+    ): Result[List[HumanResourceId]] =
+    requiredTypes.foldLeft[Result[(List[HumanResourceId], Set[HumanResourceId])]](Right((Nil, Set.empty))) {
       case (accResult, requiredType) => for {
         (assignedNames, usedNames) <- accResult
         human <- availableHumans
-          .find(hr => hr.physicalResourceTypes.contains(requiredType) && !usedNames.contains(hr.name))
+          .find(hr => hr.physicalResourceTypes.contains(requiredType) && !usedNames.contains(hr.id))
           .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType.to))
-      } yield (human.name :: assignedNames, usedNames + human.name)
+      } yield (human.id :: assignedNames, usedNames + human.id)
     }.map(_._1.reverse)
 
 
@@ -147,33 +120,9 @@ object ScheduleMS01 extends Schedule:
   } yield
     (TaskSchedule(orderId, productNum, task.id, start, end, physical, humans), end.to)
 
-
-  private def toXml(schedules: List[TaskSchedule]): Elem =
-    <Schedule xmlns="http://www.dei.isep.ipp.pt/tap-2025"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd ">
-      {schedules.sortBy(s => (s.orderId.to, s.productNumber.to, s.start.to)).map { sched =>
-      <TaskSchedule order={sched.orderId.to}
-                    productNumber={sched.productNumber.to.toString}
-                    task={sched.taskId.to}
-                    start={sched.start.to.toString}
-                    end={sched.end.to.toString}>
-        <PhysicalResources>
-          {sched.physicalResourceIds.map(id =>
-            <Physical id={id.to}/>
-        )}
-        </PhysicalResources>
-        <HumanResources>
-          {sched.humanResourceNames.map(name =>
-            <Human name={name.to}/>
-        )}
-        </HumanResources>
-      </TaskSchedule>
-    }}
-    </Schedule>
-
   def create(xml: Elem): Result[Elem] =
     for {
-      (orders, products, tasks, humanResources, physicalResources) <- scheduleDataRetriever(xml)
+      (orders, products, tasks, humanResources, physicalResources) <- Shared.scheduleDataRetriever(xml)
       schedules <- generateSchedule(orders, products, tasks, humanResources, physicalResources)
-    } yield toXml(schedules)
+      outputXml = Shared.toXml(schedules, humanResources)
+    } yield outputXml

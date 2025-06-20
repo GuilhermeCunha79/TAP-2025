@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<Schedule 
+xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.dei.isep.ipp.pt/tap-2025">
+    <TaskSchedule order="ORD_01" productNumber="1" task="TSK_01" start="0" end="10">
+        <PhysicalResources>
+            <Physical id="PRS_05"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="name of 01"/>
+        </HumanResources>
+    </TaskSchedule>
+    <TaskSchedule order="ORD_01" productNumber="2" task="TSK_01" start="0" end="10">
+        <PhysicalResources>
+            <Physical id="PRS_07"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="name of 02"/>
+        </HumanResources>
+    </TaskSchedule>
+    <TaskSchedule order="ORD_01" productNumber="3" task="TSK_01" start="0" end="10">
+        <PhysicalResources>
+            <Physical id="PRS_14"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="name of 05"/>
+        </HumanResources>
+    </TaskSchedule>
+    <TaskSchedule order="ORD_01" productNumber="4" task="TSK_01" start="10" end="20">
+        <PhysicalResources>
+            <Physical id="PRS_05"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="name of 01"/>
+        </HumanResources>
+    </TaskSchedule>
+    <TaskSchedule order="ORD_02" productNumber="1" task="TSK_01" start="10" end="20">
+        <PhysicalResources>
+            <Physical id="PRS_07"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="name of 02"/>
+        </HumanResources>
+    </TaskSchedule>
+    <TaskSchedule order="ORD_03" productNumber="1" task="TSK_01" start="10" end="20">
+        <PhysicalResources>
+            <Physical id="PRS_14"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="name of 05"/>
+        </HumanResources>
+    </TaskSchedule>
+    <TaskSchedule order="ORD_01" productNumber="1" task="TSK_02" start="10" end="13">
+        <PhysicalResources>
+            <Physical id="PRS_01"/>
+            <Physical id="PRS_02"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="name of 03"/>
+            <Human name="name of 04"/>
+        </HumanResources>
+    </TaskSchedule>
+    <TaskSchedule order="ORD_01" productNumber="2" task="TSK_02" start="13" end="16">
+        <PhysicalResources>
+            <Physical id="PRS_01"/>
+            <Physical id="PRS_02"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="name of 03"/>
+            <Human name="name of 04"/>
+        </HumanResources>
+    </TaskSchedule>
+    <TaskSchedule order="ORD_01" productNumber="3" task="TSK_02" start="16" end="19">
+        <PhysicalResources>
+            <Physical id="PRS_01"/>
+            <Physical id="PRS_02"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="name of 03"/>
+            <Human name="name of 04"/>
+        </HumanResources>
+    </TaskSchedule>
+    <TaskSchedule order="ORD_01" productNumber="4" task="TSK_02" start="20" end="23">
+        <PhysicalResources>
+            <Physical id="PRS_01"/>
+            <Physical id="PRS_02"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="name of 01"/>
+            <Human name="name of 02"/>
+        </HumanResources>
+    </TaskSchedule>
+</Schedule>
+

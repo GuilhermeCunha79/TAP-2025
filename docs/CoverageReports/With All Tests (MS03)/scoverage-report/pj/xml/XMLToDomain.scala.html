@@ -1,0 +1,2407 @@
+<html>
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title id="title">
+          pj\xml\XMLToDomain.scala.html
+        </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/css/theme.default.min.css" type="text/css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/js/jquery.tablesorter.min.js"></script><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" type="text/css"/><script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script><script type="text/javascript">
+        $(document).ready(function() {$(".tablesorter").tablesorter();});
+      </script>
+        <style>
+          table.codegrid { font-family: monospace; font-size: 12px; width: auto!important; }table.statementlist { width: auto!important; font-size: 13px; } table.codegrid td { padding: 0!important; border: 0!important } table td.linenumber { width: 40px!important; } 
+        </style>
+      </head>
+      <body style="font-family: monospace;">
+        <ul class="nav nav-tabs">
+          <li>
+            <a href="#codegrid" data-toggle="tab">Codegrid</a>
+          </li>
+          <li>
+            <a href="#statementlist" data-toggle="tab">Statement List</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="codegrid">
+            <pre style='font-size: 12pt; font-family: courier, monospace;'>1 <span style=''>package pj.xml
+</span>2 <span style=''>
+</span>3 <span style=''>import pj.domain.DomainError.*
+</span>4 <span style=''>import pj.domain.Result
+</span>5 <span style=''>import pj.domain.resources.*
+</span>6 <span style=''>import pj.domain.resources.Types.*
+</span>7 <span style=''>
+</span>8 <span style=''>import scala.xml.{Elem, Node}
+</span>9 <span style=''>
+</span>10 <span style=''>object XMLToDomain :
+</span>11 <span style=''>  </span><span style='background: #AEF1AE'>def getProduct</span><span style=''>(tasks: List[Task])(xml: Node): Result[Product] =
+</span>12 <span style=''>    </span><span style='background: #AEF1AE'>for
+</span>13 <span style=''></span><span style='background: #AEF1AE'>      id &lt;- XML.fromAttribute(xml, &quot;id&quot;)
+</span>14 <span style=''></span><span style='background: #AEF1AE'>      name &lt;- XML.fromAttribute(xml, &quot;name&quot;)
+</span>15 <span style=''></span><span style='background: #AEF1AE'>      productId &lt;- ProductId.from(id)
+</span>16 <span style=''></span><span style='background: #AEF1AE'>      productName &lt;- ProductName.from(name)
+</span>17 <span style=''></span><span style='background: #AEF1AE'>      tasksList &lt;- XML.traverse(xml \ &quot;Process&quot;, { tasksNode =&gt;
+</span>18 <span style=''></span><span style='background: #AEF1AE'>        XML.fromAttribute(tasksNode, &quot;tskref&quot;).flatMap { taskRefString =&gt;
+</span>19 <span style=''></span><span style='background: #AEF1AE'>          val isValidType = tasks.exists(_.id.to == taskRefString)
+</span>20 <span style=''></span><span style='background: #AEF1AE'>          if (isValidType) {
+</span>21 <span style=''></span><span style='background: #AEF1AE'>            TaskId.from(taskRefString)
+</span>22 <span style=''></span><span style='background: #AEF1AE'>          } else {
+</span>23 <span style=''></span><span style='background: #AEF1AE'>            Left(TaskDoesNotExist(taskRefString))
+</span>24 <span style=''></span><span style='background: #AEF1AE'>          }
+</span>25 <span style=''></span><span style='background: #AEF1AE'>        }
+</span>26 <span style=''></span><span style='background: #AEF1AE'>      })
+</span>27 <span style=''></span><span style='background: #AEF1AE'>    yield Product(productId, productName, tasksList)</span><span style=''>
+</span>28 <span style=''>
+</span>29 <span style=''>  </span><span style='background: #AEF1AE'>def getOrder</span><span style=''>(products: List[Product])(xml: Node): Result[Order] =
+</span>30 <span style=''>    </span><span style='background: #AEF1AE'>for
+</span>31 <span style=''></span><span style='background: #AEF1AE'>      rawOrderId &lt;- XML.fromAttribute(xml, &quot;id&quot;)
+</span>32 <span style=''></span><span style='background: #AEF1AE'>      rawProductId &lt;- XML.fromAttribute(xml, &quot;prdref&quot;)
+</span>33 <span style=''></span><span style='background: #AEF1AE'>      rawQuantity &lt;- XML.fromAttribute(xml, &quot;quantity&quot;)
+</span>34 <span style=''></span><span style='background: #AEF1AE'>      orderId &lt;- OrderId.from(rawOrderId)
+</span>35 <span style=''></span><span style='background: #AEF1AE'>      quantity &lt;- OrderQuantity.from(rawQuantity)
+</span>36 <span style=''></span><span style='background: #AEF1AE'>      productId &lt;-
+</span>37 <span style=''></span><span style='background: #AEF1AE'>        val productExists = products.exists(_.id.to == rawProductId)
+</span>38 <span style=''></span><span style='background: #AEF1AE'>        if (productExists)
+</span>39 <span style=''></span><span style='background: #AEF1AE'>          ProductId.from(rawProductId)
+</span>40 <span style=''></span><span style='background: #AEF1AE'>        else
+</span>41 <span style=''></span><span style='background: #AEF1AE'>          Left(ProductDoesNotExist(rawProductId))
+</span>42 <span style=''></span><span style='background: #AEF1AE'>    yield Order(orderId, quantity, productId)</span><span style=''>
+</span>43 <span style=''>
+</span>44 <span style=''>  </span><span style='background: #AEF1AE'>def getPhysicalResource</span><span style=''>(xml: Node): Result[PhysicalResource] =
+</span>45 <span style=''>    </span><span style='background: #AEF1AE'>for
+</span>46 <span style=''></span><span style='background: #AEF1AE'>      rawPhysicalResourceId &lt;- XML.fromAttribute(xml, &quot;id&quot;)
+</span>47 <span style=''></span><span style='background: #AEF1AE'>      rawPhysicalResourceType &lt;- XML.fromAttribute(xml, &quot;type&quot;)
+</span>48 <span style=''></span><span style='background: #AEF1AE'>      physicalResourceId &lt;- PhysicalResourceId.from(rawPhysicalResourceId)
+</span>49 <span style=''></span><span style='background: #AEF1AE'>      physicalResourceType &lt;- PhysicalResourceType.from(rawPhysicalResourceType)
+</span>50 <span style=''></span><span style='background: #AEF1AE'>    yield PhysicalResource(physicalResourceId, physicalResourceType)</span><span style=''>
+</span>51 <span style=''>
+</span>52 <span style=''>  </span><span style='background: #AEF1AE'>def getTask</span><span style=''>(validPhysicalResourceTypes: List[PhysicalResourceType])(xml: Node): Result[Task] =
+</span>53 <span style=''>    </span><span style='background: #AEF1AE'>for
+</span>54 <span style=''></span><span style='background: #AEF1AE'>      rawTaskId &lt;- XML.fromAttribute(xml, &quot;id&quot;)
+</span>55 <span style=''></span><span style='background: #AEF1AE'>      rawTaskTime &lt;- XML.fromAttribute(xml, &quot;time&quot;)
+</span>56 <span style=''></span><span style='background: #AEF1AE'>      taskId &lt;- TaskId.from(rawTaskId)
+</span>57 <span style=''></span><span style='background: #AEF1AE'>      taskTime &lt;- TaskTime.from(rawTaskTime)
+</span>58 <span style=''></span><span style='background: #AEF1AE'>      taskPhysicalResources &lt;- XML.traverse(xml \ &quot;PhysicalResource&quot;, { physicalResourceNode =&gt;
+</span>59 <span style=''></span><span style='background: #AEF1AE'>        for
+</span>60 <span style=''></span><span style='background: #AEF1AE'>          rawType &lt;- XML.fromAttribute(physicalResourceNode, &quot;type&quot;)
+</span>61 <span style=''></span><span style='background: #AEF1AE'>          prt &lt;- PhysicalResourceType.from(rawType)
+</span>62 <span style=''></span><span style='background: #AEF1AE'>          _ &lt;-
+</span>63 <span style=''></span><span style='background: #AEF1AE'>            if validPhysicalResourceTypes.contains(prt) then Right(())
+</span>64 <span style=''></span><span style='background: #AEF1AE'>            else Left(TaskUsesNonExistentPRT(prt.to))
+</span>65 <span style=''></span><span style='background: #AEF1AE'>        yield prt
+</span>66 <span style=''></span><span style='background: #AEF1AE'>      })
+</span>67 <span style=''></span><span style='background: #AEF1AE'>    yield Task(taskId, taskTime, taskPhysicalResources)</span><span style=''>
+</span>68 <span style=''>
+</span>69 <span style=''>
+</span>70 <span style=''>  </span><span style='background: #AEF1AE'>def getHumanResource</span><span style=''>(validPhysicalResourceTypes: List[PhysicalResourceType])(xml: Node): Result[HumanResource] =
+</span>71 <span style=''>    </span><span style='background: #AEF1AE'>for
+</span>72 <span style=''></span><span style='background: #AEF1AE'>      rawHumanResourceId &lt;- XML.fromAttribute(xml, &quot;id&quot;)
+</span>73 <span style=''></span><span style='background: #AEF1AE'>      humanResourceId &lt;- HumanResourceId.from(rawHumanResourceId)
+</span>74 <span style=''></span><span style='background: #AEF1AE'>      rawName &lt;- XML.fromAttribute(xml, &quot;name&quot;)
+</span>75 <span style=''></span><span style='background: #AEF1AE'>      humanResourceName &lt;- HumanResourceName.from(rawName)
+</span>76 <span style=''></span><span style='background: #AEF1AE'>      handledPRTs &lt;- XML.traverse(xml \ &quot;Handles&quot;, { physicalResourceNode =&gt;
+</span>77 <span style=''></span><span style='background: #AEF1AE'>        for
+</span>78 <span style=''></span><span style='background: #AEF1AE'>          rawType &lt;- XML.fromAttribute(physicalResourceNode, &quot;type&quot;)
+</span>79 <span style=''></span><span style='background: #AEF1AE'>          prt &lt;- PhysicalResourceType.from(rawType)
+</span>80 <span style=''></span><span style='background: #AEF1AE'>          _ &lt;-
+</span>81 <span style=''></span><span style='background: #AEF1AE'>            if validPhysicalResourceTypes.contains(prt) then Right(())
+</span>82 <span style=''></span><span style='background: #AEF1AE'>            else Left(PhysicalResourceTypeNotFound(rawHumanResourceId, prt.to))
+</span>83 <span style=''></span><span style='background: #AEF1AE'>        yield prt
+</span>84 <span style=''></span><span style='background: #AEF1AE'>      })
+</span>85 <span style=''></span><span style='background: #AEF1AE'>    yield HumanResource(humanResourceId, humanResourceName, handledPRTs)</span><span style=''>
+</span></pre>
+          </div>
+          <div class="tab-pane" id="statementlist">
+            <table cellspacing="0" cellpadding="0" class="table statementlist">
+      <tr>
+        <th>Line</th>
+        <th>Stmt Id</th>
+        <th>Pos</th>
+        <th>Tree</th>
+        <th>Symbol</th>
+        <th>Tests</th>
+        <th>Code</th>
+      </tr><tr>
+        <td>
+          11
+        </td>
+        <td>
+          662
+        </td>
+        <td>
+          200
+          -
+          214
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          getProduct
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def getProduct
+        </td>
+      </tr><tr>
+        <td>
+          12
+        </td>
+        <td>
+          643
+        </td>
+        <td>
+          269
+          -
+          881
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          for\r\n      id &lt;- XML.fromAttribute(xml, &quot;id&quot;)\r\n      name &lt;- XML.fromAttribute(xml, &quot;name&quot;)\r\n      productId &lt;- ProductId.from(id)\r\n      productName &lt;- ProductName.from(name)\r\n      tasksList &lt;- XML.traverse(xml \\ &quot;Process&quot;, { tasksNode =&gt;\r\n        XML.fromAttribute(tasksNode, &quot;tskref&quot;).flatMap { taskRefString =&gt;\r\n          val isValidType = tasks.exists(_.id.to == taskRefString)\r\n          if (isValidType) {\r\n            TaskId.from(taskRefString)\r\n          } else {\r\n            Left(TaskDoesNotExist(taskRefString))\r\n          }\r\n        }\r\n      })\r\n    yield Product(productId, productName, tasksList)
+        </td>
+      </tr><tr>
+        <td>
+          13
+        </td>
+        <td>
+          644
+        </td>
+        <td>
+          286
+          -
+          314
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fromAttribute
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.fromAttribute(xml, &quot;id&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          14
+        </td>
+        <td>
+          645
+        </td>
+        <td>
+          322
+          -
+          881
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          name &lt;- XML.fromAttribute(xml, &quot;name&quot;)\r\n      productId &lt;- ProductId.from(id)\r\n      productName &lt;- ProductName.from(name)\r\n      tasksList &lt;- XML.traverse(xml \\ &quot;Process&quot;, { tasksNode =&gt;\r\n        XML.fromAttribute(tasksNode, &quot;tskref&quot;).flatMap { taskRefString =&gt;\r\n          val isValidType = tasks.exists(_.id.to == taskRefString)\r\n          if (isValidType) {\r\n            TaskId.from(taskRefString)\r\n          } else {\r\n            Left(TaskDoesNotExist(taskRefString))\r\n          }\r\n        }\r\n      })\r\n    yield Product(productId, productName, tasksList)
+        </td>
+      </tr><tr>
+        <td>
+          14
+        </td>
+        <td>
+          646
+        </td>
+        <td>
+          330
+          -
+          360
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fromAttribute
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.fromAttribute(xml, &quot;name&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          15
+        </td>
+        <td>
+          648
+        </td>
+        <td>
+          381
+          -
+          399
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ProductId.from(id)
+        </td>
+      </tr><tr>
+        <td>
+          15
+        </td>
+        <td>
+          647
+        </td>
+        <td>
+          368
+          -
+          881
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          productId &lt;- ProductId.from(id)\r\n      productName &lt;- ProductName.from(name)\r\n      tasksList &lt;- XML.traverse(xml \\ &quot;Process&quot;, { tasksNode =&gt;\r\n        XML.fromAttribute(tasksNode, &quot;tskref&quot;).flatMap { taskRefString =&gt;\r\n          val isValidType = tasks.exists(_.id.to == taskRefString)\r\n          if (isValidType) {\r\n            TaskId.from(taskRefString)\r\n          } else {\r\n            Left(TaskDoesNotExist(taskRefString))\r\n          }\r\n        }\r\n      })\r\n    yield Product(productId, productName, tasksList)
+        </td>
+      </tr><tr>
+        <td>
+          16
+        </td>
+        <td>
+          650
+        </td>
+        <td>
+          422
+          -
+          444
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ProductName.from(name)
+        </td>
+      </tr><tr>
+        <td>
+          16
+        </td>
+        <td>
+          649
+        </td>
+        <td>
+          407
+          -
+          881
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          productName &lt;- ProductName.from(name)\r\n      tasksList &lt;- XML.traverse(xml \\ &quot;Process&quot;, { tasksNode =&gt;\r\n        XML.fromAttribute(tasksNode, &quot;tskref&quot;).flatMap { taskRefString =&gt;\r\n          val isValidType = tasks.exists(_.id.to == taskRefString)\r\n          if (isValidType) {\r\n            TaskId.from(taskRefString)\r\n          } else {\r\n            Left(TaskDoesNotExist(taskRefString))\r\n          }\r\n        }\r\n      })\r\n    yield Product(productId, productName, tasksList)
+        </td>
+      </tr><tr>
+        <td>
+          17
+        </td>
+        <td>
+          651
+        </td>
+        <td>
+          452
+          -
+          881
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          tasksList &lt;- XML.traverse(xml \\ &quot;Process&quot;, { tasksNode =&gt;\r\n        XML.fromAttribute(tasksNode, &quot;tskref&quot;).flatMap { taskRefString =&gt;\r\n          val isValidType = tasks.exists(_.id.to == taskRefString)\r\n          if (isValidType) {\r\n            TaskId.from(taskRefString)\r\n          } else {\r\n            Left(TaskDoesNotExist(taskRefString))\r\n          }\r\n        }\r\n      })\r\n    yield Product(productId, productName, tasksList)
+        </td>
+      </tr><tr>
+        <td>
+          17
+        </td>
+        <td>
+          653
+        </td>
+        <td>
+          478
+          -
+          493
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          \\
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          xml \\ &quot;Process&quot;
+        </td>
+      </tr><tr>
+        <td>
+          17
+        </td>
+        <td>
+          652
+        </td>
+        <td>
+          465
+          -
+          827
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          traverse
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.traverse(xml \\ &quot;Process&quot;, { tasksNode =&gt;\r\n        XML.fromAttribute(tasksNode, &quot;tskref&quot;).flatMap { taskRefString =&gt;\r\n          val isValidType = tasks.exists(_.id.to == taskRefString)\r\n          if (isValidType) {\r\n            TaskId.from(taskRefString)\r\n          } else {\r\n            Left(TaskDoesNotExist(taskRefString))\r\n          }\r\n        }\r\n      })
+        </td>
+      </tr><tr>
+        <td>
+          18
+        </td>
+        <td>
+          654
+        </td>
+        <td>
+          519
+          -
+          817
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.fromAttribute(tasksNode, &quot;tskref&quot;).flatMap { taskRefString =&gt;\r\n          val isValidType = tasks.exists(_.id.to == taskRefString)\r\n          if (isValidType) {\r\n            TaskId.from(taskRefString)\r\n          } else {\r\n            Left(TaskDoesNotExist(taskRefString))\r\n          }\r\n        }
+        </td>
+      </tr><tr>
+        <td>
+          18
+        </td>
+        <td>
+          655
+        </td>
+        <td>
+          519
+          -
+          557
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fromAttribute
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.fromAttribute(tasksNode, &quot;tskref&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          19
+        </td>
+        <td>
+          657
+        </td>
+        <td>
+          627
+          -
+          634
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          _.id.to
+        </td>
+      </tr><tr>
+        <td>
+          19
+        </td>
+        <td>
+          656
+        </td>
+        <td>
+          614
+          -
+          652
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          exists
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          tasks.exists(_.id.to == taskRefString)
+        </td>
+      </tr><tr>
+        <td>
+          20
+        </td>
+        <td>
+          659
+        </td>
+        <td>
+          681
+          -
+          735
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          {\r\n            TaskId.from(taskRefString)\r\n          }
+        </td>
+      </tr><tr>
+        <td>
+          21
+        </td>
+        <td>
+          658
+        </td>
+        <td>
+          696
+          -
+          722
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          TaskId.from(taskRefString)
+        </td>
+      </tr><tr>
+        <td>
+          22
+        </td>
+        <td>
+          661
+        </td>
+        <td>
+          741
+          -
+          806
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          {\r\n            Left(TaskDoesNotExist(taskRefString))\r\n          }
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          660
+        </td>
+        <td>
+          756
+          -
+          760
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Left
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Left
+        </td>
+      </tr><tr>
+        <td>
+          29
+        </td>
+        <td>
+          680
+        </td>
+        <td>
+          887
+          -
+          899
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          getOrder
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def getOrder
+        </td>
+      </tr><tr>
+        <td>
+          30
+        </td>
+        <td>
+          663
+        </td>
+        <td>
+          958
+          -
+          1488
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          for\r\n      rawOrderId &lt;- XML.fromAttribute(xml, &quot;id&quot;)\r\n      rawProductId &lt;- XML.fromAttribute(xml, &quot;prdref&quot;)\r\n      rawQuantity &lt;- XML.fromAttribute(xml, &quot;quantity&quot;)\r\n      orderId &lt;- OrderId.from(rawOrderId)\r\n      quantity &lt;- OrderQuantity.from(rawQuantity)\r\n      productId &lt;-\r\n        val productExists = products.exists(_.id.to == rawProductId)\r\n        if (productExists)\r\n          ProductId.from(rawProductId)\r\n        else\r\n          Left(ProductDoesNotExist(rawProductId))\r\n    yield Order(orderId, quantity, productId)
+        </td>
+      </tr><tr>
+        <td>
+          31
+        </td>
+        <td>
+          664
+        </td>
+        <td>
+          983
+          -
+          1011
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fromAttribute
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.fromAttribute(xml, &quot;id&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          32
+        </td>
+        <td>
+          666
+        </td>
+        <td>
+          1035
+          -
+          1067
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fromAttribute
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.fromAttribute(xml, &quot;prdref&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          32
+        </td>
+        <td>
+          665
+        </td>
+        <td>
+          1019
+          -
+          1488
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          rawProductId &lt;- XML.fromAttribute(xml, &quot;prdref&quot;)\r\n      rawQuantity &lt;- XML.fromAttribute(xml, &quot;quantity&quot;)\r\n      orderId &lt;- OrderId.from(rawOrderId)\r\n      quantity &lt;- OrderQuantity.from(rawQuantity)\r\n      productId &lt;-\r\n        val productExists = products.exists(_.id.to == rawProductId)\r\n        if (productExists)\r\n          ProductId.from(rawProductId)\r\n        else\r\n          Left(ProductDoesNotExist(rawProductId))\r\n    yield Order(orderId, quantity, productId)
+        </td>
+      </tr><tr>
+        <td>
+          33
+        </td>
+        <td>
+          668
+        </td>
+        <td>
+          1090
+          -
+          1124
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fromAttribute
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.fromAttribute(xml, &quot;quantity&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          33
+        </td>
+        <td>
+          667
+        </td>
+        <td>
+          1075
+          -
+          1488
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          rawQuantity &lt;- XML.fromAttribute(xml, &quot;quantity&quot;)\r\n      orderId &lt;- OrderId.from(rawOrderId)\r\n      quantity &lt;- OrderQuantity.from(rawQuantity)\r\n      productId &lt;-\r\n        val productExists = products.exists(_.id.to == rawProductId)\r\n        if (productExists)\r\n          ProductId.from(rawProductId)\r\n        else\r\n          Left(ProductDoesNotExist(rawProductId))\r\n    yield Order(orderId, quantity, productId)
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          669
+        </td>
+        <td>
+          1132
+          -
+          1488
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          orderId &lt;- OrderId.from(rawOrderId)\r\n      quantity &lt;- OrderQuantity.from(rawQuantity)\r\n      productId &lt;-\r\n        val productExists = products.exists(_.id.to == rawProductId)\r\n        if (productExists)\r\n          ProductId.from(rawProductId)\r\n        else\r\n          Left(ProductDoesNotExist(rawProductId))\r\n    yield Order(orderId, quantity, productId)
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          670
+        </td>
+        <td>
+          1143
+          -
+          1167
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          OrderId.from(rawOrderId)
+        </td>
+      </tr><tr>
+        <td>
+          35
+        </td>
+        <td>
+          672
+        </td>
+        <td>
+          1187
+          -
+          1218
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          OrderQuantity.from(rawQuantity)
+        </td>
+      </tr><tr>
+        <td>
+          35
+        </td>
+        <td>
+          671
+        </td>
+        <td>
+          1175
+          -
+          1488
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          quantity &lt;- OrderQuantity.from(rawQuantity)\r\n      productId &lt;-\r\n        val productExists = products.exists(_.id.to == rawProductId)\r\n        if (productExists)\r\n          ProductId.from(rawProductId)\r\n        else\r\n          Left(ProductDoesNotExist(rawProductId))\r\n    yield Order(orderId, quantity, productId)
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          673
+        </td>
+        <td>
+          1226
+          -
+          1488
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          productId &lt;-\r\n        val productExists = products.exists(_.id.to == rawProductId)\r\n        if (productExists)\r\n          ProductId.from(rawProductId)\r\n        else\r\n          Left(ProductDoesNotExist(rawProductId))\r\n    yield Order(orderId, quantity, productId)
+        </td>
+      </tr><tr>
+        <td>
+          37
+        </td>
+        <td>
+          675
+        </td>
+        <td>
+          1284
+          -
+          1291
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          _.id.to
+        </td>
+      </tr><tr>
+        <td>
+          37
+        </td>
+        <td>
+          674
+        </td>
+        <td>
+          1268
+          -
+          1308
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          exists
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          products.exists(_.id.to == rawProductId)
+        </td>
+      </tr><tr>
+        <td>
+          39
+        </td>
+        <td>
+          677
+        </td>
+        <td>
+          1348
+          -
+          1376
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ProductId.from(rawProductId)
+        </td>
+      </tr><tr>
+        <td>
+          39
+        </td>
+        <td>
+          676
+        </td>
+        <td>
+          1348
+          -
+          1376
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ProductId.from(rawProductId)
+        </td>
+      </tr><tr>
+        <td>
+          41
+        </td>
+        <td>
+          678
+        </td>
+        <td>
+          1402
+          -
+          1406
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Left
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Left
+        </td>
+      </tr><tr>
+        <td>
+          41
+        </td>
+        <td>
+          679
+        </td>
+        <td>
+          1402
+          -
+          1441
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Left(ProductDoesNotExist(rawProductId))
+        </td>
+      </tr><tr>
+        <td>
+          44
+        </td>
+        <td>
+          689
+        </td>
+        <td>
+          1494
+          -
+          1517
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          getPhysicalResource
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def getPhysicalResource
+        </td>
+      </tr><tr>
+        <td>
+          45
+        </td>
+        <td>
+          681
+        </td>
+        <td>
+          1562
+          -
+          1919
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          for\r\n      rawPhysicalResourceId &lt;- XML.fromAttribute(xml, &quot;id&quot;)\r\n      rawPhysicalResourceType &lt;- XML.fromAttribute(xml, &quot;type&quot;)\r\n      physicalResourceId &lt;- PhysicalResourceId.from(rawPhysicalResourceId)\r\n      physicalResourceType &lt;- PhysicalResourceType.from(rawPhysicalResourceType)\r\n    yield PhysicalResource(physicalResourceId, physicalResourceType)
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          682
+        </td>
+        <td>
+          1598
+          -
+          1626
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fromAttribute
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.fromAttribute(xml, &quot;id&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          47
+        </td>
+        <td>
+          684
+        </td>
+        <td>
+          1661
+          -
+          1691
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fromAttribute
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.fromAttribute(xml, &quot;type&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          47
+        </td>
+        <td>
+          683
+        </td>
+        <td>
+          1634
+          -
+          1919
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          rawPhysicalResourceType &lt;- XML.fromAttribute(xml, &quot;type&quot;)\r\n      physicalResourceId &lt;- PhysicalResourceId.from(rawPhysicalResourceId)\r\n      physicalResourceType &lt;- PhysicalResourceType.from(rawPhysicalResourceType)\r\n    yield PhysicalResource(physicalResourceId, physicalResourceType)
+        </td>
+      </tr><tr>
+        <td>
+          48
+        </td>
+        <td>
+          686
+        </td>
+        <td>
+          1721
+          -
+          1767
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          PhysicalResourceId.from(rawPhysicalResourceId)
+        </td>
+      </tr><tr>
+        <td>
+          48
+        </td>
+        <td>
+          685
+        </td>
+        <td>
+          1699
+          -
+          1919
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          physicalResourceId &lt;- PhysicalResourceId.from(rawPhysicalResourceId)\r\n      physicalResourceType &lt;- PhysicalResourceType.from(rawPhysicalResourceType)\r\n    yield PhysicalResource(physicalResourceId, physicalResourceType)
+        </td>
+      </tr><tr>
+        <td>
+          49
+        </td>
+        <td>
+          687
+        </td>
+        <td>
+          1775
+          -
+          1919
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          physicalResourceType &lt;- PhysicalResourceType.from(rawPhysicalResourceType)\r\n    yield PhysicalResource(physicalResourceId, physicalResourceType)
+        </td>
+      </tr><tr>
+        <td>
+          49
+        </td>
+        <td>
+          688
+        </td>
+        <td>
+          1799
+          -
+          1849
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          PhysicalResourceType.from(rawPhysicalResourceType)
+        </td>
+      </tr><tr>
+        <td>
+          52
+        </td>
+        <td>
+          713
+        </td>
+        <td>
+          1925
+          -
+          1936
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          getTask
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def getTask
+        </td>
+      </tr><tr>
+        <td>
+          53
+        </td>
+        <td>
+          690
+        </td>
+        <td>
+          2025
+          -
+          2678
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          for\r\n      rawTaskId &lt;- XML.fromAttribute(xml, &quot;id&quot;)\r\n      rawTaskTime &lt;- XML.fromAttribute(xml, &quot;time&quot;)\r\n      taskId &lt;- TaskId.from(rawTaskId)\r\n      taskTime &lt;- TaskTime.from(rawTaskTime)\r\n      taskPhysicalResources &lt;- XML.traverse(xml \\ &quot;PhysicalResource&quot;, { physicalResourceNode =&gt;\r\n        for\r\n          rawType &lt;- XML.fromAttribute(physicalResourceNode, &quot;type&quot;)\r\n          prt &lt;- PhysicalResourceType.from(rawType)\r\n          _ &lt;-\r\n            if validPhysicalResourceTypes.contains(prt) then Right(())\r\n            else Left(TaskUsesNonExistentPRT(prt.to))\r\n        yield prt\r\n      })\r\n    yield Task(taskId, taskTime, taskPhysicalResources)
+        </td>
+      </tr><tr>
+        <td>
+          54
+        </td>
+        <td>
+          691
+        </td>
+        <td>
+          2049
+          -
+          2077
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fromAttribute
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.fromAttribute(xml, &quot;id&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          55
+        </td>
+        <td>
+          693
+        </td>
+        <td>
+          2100
+          -
+          2130
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fromAttribute
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.fromAttribute(xml, &quot;time&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          55
+        </td>
+        <td>
+          692
+        </td>
+        <td>
+          2085
+          -
+          2678
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          rawTaskTime &lt;- XML.fromAttribute(xml, &quot;time&quot;)\r\n      taskId &lt;- TaskId.from(rawTaskId)\r\n      taskTime &lt;- TaskTime.from(rawTaskTime)\r\n      taskPhysicalResources &lt;- XML.traverse(xml \\ &quot;PhysicalResource&quot;, { physicalResourceNode =&gt;\r\n        for\r\n          rawType &lt;- XML.fromAttribute(physicalResourceNode, &quot;type&quot;)\r\n          prt &lt;- PhysicalResourceType.from(rawType)\r\n          _ &lt;-\r\n            if validPhysicalResourceTypes.contains(prt) then Right(())\r\n            else Left(TaskUsesNonExistentPRT(prt.to))\r\n        yield prt\r\n      })\r\n    yield Task(taskId, taskTime, taskPhysicalResources)
+        </td>
+      </tr><tr>
+        <td>
+          56
+        </td>
+        <td>
+          695
+        </td>
+        <td>
+          2148
+          -
+          2170
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          TaskId.from(rawTaskId)
+        </td>
+      </tr><tr>
+        <td>
+          56
+        </td>
+        <td>
+          694
+        </td>
+        <td>
+          2138
+          -
+          2678
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          taskId &lt;- TaskId.from(rawTaskId)\r\n      taskTime &lt;- TaskTime.from(rawTaskTime)\r\n      taskPhysicalResources &lt;- XML.traverse(xml \\ &quot;PhysicalResource&quot;, { physicalResourceNode =&gt;\r\n        for\r\n          rawType &lt;- XML.fromAttribute(physicalResourceNode, &quot;type&quot;)\r\n          prt &lt;- PhysicalResourceType.from(rawType)\r\n          _ &lt;-\r\n            if validPhysicalResourceTypes.contains(prt) then Right(())\r\n            else Left(TaskUsesNonExistentPRT(prt.to))\r\n        yield prt\r\n      })\r\n    yield Task(taskId, taskTime, taskPhysicalResources)
+        </td>
+      </tr><tr>
+        <td>
+          57
+        </td>
+        <td>
+          696
+        </td>
+        <td>
+          2178
+          -
+          2678
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          taskTime &lt;- TaskTime.from(rawTaskTime)\r\n      taskPhysicalResources &lt;- XML.traverse(xml \\ &quot;PhysicalResource&quot;, { physicalResourceNode =&gt;\r\n        for\r\n          rawType &lt;- XML.fromAttribute(physicalResourceNode, &quot;type&quot;)\r\n          prt &lt;- PhysicalResourceType.from(rawType)\r\n          _ &lt;-\r\n            if validPhysicalResourceTypes.contains(prt) then Right(())\r\n            else Left(TaskUsesNonExistentPRT(prt.to))\r\n        yield prt\r\n      })\r\n    yield Task(taskId, taskTime, taskPhysicalResources)
+        </td>
+      </tr><tr>
+        <td>
+          57
+        </td>
+        <td>
+          697
+        </td>
+        <td>
+          2190
+          -
+          2216
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          TaskTime.from(rawTaskTime)
+        </td>
+      </tr><tr>
+        <td>
+          58
+        </td>
+        <td>
+          699
+        </td>
+        <td>
+          2249
+          -
+          2621
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          traverse
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.traverse(xml \\ &quot;PhysicalResource&quot;, { physicalResourceNode =&gt;\r\n        for\r\n          rawType &lt;- XML.fromAttribute(physicalResourceNode, &quot;type&quot;)\r\n          prt &lt;- PhysicalResourceType.from(rawType)\r\n          _ &lt;-\r\n            if validPhysicalResourceTypes.contains(prt) then Right(())\r\n            else Left(TaskUsesNonExistentPRT(prt.to))\r\n        yield prt\r\n      })
+        </td>
+      </tr><tr>
+        <td>
+          58
+        </td>
+        <td>
+          698
+        </td>
+        <td>
+          2224
+          -
+          2678
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          taskPhysicalResources &lt;- XML.traverse(xml \\ &quot;PhysicalResource&quot;, { physicalResourceNode =&gt;\r\n        for\r\n          rawType &lt;- XML.fromAttribute(physicalResourceNode, &quot;type&quot;)\r\n          prt &lt;- PhysicalResourceType.from(rawType)\r\n          _ &lt;-\r\n            if validPhysicalResourceTypes.contains(prt) then Right(())\r\n            else Left(TaskUsesNonExistentPRT(prt.to))\r\n        yield prt\r\n      })\r\n    yield Task(taskId, taskTime, taskPhysicalResources)
+        </td>
+      </tr><tr>
+        <td>
+          58
+        </td>
+        <td>
+          700
+        </td>
+        <td>
+          2262
+          -
+          2286
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          \\
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          xml \\ &quot;PhysicalResource&quot;
+        </td>
+      </tr><tr>
+        <td>
+          59
+        </td>
+        <td>
+          701
+        </td>
+        <td>
+          2323
+          -
+          2611
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          for\r\n          rawType &lt;- XML.fromAttribute(physicalResourceNode, &quot;type&quot;)\r\n          prt &lt;- PhysicalResourceType.from(rawType)\r\n          _ &lt;-\r\n            if validPhysicalResourceTypes.contains(prt) then Right(())\r\n            else Left(TaskUsesNonExistentPRT(prt.to))\r\n        yield prt
+        </td>
+      </tr><tr>
+        <td>
+          60
+        </td>
+        <td>
+          702
+        </td>
+        <td>
+          2349
+          -
+          2396
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fromAttribute
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.fromAttribute(physicalResourceNode, &quot;type&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          61
+        </td>
+        <td>
+          704
+        </td>
+        <td>
+          2415
+          -
+          2449
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          PhysicalResourceType.from(rawType)
+        </td>
+      </tr><tr>
+        <td>
+          61
+        </td>
+        <td>
+          703
+        </td>
+        <td>
+          2408
+          -
+          2611
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          prt &lt;- PhysicalResourceType.from(rawType)\r\n          _ &lt;-\r\n            if validPhysicalResourceTypes.contains(prt) then Right(())\r\n            else Left(TaskUsesNonExistentPRT(prt.to))\r\n        yield prt
+        </td>
+      </tr><tr>
+        <td>
+          62
+        </td>
+        <td>
+          705
+        </td>
+        <td>
+          2461
+          -
+          2611
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          _ &lt;-\r\n            if validPhysicalResourceTypes.contains(prt) then Right(())\r\n            else Left(TaskUsesNonExistentPRT(prt.to))\r\n        yield prt
+        </td>
+      </tr><tr>
+        <td>
+          63
+        </td>
+        <td>
+          708
+        </td>
+        <td>
+          2528
+          -
+          2537
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right(())
+        </td>
+      </tr><tr>
+        <td>
+          63
+        </td>
+        <td>
+          707
+        </td>
+        <td>
+          2528
+          -
+          2533
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Right
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right
+        </td>
+      </tr><tr>
+        <td>
+          63
+        </td>
+        <td>
+          706
+        </td>
+        <td>
+          2482
+          -
+          2522
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          contains
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          validPhysicalResourceTypes.contains(prt)
+        </td>
+      </tr><tr>
+        <td>
+          64
+        </td>
+        <td>
+          711
+        </td>
+        <td>
+          2556
+          -
+          2592
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Left(TaskUsesNonExistentPRT(prt.to))
+        </td>
+      </tr><tr>
+        <td>
+          64
+        </td>
+        <td>
+          710
+        </td>
+        <td>
+          2584
+          -
+          2590
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          prt.to
+        </td>
+      </tr><tr>
+        <td>
+          64
+        </td>
+        <td>
+          709
+        </td>
+        <td>
+          2556
+          -
+          2560
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Left
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Left
+        </td>
+      </tr><tr>
+        <td>
+          65
+        </td>
+        <td>
+          712
+        </td>
+        <td>
+          2608
+          -
+          2611
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          prt
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          prt
+        </td>
+      </tr><tr>
+        <td>
+          70
+        </td>
+        <td>
+          737
+        </td>
+        <td>
+          2686
+          -
+          2706
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          getHumanResource
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def getHumanResource
+        </td>
+      </tr><tr>
+        <td>
+          71
+        </td>
+        <td>
+          714
+        </td>
+        <td>
+          2804
+          -
+          3527
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          for\r\n      rawHumanResourceId &lt;- XML.fromAttribute(xml, &quot;id&quot;)\r\n      humanResourceId &lt;- HumanResourceId.from(rawHumanResourceId)\r\n      rawName &lt;- XML.fromAttribute(xml, &quot;name&quot;)\r\n      humanResourceName &lt;- HumanResourceName.from(rawName)\r\n      handledPRTs &lt;- XML.traverse(xml \\ &quot;Handles&quot;, { physicalResourceNode =&gt;\r\n        for\r\n          rawType &lt;- XML.fromAttribute(physicalResourceNode, &quot;type&quot;)\r\n          prt &lt;- PhysicalResourceType.from(rawType)\r\n          _ &lt;-\r\n            if validPhysicalResourceTypes.contains(prt) then Right(())\r\n            else Left(PhysicalResourceTypeNotFound(rawHumanResourceId, prt.to))\r\n        yield prt\r\n      })\r\n    yield HumanResource(humanResourceId, humanResourceName, handledPRTs)
+        </td>
+      </tr><tr>
+        <td>
+          72
+        </td>
+        <td>
+          715
+        </td>
+        <td>
+          2837
+          -
+          2865
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fromAttribute
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.fromAttribute(xml, &quot;id&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          73
+        </td>
+        <td>
+          717
+        </td>
+        <td>
+          2892
+          -
+          2932
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          HumanResourceId.from(rawHumanResourceId)
+        </td>
+      </tr><tr>
+        <td>
+          73
+        </td>
+        <td>
+          716
+        </td>
+        <td>
+          2873
+          -
+          3527
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          humanResourceId &lt;- HumanResourceId.from(rawHumanResourceId)\r\n      rawName &lt;- XML.fromAttribute(xml, &quot;name&quot;)\r\n      humanResourceName &lt;- HumanResourceName.from(rawName)\r\n      handledPRTs &lt;- XML.traverse(xml \\ &quot;Handles&quot;, { physicalResourceNode =&gt;\r\n        for\r\n          rawType &lt;- XML.fromAttribute(physicalResourceNode, &quot;type&quot;)\r\n          prt &lt;- PhysicalResourceType.from(rawType)\r\n          _ &lt;-\r\n            if validPhysicalResourceTypes.contains(prt) then Right(())\r\n            else Left(PhysicalResourceTypeNotFound(rawHumanResourceId, prt.to))\r\n        yield prt\r\n      })\r\n    yield HumanResource(humanResourceId, humanResourceName, handledPRTs)
+        </td>
+      </tr><tr>
+        <td>
+          74
+        </td>
+        <td>
+          719
+        </td>
+        <td>
+          2951
+          -
+          2981
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fromAttribute
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.fromAttribute(xml, &quot;name&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          74
+        </td>
+        <td>
+          718
+        </td>
+        <td>
+          2940
+          -
+          3527
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          rawName &lt;- XML.fromAttribute(xml, &quot;name&quot;)\r\n      humanResourceName &lt;- HumanResourceName.from(rawName)\r\n      handledPRTs &lt;- XML.traverse(xml \\ &quot;Handles&quot;, { physicalResourceNode =&gt;\r\n        for\r\n          rawType &lt;- XML.fromAttribute(physicalResourceNode, &quot;type&quot;)\r\n          prt &lt;- PhysicalResourceType.from(rawType)\r\n          _ &lt;-\r\n            if validPhysicalResourceTypes.contains(prt) then Right(())\r\n            else Left(PhysicalResourceTypeNotFound(rawHumanResourceId, prt.to))\r\n        yield prt\r\n      })\r\n    yield HumanResource(humanResourceId, humanResourceName, handledPRTs)
+        </td>
+      </tr><tr>
+        <td>
+          75
+        </td>
+        <td>
+          720
+        </td>
+        <td>
+          2989
+          -
+          3527
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          humanResourceName &lt;- HumanResourceName.from(rawName)\r\n      handledPRTs &lt;- XML.traverse(xml \\ &quot;Handles&quot;, { physicalResourceNode =&gt;\r\n        for\r\n          rawType &lt;- XML.fromAttribute(physicalResourceNode, &quot;type&quot;)\r\n          prt &lt;- PhysicalResourceType.from(rawType)\r\n          _ &lt;-\r\n            if validPhysicalResourceTypes.contains(prt) then Right(())\r\n            else Left(PhysicalResourceTypeNotFound(rawHumanResourceId, prt.to))\r\n        yield prt\r\n      })\r\n    yield HumanResource(humanResourceId, humanResourceName, handledPRTs)
+        </td>
+      </tr><tr>
+        <td>
+          75
+        </td>
+        <td>
+          721
+        </td>
+        <td>
+          3010
+          -
+          3041
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          HumanResourceName.from(rawName)
+        </td>
+      </tr><tr>
+        <td>
+          76
+        </td>
+        <td>
+          723
+        </td>
+        <td>
+          3064
+          -
+          3453
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          traverse
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.traverse(xml \\ &quot;Handles&quot;, { physicalResourceNode =&gt;\r\n        for\r\n          rawType &lt;- XML.fromAttribute(physicalResourceNode, &quot;type&quot;)\r\n          prt &lt;- PhysicalResourceType.from(rawType)\r\n          _ &lt;-\r\n            if validPhysicalResourceTypes.contains(prt) then Right(())\r\n            else Left(PhysicalResourceTypeNotFound(rawHumanResourceId, prt.to))\r\n        yield prt\r\n      })
+        </td>
+      </tr><tr>
+        <td>
+          76
+        </td>
+        <td>
+          722
+        </td>
+        <td>
+          3049
+          -
+          3527
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          handledPRTs &lt;- XML.traverse(xml \\ &quot;Handles&quot;, { physicalResourceNode =&gt;\r\n        for\r\n          rawType &lt;- XML.fromAttribute(physicalResourceNode, &quot;type&quot;)\r\n          prt &lt;- PhysicalResourceType.from(rawType)\r\n          _ &lt;-\r\n            if validPhysicalResourceTypes.contains(prt) then Right(())\r\n            else Left(PhysicalResourceTypeNotFound(rawHumanResourceId, prt.to))\r\n        yield prt\r\n      })\r\n    yield HumanResource(humanResourceId, humanResourceName, handledPRTs)
+        </td>
+      </tr><tr>
+        <td>
+          76
+        </td>
+        <td>
+          724
+        </td>
+        <td>
+          3077
+          -
+          3092
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          \\
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          xml \\ &quot;Handles&quot;
+        </td>
+      </tr><tr>
+        <td>
+          77
+        </td>
+        <td>
+          725
+        </td>
+        <td>
+          3129
+          -
+          3443
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          for\r\n          rawType &lt;- XML.fromAttribute(physicalResourceNode, &quot;type&quot;)\r\n          prt &lt;- PhysicalResourceType.from(rawType)\r\n          _ &lt;-\r\n            if validPhysicalResourceTypes.contains(prt) then Right(())\r\n            else Left(PhysicalResourceTypeNotFound(rawHumanResourceId, prt.to))\r\n        yield prt
+        </td>
+      </tr><tr>
+        <td>
+          78
+        </td>
+        <td>
+          726
+        </td>
+        <td>
+          3155
+          -
+          3202
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fromAttribute
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.fromAttribute(physicalResourceNode, &quot;type&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          79
+        </td>
+        <td>
+          728
+        </td>
+        <td>
+          3221
+          -
+          3255
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          PhysicalResourceType.from(rawType)
+        </td>
+      </tr><tr>
+        <td>
+          79
+        </td>
+        <td>
+          727
+        </td>
+        <td>
+          3214
+          -
+          3443
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          prt &lt;- PhysicalResourceType.from(rawType)\r\n          _ &lt;-\r\n            if validPhysicalResourceTypes.contains(prt) then Right(())\r\n            else Left(PhysicalResourceTypeNotFound(rawHumanResourceId, prt.to))\r\n        yield prt
+        </td>
+      </tr><tr>
+        <td>
+          80
+        </td>
+        <td>
+          729
+        </td>
+        <td>
+          3267
+          -
+          3443
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          _ &lt;-\r\n            if validPhysicalResourceTypes.contains(prt) then Right(())\r\n            else Left(PhysicalResourceTypeNotFound(rawHumanResourceId, prt.to))\r\n        yield prt
+        </td>
+      </tr><tr>
+        <td>
+          81
+        </td>
+        <td>
+          732
+        </td>
+        <td>
+          3334
+          -
+          3343
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right(())
+        </td>
+      </tr><tr>
+        <td>
+          81
+        </td>
+        <td>
+          731
+        </td>
+        <td>
+          3334
+          -
+          3339
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Right
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right
+        </td>
+      </tr><tr>
+        <td>
+          81
+        </td>
+        <td>
+          730
+        </td>
+        <td>
+          3288
+          -
+          3328
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          contains
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          validPhysicalResourceTypes.contains(prt)
+        </td>
+      </tr><tr>
+        <td>
+          82
+        </td>
+        <td>
+          735
+        </td>
+        <td>
+          3362
+          -
+          3424
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Left(PhysicalResourceTypeNotFound(rawHumanResourceId, prt.to))
+        </td>
+      </tr><tr>
+        <td>
+          82
+        </td>
+        <td>
+          734
+        </td>
+        <td>
+          3416
+          -
+          3422
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          prt.to
+        </td>
+      </tr><tr>
+        <td>
+          82
+        </td>
+        <td>
+          733
+        </td>
+        <td>
+          3362
+          -
+          3366
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Left
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Left
+        </td>
+      </tr><tr>
+        <td>
+          83
+        </td>
+        <td>
+          736
+        </td>
+        <td>
+          3440
+          -
+          3443
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          prt
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          prt
+        </td>
+      </tr>
+    </table>
+          </div>
+        </div>
+      </body>
+    </html>
