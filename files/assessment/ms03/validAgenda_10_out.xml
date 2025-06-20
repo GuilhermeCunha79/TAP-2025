@@ -24,7 +24,7 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Physical id="PRS_2"/>
         </PhysicalResources>
         <HumanResources>
-            <Human name="Antonio"/>
+            <Human name="Joao"/>
         </HumanResources>
     </TaskSchedule>
     <TaskSchedule order="ORD_1" productNumber="2" task="TSK_1" start="5" end="10">

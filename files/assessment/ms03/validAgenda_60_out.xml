@@ -147,21 +147,7 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Human name="name of 05"/>
         </HumanResources>
     </TaskSchedule>
-    <TaskSchedule order="ORD_03" productNumber="3" task="TSK_01" start="6" end="7">
-        <PhysicalResources>
-            <Physical id="PRS_15"/>
-            <Physical id="PRS_07"/>
-            <Physical id="PRS_09"/>
-            <Physical id="PRS_10"/>
-        </PhysicalResources>
-        <HumanResources>
-            <Human name="name of 01"/>
-            <Human name="name of 02"/>
-            <Human name="name of 04"/>
-            <Human name="name of 05"/>
-        </HumanResources>
-    </TaskSchedule>
-    <TaskSchedule order="ORD_03" productNumber="4" task="TSK_01" start="7" end="8">
+    <TaskSchedule order="ORD_03" productNumber="3" task="TSK_01" start="7" end="8">
         <PhysicalResources>
             <Physical id="PRS_06"/>
             <Physical id="PRS_01"/>
@@ -175,12 +161,26 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Human name="name of 05"/>
         </HumanResources>
     </TaskSchedule>
-    <TaskSchedule order="ORD_03" productNumber="5" task="TSK_01" start="7" end="8">
+    <TaskSchedule order="ORD_03" productNumber="4" task="TSK_01" start="8" end="9">
         <PhysicalResources>
-            <Physical id="PRS_15"/>
-            <Physical id="PRS_07"/>
-            <Physical id="PRS_09"/>
-            <Physical id="PRS_10"/>
+            <Physical id="PRS_06"/>
+            <Physical id="PRS_01"/>
+            <Physical id="PRS_04"/>
+            <Physical id="PRS_05"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="name of 01"/>
+            <Human name="name of 02"/>
+            <Human name="name of 04"/>
+            <Human name="name of 05"/>
+        </HumanResources>
+    </TaskSchedule>
+    <TaskSchedule order="ORD_03" productNumber="5" task="TSK_01" start="9" end="10">
+        <PhysicalResources>
+            <Physical id="PRS_06"/>
+            <Physical id="PRS_01"/>
+            <Physical id="PRS_04"/>
+            <Physical id="PRS_05"/>
         </PhysicalResources>
         <HumanResources>
             <Human name="name of 01"/>

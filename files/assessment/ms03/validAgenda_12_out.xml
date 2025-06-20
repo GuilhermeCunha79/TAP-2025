@@ -24,15 +24,7 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Physical id="PRS_6"/>
         </PhysicalResources>
         <HumanResources>
-            <Human name="Antonio"/>
-        </HumanResources>
-    </TaskSchedule>
-    <TaskSchedule order="ORD_2" productNumber="2" task="TSK_3" start="2" end="4">
-        <PhysicalResources>
-            <Physical id="PRS_2"/>
-        </PhysicalResources>
-        <HumanResources>
-            <Human name="Maria"/>
+            <Human name="Joao"/>
         </HumanResources>
     </TaskSchedule>
     <TaskSchedule order="ORD_1" productNumber="2" task="TSK_1" start="5" end="10">
@@ -45,7 +37,7 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Human name="Maria"/>
         </HumanResources>
     </TaskSchedule>
-    <TaskSchedule order="ORD_1" productNumber="1" task="TSK_2" start="5" end="8">
+    <TaskSchedule order="ORD_1" productNumber="1" task="TSK_2" start="6" end="9">
         <PhysicalResources>
             <Physical id="PRS_2"/>
         </PhysicalResources>
@@ -53,20 +45,28 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Human name="Joao"/>
         </HumanResources>
     </TaskSchedule>
-    <TaskSchedule order="ORD_2" productNumber="2" task="TSK_4" start="6" end="10">
+    <TaskSchedule order="ORD_2" productNumber="2" task="TSK_3" start="9" end="11">
         <PhysicalResources>
-            <Physical id="PRS_6"/>
+            <Physical id="PRS_2"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="Joao"/>
+        </HumanResources>
+    </TaskSchedule>
+    <TaskSchedule order="ORD_1" productNumber="2" task="TSK_2" start="10" end="13">
+        <PhysicalResources>
+            <Physical id="PRS_7"/>
         </PhysicalResources>
         <HumanResources>
             <Human name="Antonio"/>
         </HumanResources>
     </TaskSchedule>
-    <TaskSchedule order="ORD_1" productNumber="2" task="TSK_2" start="10" end="13">
+    <TaskSchedule order="ORD_2" productNumber="2" task="TSK_4" start="11" end="15">
         <PhysicalResources>
-            <Physical id="PRS_2"/>
+            <Physical id="PRS_4"/>
         </PhysicalResources>
         <HumanResources>
-            <Human name="Antonio"/>
+            <Human name="Maria"/>
         </HumanResources>
     </TaskSchedule>
 </Schedule>

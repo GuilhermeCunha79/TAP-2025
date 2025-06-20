@@ -25,14 +25,6 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Human name="Antonio"/>
         </HumanResources>
     </TaskSchedule>
-    <TaskSchedule order="ORD_2" productNumber="1" task="TSK_4" start="5" end="9">
-        <PhysicalResources>
-            <Physical id="PRS_4"/>
-        </PhysicalResources>
-        <HumanResources>
-            <Human name="Maria"/>
-        </HumanResources>
-    </TaskSchedule>
     <TaskSchedule order="ORD_2" productNumber="1" task="TSK_3" start="8" end="9">
         <PhysicalResources>
             <Physical id="PRS_2"/>
@@ -41,7 +33,15 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Human name="Antonio"/>
         </HumanResources>
     </TaskSchedule>
-    <TaskSchedule order="ORD_3" productNumber="1" task="TSK_6" start="10" end="12">
+    <TaskSchedule order="ORD_2" productNumber="1" task="TSK_4" start="10" end="14">
+        <PhysicalResources>
+            <Physical id="PRS_4"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="Maria"/>
+        </HumanResources>
+    </TaskSchedule>
+    <TaskSchedule order="ORD_3" productNumber="1" task="TSK_6" start="14" end="16">
         <PhysicalResources>
             <Physical id="PRS_5"/>
         </PhysicalResources>

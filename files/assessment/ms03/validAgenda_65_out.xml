@@ -32,7 +32,7 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Physical id="PRS_06"/>
         </PhysicalResources>
         <HumanResources>
-            <Human name="name of 01"/>
+            <Human name="name of 05"/>
         </HumanResources>
     </TaskSchedule>
     <TaskSchedule order="ORD_01" productNumber="2" task="TSK_07" start="7" end="9">
@@ -40,7 +40,7 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Physical id="PRS_07"/>
         </PhysicalResources>
         <HumanResources>
-            <Human name="name of 02"/>
+            <Human name="name of 06"/>
         </HumanResources>
     </TaskSchedule>
     <TaskSchedule order="ORD_03" productNumber="1" task="TSK_09" start="7" end="8">
@@ -48,7 +48,7 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Physical id="PRS_08"/>
         </PhysicalResources>
         <HumanResources>
-            <Human name="name of 03"/>
+            <Human name="name of 07"/>
         </HumanResources>
     </TaskSchedule>
     <TaskSchedule order="ORD_06" productNumber="1" task="TSK_12" start="8" end="9">
@@ -56,7 +56,7 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Physical id="PRS_08"/>
         </PhysicalResources>
         <HumanResources>
-            <Human name="name of 01"/>
+            <Human name="name of 07"/>
         </HumanResources>
     </TaskSchedule>
     <TaskSchedule order="ORD_06" productNumber="2" task="TSK_12" start="9" end="10">
@@ -64,7 +64,7 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Physical id="PRS_06"/>
         </PhysicalResources>
         <HumanResources>
-            <Human name="name of 01"/>
+            <Human name="name of 05"/>
         </HumanResources>
     </TaskSchedule>
     <TaskSchedule order="ORD_07" productNumber="1" task="TSK_12" start="9" end="10">
@@ -72,7 +72,7 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Physical id="PRS_07"/>
         </PhysicalResources>
         <HumanResources>
-            <Human name="name of 02"/>
+            <Human name="name of 06"/>
         </HumanResources>
     </TaskSchedule>
     <TaskSchedule order="ORD_03" productNumber="1" task="TSK_15" start="9" end="10">
@@ -80,7 +80,7 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Physical id="PRS_08"/>
         </PhysicalResources>
         <HumanResources>
-            <Human name="name of 03"/>
+            <Human name="name of 07"/>
         </HumanResources>
     </TaskSchedule>
     <TaskSchedule order="ORD_05" productNumber="2" task="TSK_11" start="10" end="20">
@@ -110,7 +110,7 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Physical id="PRS_07"/>
         </PhysicalResources>
         <HumanResources>
-            <Human name="name of 01"/>
+            <Human name="name of 06"/>
         </HumanResources>
     </TaskSchedule>
     <TaskSchedule order="ORD_05" productNumber="4" task="TSK_09" start="10" end="11">
@@ -118,7 +118,7 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Physical id="PRS_08"/>
         </PhysicalResources>
         <HumanResources>
-            <Human name="name of 01"/>
+            <Human name="name of 07"/>
         </HumanResources>
     </TaskSchedule>
     <TaskSchedule order="ORD_02" productNumber="1" task="TSK_10" start="11" end="12">
@@ -127,8 +127,8 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Physical id="PRS_08"/>
         </PhysicalResources>
         <HumanResources>
-            <Human name="name of 01"/>
-            <Human name="name of 02"/>
+            <Human name="name of 06"/>
+            <Human name="name of 07"/>
         </HumanResources>
     </TaskSchedule>
     <TaskSchedule order="ORD_05" productNumber="3" task="TSK_11" start="20" end="30">

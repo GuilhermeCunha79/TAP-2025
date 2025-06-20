@@ -32,7 +32,7 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Physical id="PRS_4"/>
         </PhysicalResources>
         <HumanResources>
-            <Human name="Maria"/>
+            <Human name="Joao"/>
         </HumanResources>
     </TaskSchedule>
     <TaskSchedule order="ORD_2" productNumber="1" task="TSK_3" start="8" end="10">

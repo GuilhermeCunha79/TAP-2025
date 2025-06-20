@@ -17,7 +17,15 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Human name="Maria"/>
         </HumanResources>
     </TaskSchedule>
-    <TaskSchedule order="ORD_1" productNumber="1" task="TSK_1" start="2" end="7">
+    <TaskSchedule order="ORD_2" productNumber="1" task="TSK_4" start="2" end="6">
+        <PhysicalResources>
+            <Physical id="PRS_4"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="Maria"/>
+        </HumanResources>
+    </TaskSchedule>
+    <TaskSchedule order="ORD_1" productNumber="1" task="TSK_1" start="10" end="15">
         <PhysicalResources>
             <Physical id="PRS_1"/>
             <Physical id="PRS_2"/>
@@ -27,28 +35,20 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Human name="Maria"/>
         </HumanResources>
     </TaskSchedule>
-    <TaskSchedule order="ORD_2" productNumber="1" task="TSK_4" start="7" end="11">
-        <PhysicalResources>
-            <Physical id="PRS_4"/>
-        </PhysicalResources>
-        <HumanResources>
-            <Human name="Maria"/>
-        </HumanResources>
-    </TaskSchedule>
-    <TaskSchedule order="ORD_1" productNumber="1" task="TSK_2" start="7" end="10">
-        <PhysicalResources>
-            <Physical id="PRS_2"/>
-        </PhysicalResources>
-        <HumanResources>
-            <Human name="Joao"/>
-        </HumanResources>
-    </TaskSchedule>
     <TaskSchedule order="ORD_3" productNumber="1" task="TSK_6" start="10" end="11">
         <PhysicalResources>
             <Physical id="PRS_5"/>
         </PhysicalResources>
         <HumanResources>
             <Human name="Joao"/>
+        </HumanResources>
+    </TaskSchedule>
+    <TaskSchedule order="ORD_1" productNumber="1" task="TSK_2" start="15" end="18">
+        <PhysicalResources>
+            <Physical id="PRS_2"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="Maria"/>
         </HumanResources>
     </TaskSchedule>
 </Schedule>

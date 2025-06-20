@@ -91,8 +91,8 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Physical id="PRS_04"/>
         </PhysicalResources>
         <HumanResources>
-            <Human name="name of 01"/>
-            <Human name="name of 02"/>
+            <Human name="name of 09"/>
+            <Human name="name of 10"/>
         </HumanResources>
     </TaskSchedule>
     <TaskSchedule order="ORD_03" productNumber="2" task="TSK_20" start="14" end="15">
@@ -101,8 +101,8 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Physical id="PRS_04"/>
         </PhysicalResources>
         <HumanResources>
-            <Human name="name of 01"/>
-            <Human name="name of 02"/>
+            <Human name="name of 09"/>
+            <Human name="name of 10"/>
         </HumanResources>
     </TaskSchedule>
     <TaskSchedule order="ORD_03" productNumber="3" task="TSK_20" start="15" end="16">
@@ -111,8 +111,8 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Physical id="PRS_04"/>
         </PhysicalResources>
         <HumanResources>
-            <Human name="name of 01"/>
-            <Human name="name of 02"/>
+            <Human name="name of 09"/>
+            <Human name="name of 10"/>
         </HumanResources>
     </TaskSchedule>
     <TaskSchedule order="ORD_03" productNumber="4" task="TSK_20" start="16" end="17">
@@ -121,8 +121,8 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Physical id="PRS_04"/>
         </PhysicalResources>
         <HumanResources>
-            <Human name="name of 01"/>
-            <Human name="name of 02"/>
+            <Human name="name of 09"/>
+            <Human name="name of 10"/>
         </HumanResources>
     </TaskSchedule>
     <TaskSchedule order="ORD_03" productNumber="5" task="TSK_20" start="17" end="18">
@@ -131,8 +131,8 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Physical id="PRS_04"/>
         </PhysicalResources>
         <HumanResources>
-            <Human name="name of 01"/>
-            <Human name="name of 02"/>
+            <Human name="name of 09"/>
+            <Human name="name of 10"/>
         </HumanResources>
     </TaskSchedule>
     <TaskSchedule order="ORD_02" productNumber="1" task="TSK_20" start="18" end="19">
@@ -141,8 +141,8 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Physical id="PRS_04"/>
         </PhysicalResources>
         <HumanResources>
-            <Human name="name of 01"/>
-            <Human name="name of 02"/>
+            <Human name="name of 09"/>
+            <Human name="name of 10"/>
         </HumanResources>
     </TaskSchedule>
     <TaskSchedule order="ORD_02" productNumber="1" task="TSK_10" start="19" end="20">
@@ -151,8 +151,8 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Physical id="PRS_15"/>
         </PhysicalResources>
         <HumanResources>
-            <Human name="name of 01"/>
-            <Human name="name of 02"/>
+            <Human name="name of 09"/>
+            <Human name="name of 10"/>
         </HumanResources>
     </TaskSchedule>
     <TaskSchedule order="ORD_04" productNumber="3" task="TSK_19" start="20" end="30">
@@ -191,10 +191,10 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Physical id="PRS_16"/>
         </PhysicalResources>
         <HumanResources>
-            <Human name="name of 01"/>
-            <Human name="name of 02"/>
-            <Human name="name of 04"/>
-            <Human name="name of 05"/>
+            <Human name="name of 09"/>
+            <Human name="name of 10"/>
+            <Human name="name of 11"/>
+            <Human name="name of 12"/>
         </HumanResources>
     </TaskSchedule>
     <TaskSchedule order="ORD_05" productNumber="1" task="TSK_19" start="30" end="40">
@@ -344,7 +344,7 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Physical id="PRS_17"/>
         </PhysicalResources>
         <HumanResources>
-            <Human name="name of 01"/>
+            <Human name="name of 03"/>
         </HumanResources>
     </TaskSchedule>
     <TaskSchedule order="ORD_05" productNumber="4" task="TSK_05" start="64" end="68">
@@ -352,7 +352,7 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Physical id="PRS_19"/>
         </PhysicalResources>
         <HumanResources>
-            <Human name="name of 02"/>
+            <Human name="name of 06"/>
         </HumanResources>
     </TaskSchedule>
     <TaskSchedule order="ORD_05" productNumber="5" task="TSK_05" start="70" end="74">

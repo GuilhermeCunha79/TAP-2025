@@ -30,7 +30,7 @@ xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xml
             <Physical id="PRS_3"/>
         </PhysicalResources>
         <HumanResources>
-            <Human name="Antonio"/>
+            <Human name="Joao"/>
         </HumanResources>
     </TaskSchedule>
 </Schedule>

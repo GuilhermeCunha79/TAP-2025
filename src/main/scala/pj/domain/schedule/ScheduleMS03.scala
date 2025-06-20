@@ -216,7 +216,7 @@ object ScheduleMS03 extends Schedule:
       availability.getOrElse({res.id.to}, 0) <= currentTime
     }
     val availableHuman = humanResources.filter { res =>
-      availability.getOrElse({res.name.to}, 0) <= currentTime
+      availability.getOrElse({res.id.to}, 0) <= currentTime
     }
     (availablePhysical, availableHuman)
 
@@ -230,22 +230,22 @@ object ScheduleMS03 extends Schedule:
     availablePhysical: List[PhysicalResource],
     availableHuman: List[HumanResource],
     usedPhysicalIds: Set[PhysicalResourceId],
-    usedHumanNames: Set[HumanResourceId]
+    usedHumanIds: Set[HumanResourceId]
   ): Result[SchedulingState] =
     tasks match
       case Nil => Right(state)
       case taskInfo :: remainingTasks =>
-        tryScheduleTask(taskInfo, currentTime, availablePhysical, availableHuman, usedPhysicalIds, usedHumanNames)
+        tryScheduleTask(taskInfo, currentTime, availablePhysical, availableHuman, usedPhysicalIds, usedHumanIds)
           .fold(
             _ => scheduleBatchRecursively(
               state, remainingTasks, currentTime, availablePhysical, availableHuman,
-              usedPhysicalIds, usedHumanNames
+              usedPhysicalIds, usedHumanIds
             ),
-            { case (physicalIds, humanNames) =>
-              createTaskSchedule(taskInfo, currentTime, physicalIds, humanNames).flatMap { schedule =>
+            { case (physicalIds, humanIds) =>
+              createTaskSchedule(taskInfo, currentTime, physicalIds, humanIds).flatMap { schedule =>
                 val newState = updateStateAfterScheduling(state, taskInfo, schedule, currentTime)
                 val updatedUsedPhysical = usedPhysicalIds ++ physicalIds.toSet
-                val updatedUsedHuman = usedHumanNames ++ humanNames.toSet
+                val updatedUsedHuman = usedHumanIds ++ humanIds.toSet
                 val filteredRemaining = remainingTasks.filterNot(isMatchingTask(_, taskInfo))
 
                 scheduleBatchRecursively(
@@ -265,12 +265,12 @@ object ScheduleMS03 extends Schedule:
    availablePhysical: List[PhysicalResource],
    availableHuman: List[HumanResource],
    usedPhysicalIds: Set[PhysicalResourceId],
-   usedHumanNames: Set[HumanResourceId]
+   usedHumanIds: Set[HumanResourceId]
  ): Result[(List[PhysicalResourceId], List[HumanResourceId])] =
     for {
       physicalIds <- allocateResources(taskInfo.task.physicalResourceTypes, availablePhysical, usedPhysicalIds)
-      humanNames <- allocateHumans(taskInfo.task.physicalResourceTypes, availableHuman, usedHumanNames)
-    } yield (physicalIds, humanNames)
+      humanIds <- allocateHumans(taskInfo.task.physicalResourceTypes, availableHuman, usedHumanIds)
+    } yield (physicalIds, humanIds)
 
   /**
    * Checks if two tasks are identical (same order, product number, and task ID)
@@ -339,12 +339,12 @@ object ScheduleMS03 extends Schedule:
   private def allocateHumans(
     requiredTypes: List[PhysicalResourceType],
     availableHuman: List[HumanResource],
-    usedNames: Set[HumanResourceId]
+    usedHumanIds: Set[HumanResourceId]
   ): Result[List[HumanResourceId]] =
     allocateResources(
       requiredTypes,
       availableHuman,
-      usedNames,
+      usedHumanIds,
       (res: HumanResource) => res.id,
       (res: HumanResource, reqType: PhysicalResourceType) => res.physicalResourceTypes.contains(reqType)
     )
@@ -356,7 +356,7 @@ object ScheduleMS03 extends Schedule:
     taskInfo: TaskInfo,
     startTime: Int,
     physicalIds: List[PhysicalResourceId],
-    humanNames: List[HumanResourceId]
+    humanIds: List[HumanResourceId]
   ): Result[TaskSchedule] =
     for {
       start <- TaskScheduleTime.from(startTime)
@@ -368,7 +368,7 @@ object ScheduleMS03 extends Schedule:
       start,
       end,
       physicalIds,
-      humanNames
+      humanIds
     )
 
   /**
@@ -455,7 +455,7 @@ object ScheduleMS03 extends Schedule:
     endTime: Int
   ): Map[String, Int] =
     val allUpdates = schedule.physicalResourceIds.map(id => {id.to} -> endTime) ++
-      schedule.humanResourceIds.map(name => {name.to} -> endTime)
+      schedule.humanResourceIds.map(id => {id.to} -> endTime)
     availability ++ allUpdates
 
   /**
