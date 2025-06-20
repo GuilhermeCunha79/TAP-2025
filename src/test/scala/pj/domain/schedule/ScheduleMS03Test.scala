@@ -526,7 +526,7 @@ class ScheduleMS03Test extends AnyFunSuite:
       assert(res == Left(DomainError.ImpossibleSchedule))
 
 
-  test("advanceTimeAndRetry should reschedule tasks when resources become available"):
+  test("advanceTimeAndRetry should return Right when resources become available and are provided"):
     val result = for {
       pr <- PhysicalResourceType.from("printer").toOption
       tskId <- TaskId.from("TSK_1").toOption
@@ -535,19 +535,30 @@ class ScheduleMS03Test extends AnyFunSuite:
       orderId <- OrderId.from("ORD_1").toOption
       prodNum <- ProductNumber.from(1).toOption
       pti <- ProductTaskIndex.from(0).toOption
+      prs1 <- PhysicalResourceId.from("PRS_1").toOption
+      hrs1 <- HumanResourceId.from("HRS_1").toOption
+      hrName <- HumanResourceName.from("Alice").toOption
     } yield
       val task = Task(tskId, taskTime, List(pr))
       val taskInfo = TaskInfo(orderId, prodNum, tskId, task, est, pti)
 
       val state = SchedulingState(
         readyTasks = List(taskInfo),
-        resourceAvailability = Map("PRS_1" -> 10),
+        resourceAvailability = Map("PRS_1" -> 10, "HRS_1" -> 10),
         schedules = Nil,
         productProgress = Map((taskInfo.orderId, taskInfo.productNumber) -> 0)
       )
 
-      val res = advanceTimeAndRetry(state, List(), List(), List(taskInfo))
-      assert(res.isLeft || res.isRight)
+      val physicalResources = List(PhysicalResource(prs1, pr))
+      val humanResources = List(HumanResource(hrs1, hrName, List(pr)))
 
-  
+      val res = advanceTimeAndRetry(state, physicalResources, humanResources, List(taskInfo))
+      assert(res.isRight)
+
+    result match
+      case Some(_) => succeed
+      case None => fail(s"Failed to prepare test data")
+
+
+
 
