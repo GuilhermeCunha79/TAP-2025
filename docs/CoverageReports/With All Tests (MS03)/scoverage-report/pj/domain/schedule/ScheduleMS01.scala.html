@@ -1,0 +1,2666 @@
+<html>
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title id="title">
+          pj\domain\schedule\ScheduleMS01.scala.html
+        </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/css/theme.default.min.css" type="text/css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/js/jquery.tablesorter.min.js"></script><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" type="text/css"/><script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script><script type="text/javascript">
+        $(document).ready(function() {$(".tablesorter").tablesorter();});
+      </script>
+        <style>
+          table.codegrid { font-family: monospace; font-size: 12px; width: auto!important; }table.statementlist { width: auto!important; font-size: 13px; } table.codegrid td { padding: 0!important; border: 0!important } table td.linenumber { width: 40px!important; } 
+        </style>
+      </head>
+      <body style="font-family: monospace;">
+        <ul class="nav nav-tabs">
+          <li>
+            <a href="#codegrid" data-toggle="tab">Codegrid</a>
+          </li>
+          <li>
+            <a href="#statementlist" data-toggle="tab">Statement List</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="codegrid">
+            <pre style='font-size: 12pt; font-family: courier, monospace;'>1 <span style=''>package pj.domain.schedule
+</span>2 <span style=''>
+</span>3 <span style=''>import pj.domain.*
+</span>4 <span style=''>import pj.domain.resources.*
+</span>5 <span style=''>import pj.domain.resources.Types.*
+</span>6 <span style=''>
+</span>7 <span style=''>import scala.xml.Elem
+</span>8 <span style=''>
+</span>9 <span style=''>object ScheduleMS01 extends Schedule:
+</span>10 <span style=''>
+</span>11 <span style=''>  </span><span style='background: #AEF1AE'>def allocatePhysicalResources</span><span style=''>(
+</span>12 <span style=''>       taskId: TaskId,
+</span>13 <span style=''>       requiredTypes: List[PhysicalResourceType],
+</span>14 <span style=''>       availableResources: List[PhysicalResource]
+</span>15 <span style=''>     ): Result[List[PhysicalResourceId]] =
+</span>16 <span style=''>    </span><span style='background: #AEF1AE'>requiredTypes.foldLeft[Result[(List[PhysicalResourceId], Set[PhysicalResourceId])]](Right((Nil, Set.empty))) {
+</span>17 <span style=''></span><span style='background: #AEF1AE'>      case (accResult, requiredType) =&gt; for {
+</span>18 <span style=''></span><span style='background: #AEF1AE'>        (assignedIds, usedIds) &lt;- accResult
+</span>19 <span style=''></span><span style='background: #AEF1AE'>        resource &lt;- availableResources
+</span>20 <span style=''></span><span style='background: #AEF1AE'>          .find(res =&gt; res.physical_type == requiredType &amp;&amp; !usedIds.contains(res.id))
+</span>21 <span style=''></span><span style='background: #AEF1AE'>          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType.to))
+</span>22 <span style=''></span><span style='background: #AEF1AE'>      } yield (resource.id :: assignedIds, usedIds + resource.id)
+</span>23 <span style=''></span><span style='background: #AEF1AE'>    }.map(_._1.reverse)</span><span style=''>
+</span>24 <span style=''>
+</span>25 <span style=''>
+</span>26 <span style=''>  </span><span style='background: #AEF1AE'>def allocateHumanResources</span><span style=''>(
+</span>27 <span style=''>      taskId: TaskId,
+</span>28 <span style=''>      requiredTypes: List[PhysicalResourceType],
+</span>29 <span style=''>      availableHumans: List[HumanResource]
+</span>30 <span style=''>    ): Result[List[HumanResourceId]] =
+</span>31 <span style=''>    </span><span style='background: #AEF1AE'>requiredTypes.foldLeft[Result[(List[HumanResourceId], Set[HumanResourceId])]](Right((Nil, Set.empty))) {
+</span>32 <span style=''></span><span style='background: #AEF1AE'>      case (accResult, requiredType) =&gt; for {
+</span>33 <span style=''></span><span style='background: #AEF1AE'>        (assignedNames, usedNames) &lt;- accResult
+</span>34 <span style=''></span><span style='background: #AEF1AE'>        human &lt;- availableHumans
+</span>35 <span style=''></span><span style='background: #AEF1AE'>          .find(hr =&gt; hr.physicalResourceTypes.contains(requiredType) &amp;&amp; !usedNames.contains(hr.id))
+</span>36 <span style=''></span><span style='background: #AEF1AE'>          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType.to))
+</span>37 <span style=''></span><span style='background: #AEF1AE'>      } yield (human.id :: assignedNames, usedNames + human.id)
+</span>38 <span style=''></span><span style='background: #AEF1AE'>    }.map(_._1.reverse)</span><span style=''>
+</span>39 <span style=''>
+</span>40 <span style=''>
+</span>41 <span style=''>  </span><span style='background: #AEF1AE'>def generateSchedule</span><span style=''>(
+</span>42 <span style=''>      orders: List[Order],
+</span>43 <span style=''>      products: List[Product],
+</span>44 <span style=''>      tasks: List[Task],
+</span>45 <span style=''>      humanResources: List[HumanResource],
+</span>46 <span style=''>      physicalResources: List[PhysicalResource]
+</span>47 <span style=''>    ): Result[List[TaskSchedule]] =
+</span>48 <span style=''>    val result = </span><span style='background: #AEF1AE'>orders.foldLeft(Right((List.empty[TaskSchedule], 0)): Result[(List[TaskSchedule], Int)]) { (acc, order) =&gt;
+</span>49 <span style=''></span><span style='background: #AEF1AE'>      for {
+</span>50 <span style=''></span><span style='background: #AEF1AE'>        (scheduledSoFar, globalTime) &lt;- acc
+</span>51 <span style=''></span><span style='background: #AEF1AE'>        (newSchedules, newTime) &lt;- scheduleOrder(
+</span>52 <span style=''></span><span style='background: #AEF1AE'>          order, globalTime, scheduledSoFar, products, tasks, physicalResources, humanResources
+</span>53 <span style=''></span><span style='background: #AEF1AE'>        )
+</span>54 <span style=''></span><span style='background: #AEF1AE'>      } yield (newSchedules, newTime)
+</span>55 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>56 <span style=''>
+</span>57 <span style=''>    </span><span style='background: #AEF1AE'>result.map(_._1)</span><span style=''>
+</span>58 <span style=''>
+</span>59 <span style=''>
+</span>60 <span style=''>  </span><span style='background: #AEF1AE'>def scheduleOrder</span><span style=''>(
+</span>61 <span style=''>       order: Order,
+</span>62 <span style=''>       startTime: Int,
+</span>63 <span style=''>       scheduled: List[TaskSchedule],
+</span>64 <span style=''>       allProducts: List[Product],
+</span>65 <span style=''>       allTasks: List[Task],
+</span>66 <span style=''>       physicalResources: List[PhysicalResource],
+</span>67 <span style=''>       humanResources: List[HumanResource]
+</span>68 <span style=''>     ): Result[(List[TaskSchedule], Int)] =
+</span>69 <span style=''>    </span><span style='background: #AEF1AE'>for {
+</span>70 <span style=''></span><span style='background: #AEF1AE'>      product &lt;- allProducts
+</span>71 <span style=''></span><span style='background: #AEF1AE'>        .find(_.id == order.productId)
+</span>72 <span style=''></span><span style='background: #AEF1AE'>        .toRight(DomainError.ProductDoesNotExist(order.productId.to))
+</span>73 <span style=''></span><span style='background: #AEF1AE'>
+</span>74 <span style=''></span><span style='background: #AEF1AE'>      result &lt;- (1 to order.quantity.to).foldLeft[Result[(List[TaskSchedule], Int)]](Right((scheduled, startTime))):
+</span>75 <span style=''></span><span style='background: #AEF1AE'>        (acc, instanceNum) =&gt;
+</span>76 <span style=''></span><span style='background: #AEF1AE'>          for {
+</span>77 <span style=''></span><span style='background: #AEF1AE'>            (scheduledSoFar, timeSoFar) &lt;- acc
+</span>78 <span style=''></span><span style='background: #AEF1AE'>            (newTasks, newTime) &lt;- scheduleProduct(
+</span>79 <span style=''></span><span style='background: #AEF1AE'>              order.id, product, instanceNum, timeSoFar, scheduledSoFar, allTasks, physicalResources, humanResources
+</span>80 <span style=''></span><span style='background: #AEF1AE'>            )
+</span>81 <span style=''></span><span style='background: #AEF1AE'>          } yield (newTasks, newTime)
+</span>82 <span style=''></span><span style='background: #AEF1AE'>    } yield result</span><span style=''>
+</span>83 <span style=''>
+</span>84 <span style=''>
+</span>85 <span style=''>  </span><span style='background: #AEF1AE'>def scheduleProduct</span><span style=''>(
+</span>86 <span style=''>       orderId: OrderId,
+</span>87 <span style=''>       product: Product,
+</span>88 <span style=''>       productInstance: Int,
+</span>89 <span style=''>       startTime: Int,
+</span>90 <span style=''>       scheduled: List[TaskSchedule],
+</span>91 <span style=''>       allTasks: List[Task],
+</span>92 <span style=''>       physicalResources: List[PhysicalResource],
+</span>93 <span style=''>       humanResources: List[HumanResource]
+</span>94 <span style=''>     ): Result[(List[TaskSchedule], Int)] =
+</span>95 <span style=''>    </span><span style='background: #AEF1AE'>product.tasksList.foldLeft[Result[(List[TaskSchedule], Int)]](Right((scheduled, startTime))):
+</span>96 <span style=''></span><span style='background: #AEF1AE'>      (acc, taskId) =&gt;
+</span>97 <span style=''></span><span style='background: #AEF1AE'>        for {
+</span>98 <span style=''></span><span style='background: #AEF1AE'>          (scheduledSoFar, currentTime) &lt;- acc
+</span>99 <span style=''></span><span style='background: #AEF1AE'>          task &lt;- allTasks.find(_.id == taskId)
+</span>100 <span style=''></span><span style='background: #AEF1AE'>            .toRight(DomainError.TaskDoesNotExist(taskId.to))
+</span>101 <span style=''></span><span style='background: #AEF1AE'>          (scheduledTask, endTime) &lt;- scheduleTask(
+</span>102 <span style=''></span><span style='background: #AEF1AE'>            orderId, task, productInstance, currentTime, physicalResources, humanResources
+</span>103 <span style=''></span><span style='background: #AEF1AE'>          )
+</span>104 <span style=''></span><span style='background: #AEF1AE'>        } yield (scheduledTask :: scheduledSoFar, endTime)</span><span style=''>
+</span>105 <span style=''>
+</span>106 <span style=''>
+</span>107 <span style=''>  </span><span style='background: #AEF1AE'>def scheduleTask</span><span style=''>(
+</span>108 <span style=''>      orderId: OrderId,
+</span>109 <span style=''>      task: Task,
+</span>110 <span style=''>      productInstance: Int,
+</span>111 <span style=''>      startTime: Int,
+</span>112 <span style=''>      physicalResources: List[PhysicalResource],
+</span>113 <span style=''>      humanResources: List[HumanResource]
+</span>114 <span style=''>    ): Result[(TaskSchedule, Int)] = </span><span style='background: #AEF1AE'>for {
+</span>115 <span style=''></span><span style='background: #AEF1AE'>    physical &lt;- allocatePhysicalResources(task.id, task.physicalResourceTypes, physicalResources)
+</span>116 <span style=''></span><span style='background: #AEF1AE'>    humans &lt;- allocateHumanResources(task.id, task.physicalResourceTypes, humanResources)
+</span>117 <span style=''></span><span style='background: #AEF1AE'>    productNum &lt;- ProductNumber.from(productInstance)
+</span>118 <span style=''></span><span style='background: #AEF1AE'>    start &lt;- TaskScheduleTime.from(startTime)
+</span>119 <span style=''></span><span style='background: #AEF1AE'>    end &lt;- TaskScheduleTime.from(startTime + task.time.to)
+</span>120 <span style=''></span><span style='background: #AEF1AE'>  } yield
+</span>121 <span style=''></span><span style='background: #AEF1AE'>    (TaskSchedule(orderId, productNum, task.id, start, end, physical, humans), end.to)</span><span style=''>
+</span>122 <span style=''>
+</span>123 <span style=''>  </span><span style='background: #AEF1AE'>def create</span><span style=''>(xml: Elem): Result[Elem] =
+</span>124 <span style=''>    </span><span style='background: #AEF1AE'>for {
+</span>125 <span style=''></span><span style='background: #AEF1AE'>      (orders, products, tasks, humanResources, physicalResources) &lt;- Shared.scheduleDataRetriever(xml)
+</span>126 <span style=''></span><span style='background: #AEF1AE'>      schedules &lt;- generateSchedule(orders, products, tasks, humanResources, physicalResources)
+</span>127 <span style=''></span><span style='background: #AEF1AE'>      outputXml = Shared.toXml(schedules, humanResources)
+</span>128 <span style=''></span><span style='background: #AEF1AE'>    } yield outputXml</span><span style=''>
+</span></pre>
+          </div>
+          <div class="tab-pane" id="statementlist">
+            <table cellspacing="0" cellpadding="0" class="table statementlist">
+      <tr>
+        <th>Line</th>
+        <th>Stmt Id</th>
+        <th>Pos</th>
+        <th>Tree</th>
+        <th>Symbol</th>
+        <th>Tests</th>
+        <th>Code</th>
+      </tr><tr>
+        <td>
+          11
+        </td>
+        <td>
+          139
+        </td>
+        <td>
+          186
+          -
+          215
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          allocatePhysicalResources
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def allocatePhysicalResources
+        </td>
+      </tr><tr>
+        <td>
+          16
+        </td>
+        <td>
+          122
+        </td>
+        <td>
+          476
+          -
+          481
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Right
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right
+        </td>
+      </tr><tr>
+        <td>
+          16
+        </td>
+        <td>
+          125
+        </td>
+        <td>
+          488
+          -
+          497
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          empty
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Set.empty
+        </td>
+      </tr><tr>
+        <td>
+          16
+        </td>
+        <td>
+          124
+        </td>
+        <td>
+          488
+          -
+          491
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Set
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Set
+        </td>
+      </tr><tr>
+        <td>
+          16
+        </td>
+        <td>
+          121
+        </td>
+        <td>
+          392
+          -
+          877
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          foldLeft
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          requiredTypes.foldLeft[Result[(List[PhysicalResourceId], Set[PhysicalResourceId])]](Right((Nil, Set.empty))) {\r\n      case (accResult, requiredType) =&gt; for {\r\n        (assignedIds, usedIds) &lt;- accResult\r\n        resource &lt;- availableResources\r\n          .find(res =&gt; res.physical_type == requiredType &amp;&amp; !usedIds.contains(res.id))\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType.to))\r\n      } yield (resource.id :: assignedIds, usedIds + resource.id)\r\n    }
+        </td>
+      </tr><tr>
+        <td>
+          16
+        </td>
+        <td>
+          123
+        </td>
+        <td>
+          483
+          -
+          486
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Nil
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Nil
+        </td>
+      </tr><tr>
+        <td>
+          17
+        </td>
+        <td>
+          136
+        </td>
+        <td>
+          541
+          -
+          870
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          =&gt; for {\r\n        (assignedIds, usedIds) &lt;- accResult\r\n        resource &lt;- availableResources\r\n          .find(res =&gt; res.physical_type == requiredType &amp;&amp; !usedIds.contains(res.id))\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType.to))\r\n      } yield (resource.id :: assignedIds, usedIds + resource.id)
+        </td>
+      </tr><tr>
+        <td>
+          17
+        </td>
+        <td>
+          126
+        </td>
+        <td>
+          544
+          -
+          870
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          for {\r\n        (assignedIds, usedIds) &lt;- accResult\r\n        resource &lt;- availableResources\r\n          .find(res =&gt; res.physical_type == requiredType &amp;&amp; !usedIds.contains(res.id))\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType.to))\r\n      } yield (resource.id :: assignedIds, usedIds + resource.id)
+        </td>
+      </tr><tr>
+        <td>
+          19
+        </td>
+        <td>
+          127
+        </td>
+        <td>
+          604
+          -
+          870
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          resource &lt;- availableResources\r\n          .find(res =&gt; res.physical_type == requiredType &amp;&amp; !usedIds.contains(res.id))\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType.to))\r\n      } yield (resource.id :: assignedIds, usedIds + resource.id)
+        </td>
+      </tr><tr>
+        <td>
+          19
+        </td>
+        <td>
+          135
+        </td>
+        <td>
+          604
+          -
+          870
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          resource &lt;- availableResources\r\n          .find(res =&gt; res.physical_type == requiredType &amp;&amp; !usedIds.contains(res.id))\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType.to))\r\n      } yield (resource.id :: assignedIds, usedIds + resource.id)
+        </td>
+      </tr><tr>
+        <td>
+          20
+        </td>
+        <td>
+          130
+        </td>
+        <td>
+          697
+          -
+          721
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          contains
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          usedIds.contains(res.id)
+        </td>
+      </tr><tr>
+        <td>
+          20
+        </td>
+        <td>
+          129
+        </td>
+        <td>
+          616
+          -
+          722
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          find
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          availableResources\r\n          .find(res =&gt; res.physical_type == requiredType &amp;&amp; !usedIds.contains(res.id))
+        </td>
+      </tr><tr>
+        <td>
+          21
+        </td>
+        <td>
+          128
+        </td>
+        <td>
+          616
+          -
+          803
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          toRight
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          availableResources\r\n          .find(res =&gt; res.physical_type == requiredType &amp;&amp; !usedIds.contains(res.id))\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType.to))
+        </td>
+      </tr><tr>
+        <td>
+          21
+        </td>
+        <td>
+          131
+        </td>
+        <td>
+          775
+          -
+          784
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          taskId.to
+        </td>
+      </tr><tr>
+        <td>
+          21
+        </td>
+        <td>
+          132
+        </td>
+        <td>
+          786
+          -
+          801
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          requiredType.to
+        </td>
+      </tr><tr>
+        <td>
+          22
+        </td>
+        <td>
+          134
+        </td>
+        <td>
+          848
+          -
+          869
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          usedIds + resource.id
+        </td>
+      </tr><tr>
+        <td>
+          22
+        </td>
+        <td>
+          133
+        </td>
+        <td>
+          820
+          -
+          846
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ::
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          resource.id :: assignedIds
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          137
+        </td>
+        <td>
+          882
+          -
+          886
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          _._1
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          138
+        </td>
+        <td>
+          882
+          -
+          894
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          reverse
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          _._1.reverse
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          120
+        </td>
+        <td>
+          392
+          -
+          895
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          requiredTypes.foldLeft[Result[(List[PhysicalResourceId], Set[PhysicalResourceId])]](Right((Nil, Set.empty))) {\r\n      case (accResult, requiredType) =&gt; for {\r\n        (assignedIds, usedIds) &lt;- accResult\r\n        resource &lt;- availableResources\r\n          .find(res =&gt; res.physical_type == requiredType &amp;&amp; !usedIds.contains(res.id))\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType.to))\r\n      } yield (resource.id :: assignedIds, usedIds + resource.id)\r\n    }.map(_._1.reverse)
+        </td>
+      </tr><tr>
+        <td>
+          26
+        </td>
+        <td>
+          160
+        </td>
+        <td>
+          903
+          -
+          929
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          allocateHumanResources
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def allocateHumanResources
+        </td>
+      </tr><tr>
+        <td>
+          31
+        </td>
+        <td>
+          142
+        </td>
+        <td>
+          1171
+          -
+          1176
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Right
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right
+        </td>
+      </tr><tr>
+        <td>
+          31
+        </td>
+        <td>
+          145
+        </td>
+        <td>
+          1183
+          -
+          1192
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          empty
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Set.empty
+        </td>
+      </tr><tr>
+        <td>
+          31
+        </td>
+        <td>
+          141
+        </td>
+        <td>
+          1093
+          -
+          1582
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          foldLeft
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          requiredTypes.foldLeft[Result[(List[HumanResourceId], Set[HumanResourceId])]](Right((Nil, Set.empty))) {\r\n      case (accResult, requiredType) =&gt; for {\r\n        (assignedNames, usedNames) &lt;- accResult\r\n        human &lt;- availableHumans\r\n          .find(hr =&gt; hr.physicalResourceTypes.contains(requiredType) &amp;&amp; !usedNames.contains(hr.id))\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType.to))\r\n      } yield (human.id :: assignedNames, usedNames + human.id)\r\n    }
+        </td>
+      </tr><tr>
+        <td>
+          31
+        </td>
+        <td>
+          144
+        </td>
+        <td>
+          1183
+          -
+          1186
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Set
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Set
+        </td>
+      </tr><tr>
+        <td>
+          31
+        </td>
+        <td>
+          143
+        </td>
+        <td>
+          1178
+          -
+          1181
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Nil
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Nil
+        </td>
+      </tr><tr>
+        <td>
+          32
+        </td>
+        <td>
+          146
+        </td>
+        <td>
+          1239
+          -
+          1575
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          for {\r\n        (assignedNames, usedNames) &lt;- accResult\r\n        human &lt;- availableHumans\r\n          .find(hr =&gt; hr.physicalResourceTypes.contains(requiredType) &amp;&amp; !usedNames.contains(hr.id))\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType.to))\r\n      } yield (human.id :: assignedNames, usedNames + human.id)
+        </td>
+      </tr><tr>
+        <td>
+          32
+        </td>
+        <td>
+          157
+        </td>
+        <td>
+          1236
+          -
+          1575
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          =&gt; for {\r\n        (assignedNames, usedNames) &lt;- accResult\r\n        human &lt;- availableHumans\r\n          .find(hr =&gt; hr.physicalResourceTypes.contains(requiredType) &amp;&amp; !usedNames.contains(hr.id))\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType.to))\r\n      } yield (human.id :: assignedNames, usedNames + human.id)
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          147
+        </td>
+        <td>
+          1303
+          -
+          1575
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          human &lt;- availableHumans\r\n          .find(hr =&gt; hr.physicalResourceTypes.contains(requiredType) &amp;&amp; !usedNames.contains(hr.id))\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType.to))\r\n      } yield (human.id :: assignedNames, usedNames + human.id)
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          156
+        </td>
+        <td>
+          1303
+          -
+          1575
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          human &lt;- availableHumans\r\n          .find(hr =&gt; hr.physicalResourceTypes.contains(requiredType) &amp;&amp; !usedNames.contains(hr.id))\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType.to))\r\n      } yield (human.id :: assignedNames, usedNames + human.id)
+        </td>
+      </tr><tr>
+        <td>
+          35
+        </td>
+        <td>
+          149
+        </td>
+        <td>
+          1312
+          -
+          1429
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          find
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          availableHumans\r\n          .find(hr =&gt; hr.physicalResourceTypes.contains(requiredType) &amp;&amp; !usedNames.contains(hr.id))
+        </td>
+      </tr><tr>
+        <td>
+          35
+        </td>
+        <td>
+          151
+        </td>
+        <td>
+          1403
+          -
+          1428
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          contains
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          usedNames.contains(hr.id)
+        </td>
+      </tr><tr>
+        <td>
+          35
+        </td>
+        <td>
+          150
+        </td>
+        <td>
+          1351
+          -
+          1398
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          contains
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          hr.physicalResourceTypes.contains(requiredType)
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          148
+        </td>
+        <td>
+          1312
+          -
+          1510
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          toRight
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          availableHumans\r\n          .find(hr =&gt; hr.physicalResourceTypes.contains(requiredType) &amp;&amp; !usedNames.contains(hr.id))\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType.to))
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          153
+        </td>
+        <td>
+          1493
+          -
+          1508
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          requiredType.to
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          152
+        </td>
+        <td>
+          1482
+          -
+          1491
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          taskId.to
+        </td>
+      </tr><tr>
+        <td>
+          37
+        </td>
+        <td>
+          155
+        </td>
+        <td>
+          1554
+          -
+          1574
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          usedNames + human.id
+        </td>
+      </tr><tr>
+        <td>
+          37
+        </td>
+        <td>
+          154
+        </td>
+        <td>
+          1527
+          -
+          1552
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ::
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          human.id :: assignedNames
+        </td>
+      </tr><tr>
+        <td>
+          38
+        </td>
+        <td>
+          158
+        </td>
+        <td>
+          1587
+          -
+          1591
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          _._1
+        </td>
+      </tr><tr>
+        <td>
+          38
+        </td>
+        <td>
+          140
+        </td>
+        <td>
+          1093
+          -
+          1600
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          requiredTypes.foldLeft[Result[(List[HumanResourceId], Set[HumanResourceId])]](Right((Nil, Set.empty))) {\r\n      case (accResult, requiredType) =&gt; for {\r\n        (assignedNames, usedNames) &lt;- accResult\r\n        human &lt;- availableHumans\r\n          .find(hr =&gt; hr.physicalResourceTypes.contains(requiredType) &amp;&amp; !usedNames.contains(hr.id))\r\n          .toRight(DomainError.ResourceUnavailable(taskId.to, requiredType.to))\r\n      } yield (human.id :: assignedNames, usedNames + human.id)\r\n    }.map(_._1.reverse)
+        </td>
+      </tr><tr>
+        <td>
+          38
+        </td>
+        <td>
+          159
+        </td>
+        <td>
+          1587
+          -
+          1599
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          reverse
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          _._1.reverse
+        </td>
+      </tr><tr>
+        <td>
+          41
+        </td>
+        <td>
+          172
+        </td>
+        <td>
+          1608
+          -
+          1628
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          generateSchedule
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def generateSchedule
+        </td>
+      </tr><tr>
+        <td>
+          48
+        </td>
+        <td>
+          164
+        </td>
+        <td>
+          1887
+          -
+          1897
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          empty
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          List.empty
+        </td>
+      </tr><tr>
+        <td>
+          48
+        </td>
+        <td>
+          163
+        </td>
+        <td>
+          1887
+          -
+          1891
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          List
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          List
+        </td>
+      </tr><tr>
+        <td>
+          48
+        </td>
+        <td>
+          162
+        </td>
+        <td>
+          1880
+          -
+          1885
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Right
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right
+        </td>
+      </tr><tr>
+        <td>
+          48
+        </td>
+        <td>
+          161
+        </td>
+        <td>
+          1864
+          -
+          2233
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          foldLeft
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          orders.foldLeft(Right((List.empty[TaskSchedule], 0)): Result[(List[TaskSchedule], Int)]) { (acc, order) =&gt;\r\n      for {\r\n        (scheduledSoFar, globalTime) &lt;- acc\r\n        (newSchedules, newTime) &lt;- scheduleOrder(\r\n          order, globalTime, scheduledSoFar, products, tasks, physicalResources, humanResources\r\n        )\r\n      } yield (newSchedules, newTime)\r\n    }
+        </td>
+      </tr><tr>
+        <td>
+          49
+        </td>
+        <td>
+          165
+        </td>
+        <td>
+          1978
+          -
+          2226
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          for {\r\n        (scheduledSoFar, globalTime) &lt;- acc\r\n        (newSchedules, newTime) &lt;- scheduleOrder(\r\n          order, globalTime, scheduledSoFar, products, tasks, physicalResources, humanResources\r\n        )\r\n      } yield (newSchedules, newTime)
+        </td>
+      </tr><tr>
+        <td>
+          51
+        </td>
+        <td>
+          167
+        </td>
+        <td>
+          2065
+          -
+          2187
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scheduleOrder
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          scheduleOrder(\r\n          order, globalTime, scheduledSoFar, products, tasks, physicalResources, humanResources\r\n        )
+        </td>
+      </tr><tr>
+        <td>
+          51
+        </td>
+        <td>
+          166
+        </td>
+        <td>
+          2038
+          -
+          2226
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          (newSchedules, newTime) &lt;- scheduleOrder(\r\n          order, globalTime, scheduledSoFar, products, tasks, physicalResources, humanResources\r\n        )\r\n      } yield (newSchedules, newTime)
+        </td>
+      </tr><tr>
+        <td>
+          51
+        </td>
+        <td>
+          169
+        </td>
+        <td>
+          2038
+          -
+          2226
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          (newSchedules, newTime) &lt;- scheduleOrder(\r\n          order, globalTime, scheduledSoFar, products, tasks, physicalResources, humanResources\r\n        )\r\n      } yield (newSchedules, newTime)
+        </td>
+      </tr><tr>
+        <td>
+          54
+        </td>
+        <td>
+          168
+        </td>
+        <td>
+          2203
+          -
+          2226
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          (newSchedules, newTime)
+        </td>
+      </tr><tr>
+        <td>
+          57
+        </td>
+        <td>
+          171
+        </td>
+        <td>
+          2252
+          -
+          2256
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          _._1
+        </td>
+      </tr><tr>
+        <td>
+          57
+        </td>
+        <td>
+          170
+        </td>
+        <td>
+          2241
+          -
+          2257
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          result.map(_._1)
+        </td>
+      </tr><tr>
+        <td>
+          60
+        </td>
+        <td>
+          188
+        </td>
+        <td>
+          2265
+          -
+          2282
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          scheduleOrder
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def scheduleOrder
+        </td>
+      </tr><tr>
+        <td>
+          69
+        </td>
+        <td>
+          173
+        </td>
+        <td>
+          2580
+          -
+          3187
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          for {\r\n      product &lt;- allProducts\r\n        .find(_.id == order.productId)\r\n        .toRight(DomainError.ProductDoesNotExist(order.productId.to))\r\n\r\n      result &lt;- (1 to order.quantity.to).foldLeft[Result[(List[TaskSchedule], Int)]](Right((scheduled, startTime))):\r\n        (acc, instanceNum) =&gt;\r\n          for {\r\n            (scheduledSoFar, timeSoFar) &lt;- acc\r\n            (newTasks, newTime) &lt;- scheduleProduct(\r\n              order.id, product, instanceNum, timeSoFar, scheduledSoFar, allTasks, physicalResources, humanResources\r\n            )\r\n          } yield (newTasks, newTime)\r\n    } yield result
+        </td>
+      </tr><tr>
+        <td>
+          71
+        </td>
+        <td>
+          175
+        </td>
+        <td>
+          2604
+          -
+          2655
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          find
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          allProducts\r\n        .find(_.id == order.productId)
+        </td>
+      </tr><tr>
+        <td>
+          72
+        </td>
+        <td>
+          176
+        </td>
+        <td>
+          2706
+          -
+          2724
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          order.productId.to
+        </td>
+      </tr><tr>
+        <td>
+          72
+        </td>
+        <td>
+          174
+        </td>
+        <td>
+          2604
+          -
+          2726
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          toRight
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          allProducts\r\n        .find(_.id == order.productId)\r\n        .toRight(DomainError.ProductDoesNotExist(order.productId.to))
+        </td>
+      </tr><tr>
+        <td>
+          74
+        </td>
+        <td>
+          182
+        </td>
+        <td>
+          2815
+          -
+          2820
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Right
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right
+        </td>
+      </tr><tr>
+        <td>
+          74
+        </td>
+        <td>
+          181
+        </td>
+        <td>
+          2752
+          -
+          2769
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          order.quantity.to
+        </td>
+      </tr><tr>
+        <td>
+          74
+        </td>
+        <td>
+          180
+        </td>
+        <td>
+          2747
+          -
+          2748
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          intWrapper
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          1
+        </td>
+      </tr><tr>
+        <td>
+          74
+        </td>
+        <td>
+          177
+        </td>
+        <td>
+          2736
+          -
+          3187
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          result &lt;- (1 to order.quantity.to).foldLeft[Result[(List[TaskSchedule], Int)]](Right((scheduled, startTime))):\r\n        (acc, instanceNum) =&gt;\r\n          for {\r\n            (scheduledSoFar, timeSoFar) &lt;- acc\r\n            (newTasks, newTime) &lt;- scheduleProduct(\r\n              order.id, product, instanceNum, timeSoFar, scheduledSoFar, allTasks, physicalResources, humanResources\r\n            )\r\n          } yield (newTasks, newTime)\r\n    } yield result
+        </td>
+      </tr><tr>
+        <td>
+          74
+        </td>
+        <td>
+          179
+        </td>
+        <td>
+          2747
+          -
+          2769
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          1 to order.quantity.to
+        </td>
+      </tr><tr>
+        <td>
+          75
+        </td>
+        <td>
+          178
+        </td>
+        <td>
+          2746
+          -
+          3167
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          foldLeft
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          (1 to order.quantity.to).foldLeft[Result[(List[TaskSchedule], Int)]](Right((scheduled, startTime))):\r\n        (acc, instanceNum) =&gt;\r\n          for {\r\n            (scheduledSoFar, timeSoFar) &lt;- acc\r\n            (newTasks, newTime) &lt;- scheduleProduct(\r\n              order.id, product, instanceNum, timeSoFar, scheduledSoFar, allTasks, physicalResources, humanResources\r\n            )\r\n          } yield (newTasks, newTime)
+        </td>
+      </tr><tr>
+        <td>
+          76
+        </td>
+        <td>
+          183
+        </td>
+        <td>
+          2889
+          -
+          3167
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          for {\r\n            (scheduledSoFar, timeSoFar) &lt;- acc\r\n            (newTasks, newTime) &lt;- scheduleProduct(\r\n              order.id, product, instanceNum, timeSoFar, scheduledSoFar, allTasks, physicalResources, humanResources\r\n            )\r\n          } yield (newTasks, newTime)
+        </td>
+      </tr><tr>
+        <td>
+          78
+        </td>
+        <td>
+          185
+        </td>
+        <td>
+          2979
+          -
+          3128
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scheduleProduct
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          scheduleProduct(\r\n              order.id, product, instanceNum, timeSoFar, scheduledSoFar, allTasks, physicalResources, humanResources\r\n            )
+        </td>
+      </tr><tr>
+        <td>
+          78
+        </td>
+        <td>
+          184
+        </td>
+        <td>
+          2956
+          -
+          3167
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          (newTasks, newTime) &lt;- scheduleProduct(\r\n              order.id, product, instanceNum, timeSoFar, scheduledSoFar, allTasks, physicalResources, humanResources\r\n            )\r\n          } yield (newTasks, newTime)
+        </td>
+      </tr><tr>
+        <td>
+          78
+        </td>
+        <td>
+          187
+        </td>
+        <td>
+          2956
+          -
+          3167
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          (newTasks, newTime) &lt;- scheduleProduct(\r\n              order.id, product, instanceNum, timeSoFar, scheduledSoFar, allTasks, physicalResources, humanResources\r\n            )\r\n          } yield (newTasks, newTime)
+        </td>
+      </tr><tr>
+        <td>
+          81
+        </td>
+        <td>
+          186
+        </td>
+        <td>
+          3148
+          -
+          3167
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          (newTasks, newTime)
+        </td>
+      </tr><tr>
+        <td>
+          85
+        </td>
+        <td>
+          201
+        </td>
+        <td>
+          3195
+          -
+          3214
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          scheduleProduct
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def scheduleProduct
+        </td>
+      </tr><tr>
+        <td>
+          95
+        </td>
+        <td>
+          190
+        </td>
+        <td>
+          3598
+          -
+          3603
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          Right
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Right
+        </td>
+      </tr><tr>
+        <td>
+          96
+        </td>
+        <td>
+          189
+        </td>
+        <td>
+          3536
+          -
+          4046
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          foldLeft
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          product.tasksList.foldLeft[Result[(List[TaskSchedule], Int)]](Right((scheduled, startTime))):\r\n      (acc, taskId) =&gt;\r\n        for {\r\n          (scheduledSoFar, currentTime) &lt;- acc\r\n          task &lt;- allTasks.find(_.id == taskId)\r\n            .toRight(DomainError.TaskDoesNotExist(taskId.to))\r\n          (scheduledTask, endTime) &lt;- scheduleTask(\r\n            orderId, task, productInstance, currentTime, physicalResources, humanResources\r\n          )\r\n        } yield (scheduledTask :: scheduledSoFar, endTime)
+        </td>
+      </tr><tr>
+        <td>
+          97
+        </td>
+        <td>
+          191
+        </td>
+        <td>
+          3663
+          -
+          4046
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          for {\r\n          (scheduledSoFar, currentTime) &lt;- acc\r\n          task &lt;- allTasks.find(_.id == taskId)\r\n            .toRight(DomainError.TaskDoesNotExist(taskId.to))\r\n          (scheduledTask, endTime) &lt;- scheduleTask(\r\n            orderId, task, productInstance, currentTime, physicalResources, humanResources\r\n          )\r\n        } yield (scheduledTask :: scheduledSoFar, endTime)
+        </td>
+      </tr><tr>
+        <td>
+          99
+        </td>
+        <td>
+          200
+        </td>
+        <td>
+          3728
+          -
+          4046
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          task &lt;- allTasks.find(_.id == taskId)\r\n            .toRight(DomainError.TaskDoesNotExist(taskId.to))\r\n          (scheduledTask, endTime) &lt;- scheduleTask(\r\n            orderId, task, productInstance, currentTime, physicalResources, humanResources\r\n          )\r\n        } yield (scheduledTask :: scheduledSoFar, endTime)
+        </td>
+      </tr><tr>
+        <td>
+          99
+        </td>
+        <td>
+          194
+        </td>
+        <td>
+          3736
+          -
+          3765
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          find
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          allTasks.find(_.id == taskId)
+        </td>
+      </tr><tr>
+        <td>
+          99
+        </td>
+        <td>
+          192
+        </td>
+        <td>
+          3728
+          -
+          4046
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          task &lt;- allTasks.find(_.id == taskId)\r\n            .toRight(DomainError.TaskDoesNotExist(taskId.to))\r\n          (scheduledTask, endTime) &lt;- scheduleTask(\r\n            orderId, task, productInstance, currentTime, physicalResources, humanResources\r\n          )\r\n        } yield (scheduledTask :: scheduledSoFar, endTime)
+        </td>
+      </tr><tr>
+        <td>
+          100
+        </td>
+        <td>
+          193
+        </td>
+        <td>
+          3736
+          -
+          3828
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          toRight
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          allTasks.find(_.id == taskId)\r\n            .toRight(DomainError.TaskDoesNotExist(taskId.to))
+        </td>
+      </tr><tr>
+        <td>
+          100
+        </td>
+        <td>
+          195
+        </td>
+        <td>
+          3817
+          -
+          3826
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          taskId.to
+        </td>
+      </tr><tr>
+        <td>
+          101
+        </td>
+        <td>
+          196
+        </td>
+        <td>
+          3840
+          -
+          4046
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          (scheduledTask, endTime) &lt;- scheduleTask(\r\n            orderId, task, productInstance, currentTime, physicalResources, humanResources\r\n          )\r\n        } yield (scheduledTask :: scheduledSoFar, endTime)
+        </td>
+      </tr><tr>
+        <td>
+          101
+        </td>
+        <td>
+          197
+        </td>
+        <td>
+          3868
+          -
+          3986
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scheduleTask
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          scheduleTask(\r\n            orderId, task, productInstance, currentTime, physicalResources, humanResources\r\n          )
+        </td>
+      </tr><tr>
+        <td>
+          104
+        </td>
+        <td>
+          199
+        </td>
+        <td>
+          4004
+          -
+          4046
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          (scheduledTask :: scheduledSoFar, endTime)
+        </td>
+      </tr><tr>
+        <td>
+          104
+        </td>
+        <td>
+          198
+        </td>
+        <td>
+          4005
+          -
+          4036
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ::
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          scheduledTask :: scheduledSoFar
+        </td>
+      </tr><tr>
+        <td>
+          107
+        </td>
+        <td>
+          214
+        </td>
+        <td>
+          4054
+          -
+          4070
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          scheduleTask
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def scheduleTask
+        </td>
+      </tr><tr>
+        <td>
+          114
+        </td>
+        <td>
+          202
+        </td>
+        <td>
+          4299
+          -
+          4755
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          for {\r\n    physical &lt;- allocatePhysicalResources(task.id, task.physicalResourceTypes, physicalResources)\r\n    humans &lt;- allocateHumanResources(task.id, task.physicalResourceTypes, humanResources)\r\n    productNum &lt;- ProductNumber.from(productInstance)\r\n    start &lt;- TaskScheduleTime.from(startTime)\r\n    end &lt;- TaskScheduleTime.from(startTime + task.time.to)\r\n  } yield\r\n    (TaskSchedule(orderId, productNum, task.id, start, end, physical, humans), end.to)
+        </td>
+      </tr><tr>
+        <td>
+          115
+        </td>
+        <td>
+          203
+        </td>
+        <td>
+          4322
+          -
+          4403
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          allocatePhysicalResources
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          allocatePhysicalResources(task.id, task.physicalResourceTypes, physicalResources)
+        </td>
+      </tr><tr>
+        <td>
+          116
+        </td>
+        <td>
+          205
+        </td>
+        <td>
+          4419
+          -
+          4494
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          allocateHumanResources
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          allocateHumanResources(task.id, task.physicalResourceTypes, humanResources)
+        </td>
+      </tr><tr>
+        <td>
+          116
+        </td>
+        <td>
+          204
+        </td>
+        <td>
+          4409
+          -
+          4755
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          humans &lt;- allocateHumanResources(task.id, task.physicalResourceTypes, humanResources)\r\n    productNum &lt;- ProductNumber.from(productInstance)\r\n    start &lt;- TaskScheduleTime.from(startTime)\r\n    end &lt;- TaskScheduleTime.from(startTime + task.time.to)\r\n  } yield\r\n    (TaskSchedule(orderId, productNum, task.id, start, end, physical, humans), end.to)
+        </td>
+      </tr><tr>
+        <td>
+          117
+        </td>
+        <td>
+          207
+        </td>
+        <td>
+          4514
+          -
+          4549
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ProductNumber.from(productInstance)
+        </td>
+      </tr><tr>
+        <td>
+          117
+        </td>
+        <td>
+          206
+        </td>
+        <td>
+          4500
+          -
+          4755
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          productNum &lt;- ProductNumber.from(productInstance)\r\n    start &lt;- TaskScheduleTime.from(startTime)\r\n    end &lt;- TaskScheduleTime.from(startTime + task.time.to)\r\n  } yield\r\n    (TaskSchedule(orderId, productNum, task.id, start, end, physical, humans), end.to)
+        </td>
+      </tr><tr>
+        <td>
+          118
+        </td>
+        <td>
+          209
+        </td>
+        <td>
+          4564
+          -
+          4596
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          TaskScheduleTime.from(startTime)
+        </td>
+      </tr><tr>
+        <td>
+          118
+        </td>
+        <td>
+          208
+        </td>
+        <td>
+          4555
+          -
+          4755
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          start &lt;- TaskScheduleTime.from(startTime)\r\n    end &lt;- TaskScheduleTime.from(startTime + task.time.to)\r\n  } yield\r\n    (TaskSchedule(orderId, productNum, task.id, start, end, physical, humans), end.to)
+        </td>
+      </tr><tr>
+        <td>
+          119
+        </td>
+        <td>
+          211
+        </td>
+        <td>
+          4609
+          -
+          4656
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          TaskScheduleTime.from(startTime + task.time.to)
+        </td>
+      </tr><tr>
+        <td>
+          119
+        </td>
+        <td>
+          210
+        </td>
+        <td>
+          4602
+          -
+          4755
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          end &lt;- TaskScheduleTime.from(startTime + task.time.to)\r\n  } yield\r\n    (TaskSchedule(orderId, productNum, task.id, start, end, physical, humans), end.to)
+        </td>
+      </tr><tr>
+        <td>
+          119
+        </td>
+        <td>
+          212
+        </td>
+        <td>
+          4643
+          -
+          4655
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          task.time.to
+        </td>
+      </tr><tr>
+        <td>
+          121
+        </td>
+        <td>
+          213
+        </td>
+        <td>
+          4748
+          -
+          4754
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          end.to
+        </td>
+      </tr><tr>
+        <td>
+          123
+        </td>
+        <td>
+          223
+        </td>
+        <td>
+          4761
+          -
+          4771
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          create
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def create
+        </td>
+      </tr><tr>
+        <td>
+          124
+        </td>
+        <td>
+          215
+        </td>
+        <td>
+          4804
+          -
+          5093
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          for {\r\n      (orders, products, tasks, humanResources, physicalResources) &lt;- Shared.scheduleDataRetriever(xml)\r\n      schedules &lt;- generateSchedule(orders, products, tasks, humanResources, physicalResources)\r\n      outputXml = Shared.toXml(schedules, humanResources)\r\n    } yield outputXml
+        </td>
+      </tr><tr>
+        <td>
+          125
+        </td>
+        <td>
+          216
+        </td>
+        <td>
+          4881
+          -
+          4914
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          scheduleDataRetriever
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Shared.scheduleDataRetriever(xml)
+        </td>
+      </tr><tr>
+        <td>
+          126
+        </td>
+        <td>
+          218
+        </td>
+        <td>
+          4922
+          -
+          5070
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          schedules &lt;- generateSchedule(orders, products, tasks, humanResources, physicalResources)\r\n      outputXml = Shared.toXml(schedules, humanResources)
+        </td>
+      </tr><tr>
+        <td>
+          126
+        </td>
+        <td>
+          217
+        </td>
+        <td>
+          4922
+          -
+          5093
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          schedules &lt;- generateSchedule(orders, products, tasks, humanResources, physicalResources)\r\n      outputXml = Shared.toXml(schedules, humanResources)\r\n    } yield outputXml
+        </td>
+      </tr><tr>
+        <td>
+          126
+        </td>
+        <td>
+          219
+        </td>
+        <td>
+          4935
+          -
+          5011
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          generateSchedule
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          generateSchedule(orders, products, tasks, humanResources, physicalResources)
+        </td>
+      </tr><tr>
+        <td>
+          126
+        </td>
+        <td>
+          222
+        </td>
+        <td>
+          4922
+          -
+          5093
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          schedules &lt;- generateSchedule(orders, products, tasks, humanResources, physicalResources)\r\n      outputXml = Shared.toXml(schedules, humanResources)\r\n    } yield outputXml
+        </td>
+      </tr><tr>
+        <td>
+          127
+        </td>
+        <td>
+          220
+        </td>
+        <td>
+          5031
+          -
+          5070
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          toXml
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Shared.toXml(schedules, humanResources)
+        </td>
+      </tr><tr>
+        <td>
+          128
+        </td>
+        <td>
+          221
+        </td>
+        <td>
+          5084
+          -
+          5093
+        </td>
+        <td>
+          Typed
+        </td>
+        <td>
+          outputXml
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          outputXml
+        </td>
+      </tr>
+    </table>
+          </div>
+        </div>
+      </body>
+    </html>

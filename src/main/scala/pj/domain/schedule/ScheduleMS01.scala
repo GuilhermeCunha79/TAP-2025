@@ -3,8 +3,6 @@ package pj.domain.schedule
 import pj.domain.*
 import pj.domain.resources.*
 import pj.domain.resources.Types.*
-import pj.io.FileIO
-import pj.xml.{XML, XMLToDomain}
 
 import scala.xml.Elem
 
@@ -127,13 +125,4 @@ object ScheduleMS01 extends Schedule:
       (orders, products, tasks, humanResources, physicalResources) <- Shared.scheduleDataRetriever(xml)
       schedules <- generateSchedule(orders, products, tasks, humanResources, physicalResources)
       outputXml = Shared.toXml(schedules, humanResources)
-      _ = FileIO.save("output.xml", outputXml)
-    } yield outputXml
-
-  def create(xml: Elem, fileName: String): Result[Elem] =
-    for {
-      (orders, products, tasks, humanResources, physicalResources) <- Shared.scheduleDataRetriever(xml)
-      schedules <- generateSchedule(orders, products, tasks, humanResources, physicalResources)
-      outputXml = Shared.toXml(schedules, humanResources)
-      _ = FileIO.save(fileName, outputXml)
     } yield outputXml

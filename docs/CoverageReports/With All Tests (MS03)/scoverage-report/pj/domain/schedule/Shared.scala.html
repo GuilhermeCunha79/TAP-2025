@@ -1,0 +1,1882 @@
+<html>
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title id="title">
+          pj\domain\schedule\Shared.scala.html
+        </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/css/theme.default.min.css" type="text/css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/js/jquery.tablesorter.min.js"></script><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" type="text/css"/><script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script><script type="text/javascript">
+        $(document).ready(function() {$(".tablesorter").tablesorter();});
+      </script>
+        <style>
+          table.codegrid { font-family: monospace; font-size: 12px; width: auto!important; }table.statementlist { width: auto!important; font-size: 13px; } table.codegrid td { padding: 0!important; border: 0!important } table td.linenumber { width: 40px!important; } 
+        </style>
+      </head>
+      <body style="font-family: monospace;">
+        <ul class="nav nav-tabs">
+          <li>
+            <a href="#codegrid" data-toggle="tab">Codegrid</a>
+          </li>
+          <li>
+            <a href="#statementlist" data-toggle="tab">Statement List</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="codegrid">
+            <pre style='font-size: 12pt; font-family: courier, monospace;'>1 <span style=''>package pj.domain.schedule
+</span>2 <span style=''>
+</span>3 <span style=''>import pj.domain.*
+</span>4 <span style=''>import pj.domain.resources.*
+</span>5 <span style=''>import pj.domain.resources.Types.*
+</span>6 <span style=''>import pj.xml.{XML, XMLToDomain}
+</span>7 <span style=''>
+</span>8 <span style=''>import scala.xml.Elem
+</span>9 <span style=''>
+</span>10 <span style=''>object Shared:
+</span>11 <span style=''>  </span><span style='background: #AEF1AE'>def scheduleDataRetriever</span><span style=''>(xml: Elem): Result[(
+</span>12 <span style=''>    List[Order],
+</span>13 <span style=''>    List[Product],
+</span>14 <span style=''>    List[Task],
+</span>15 <span style=''>    List[HumanResource],
+</span>16 <span style=''>    List[PhysicalResource]
+</span>17 <span style=''>    )] =
+</span>18 <span style=''>    </span><span style='background: #AEF1AE'>for {
+</span>19 <span style=''></span><span style='background: #AEF1AE'>      physicalNode &lt;- XML.fromNode(xml, &quot;PhysicalResources&quot;)
+</span>20 <span style=''></span><span style='background: #AEF1AE'>      physicalResources &lt;- XML.traverse(physicalNode \ &quot;Physical&quot;, XMLToDomain.getPhysicalResource)
+</span>21 <span style=''></span><span style='background: #AEF1AE'>      physicalTypes = physicalResources.map(_.physical_type).distinct
+</span>22 <span style=''></span><span style='background: #AEF1AE'>
+</span>23 <span style=''></span><span style='background: #AEF1AE'>      tasksNode &lt;- XML.fromNode(xml, &quot;Tasks&quot;)
+</span>24 <span style=''></span><span style='background: #AEF1AE'>      tasks &lt;- XML.traverse(tasksNode \ &quot;Task&quot;, XMLToDomain.getTask(physicalTypes))
+</span>25 <span style=''></span><span style='background: #AEF1AE'>
+</span>26 <span style=''></span><span style='background: #AEF1AE'>      humanNode &lt;- XML.fromNode(xml, &quot;HumanResources&quot;)
+</span>27 <span style=''></span><span style='background: #AEF1AE'>      humanResources &lt;- XML.traverse(humanNode \ &quot;Human&quot;, XMLToDomain.getHumanResource(physicalTypes))
+</span>28 <span style=''></span><span style='background: #AEF1AE'>
+</span>29 <span style=''></span><span style='background: #AEF1AE'>      productsNode &lt;- XML.fromNode(xml, &quot;Products&quot;)
+</span>30 <span style=''></span><span style='background: #AEF1AE'>      products &lt;- XML.traverse(productsNode \ &quot;Product&quot;, XMLToDomain.getProduct(tasks))
+</span>31 <span style=''></span><span style='background: #AEF1AE'>
+</span>32 <span style=''></span><span style='background: #AEF1AE'>      ordersNode &lt;- XML.fromNode(xml, &quot;Orders&quot;)
+</span>33 <span style=''></span><span style='background: #AEF1AE'>      orders &lt;- XML.traverse(ordersNode \ &quot;Order&quot;, XMLToDomain.getOrder(products))
+</span>34 <span style=''></span><span style='background: #AEF1AE'>    } yield (orders, products, tasks, humanResources, physicalResources)</span><span style=''>
+</span>35 <span style=''>
+</span>36 <span style=''>  </span><span style='background: #AEF1AE'>private def getHumanNameById</span><span style=''>(
+</span>37 <span style=''>      humanId: HumanResourceId,
+</span>38 <span style=''>      humanResources: List[HumanResource]
+</span>39 <span style=''>    ): String =
+</span>40 <span style=''>    </span><span style='background: #AEF1AE'>humanResources.find(_.id == humanId).map(_.name.to).getOrElse(</span><span style='background: #F0ADAD'>humanId.to</span><span style='background: #AEF1AE'>)</span><span style=''>
+</span>41 <span style=''>
+</span>42 <span style=''>  </span><span style='background: #AEF1AE'>def toXml</span><span style=''>(schedules: List[TaskSchedule], humanResources: List[HumanResource]): Elem =
+</span>43 <span style=''>    &lt;</span><span style='background: #AEF1AE'>Schedule xmlns=&quot;http://www.dei.isep.ipp.pt/tap-2025&quot;
+</span>44 <span style=''></span><span style='background: #AEF1AE'>              xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+</span>45 <span style=''></span><span style='background: #AEF1AE'>              xsi:schemaLocation=&quot;http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd &quot;&gt;
+</span>46 <span style=''></span><span style='background: #AEF1AE'>      {schedules.sortBy(_.start.to).map { sched =&gt;
+</span>47 <span style=''></span><span style='background: #AEF1AE'>      &lt;TaskSchedule order={sched.orderId.to}
+</span>48 <span style=''></span><span style='background: #AEF1AE'>                    productNumber={sched.productNumber.to.toString}
+</span>49 <span style=''></span><span style='background: #AEF1AE'>                    task={sched.taskId.to}
+</span>50 <span style=''></span><span style='background: #AEF1AE'>                    start={sched.start.to.toString}
+</span>51 <span style=''></span><span style='background: #AEF1AE'>                    end={sched.end.to.toString}&gt;
+</span>52 <span style=''></span><span style='background: #AEF1AE'>        &lt;PhysicalResources&gt;
+</span>53 <span style=''></span><span style='background: #AEF1AE'>          {sched.physicalResourceIds.map(id =&gt;
+</span>54 <span style=''></span><span style='background: #AEF1AE'>            &lt;Physical id={id.to}/&gt;
+</span>55 <span style=''></span><span style='background: #AEF1AE'>        )}
+</span>56 <span style=''></span><span style='background: #AEF1AE'>        &lt;/PhysicalResources&gt;
+</span>57 <span style=''></span><span style='background: #AEF1AE'>        &lt;HumanResources&gt;
+</span>58 <span style=''></span><span style='background: #AEF1AE'>          {sched.humanResourceIds.map(humanId =&gt;
+</span>59 <span style=''></span><span style='background: #AEF1AE'>            &lt;Human name={getHumanNameById(humanId, humanResources)}/&gt;
+</span>60 <span style=''></span><span style='background: #AEF1AE'>        )}
+</span>61 <span style=''></span><span style='background: #AEF1AE'>        &lt;/HumanResources&gt;
+</span>62 <span style=''></span><span style='background: #AEF1AE'>      &lt;/TaskSchedule&gt;
+</span>63 <span style=''></span><span style='background: #AEF1AE'>    }}
+</span>64 <span style=''></span><span style='background: #AEF1AE'>    &lt;/Schedule&gt;</span><span style=''>
+</span></pre>
+          </div>
+          <div class="tab-pane" id="statementlist">
+            <table cellspacing="0" cellpadding="0" class="table statementlist">
+      <tr>
+        <th>Line</th>
+        <th>Stmt Id</th>
+        <th>Pos</th>
+        <th>Tree</th>
+        <th>Symbol</th>
+        <th>Tests</th>
+        <th>Code</th>
+      </tr><tr>
+        <td>
+          11
+        </td>
+        <td>
+          529
+        </td>
+        <td>
+          195
+          -
+          220
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          scheduleDataRetriever
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def scheduleDataRetriever
+        </td>
+      </tr><tr>
+        <td>
+          18
+        </td>
+        <td>
+          495
+        </td>
+        <td>
+          366
+          -
+          1254
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          for {\r\n      physicalNode &lt;- XML.fromNode(xml, &quot;PhysicalResources&quot;)\r\n      physicalResources &lt;- XML.traverse(physicalNode \\ &quot;Physical&quot;, XMLToDomain.getPhysicalResource)\r\n      physicalTypes = physicalResources.map(_.physical_type).distinct\r\n\r\n      tasksNode &lt;- XML.fromNode(xml, &quot;Tasks&quot;)\r\n      tasks &lt;- XML.traverse(tasksNode \\ &quot;Task&quot;, XMLToDomain.getTask(physicalTypes))\r\n\r\n      humanNode &lt;- XML.fromNode(xml, &quot;HumanResources&quot;)\r\n      humanResources &lt;- XML.traverse(humanNode \\ &quot;Human&quot;, XMLToDomain.getHumanResource(physicalTypes))\r\n\r\n      productsNode &lt;- XML.fromNode(xml, &quot;Products&quot;)\r\n      products &lt;- XML.traverse(productsNode \\ &quot;Product&quot;, XMLToDomain.getProduct(tasks))\r\n\r\n      ordersNode &lt;- XML.fromNode(xml, &quot;Orders&quot;)\r\n      orders &lt;- XML.traverse(ordersNode \\ &quot;Order&quot;, XMLToDomain.getOrder(products))\r\n    } yield (orders, products, tasks, humanResources, physicalResources)
+        </td>
+      </tr><tr>
+        <td>
+          19
+        </td>
+        <td>
+          496
+        </td>
+        <td>
+          395
+          -
+          433
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fromNode
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.fromNode(xml, &quot;PhysicalResources&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          20
+        </td>
+        <td>
+          499
+        </td>
+        <td>
+          462
+          -
+          534
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          traverse
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.traverse(physicalNode \\ &quot;Physical&quot;, XMLToDomain.getPhysicalResource)
+        </td>
+      </tr><tr>
+        <td>
+          20
+        </td>
+        <td>
+          498
+        </td>
+        <td>
+          441
+          -
+          605
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          physicalResources &lt;- XML.traverse(physicalNode \\ &quot;Physical&quot;, XMLToDomain.getPhysicalResource)\r\n      physicalTypes = physicalResources.map(_.physical_type).distinct
+        </td>
+      </tr><tr>
+        <td>
+          20
+        </td>
+        <td>
+          501
+        </td>
+        <td>
+          502
+          -
+          533
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getPhysicalResource
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XMLToDomain.getPhysicalResource
+        </td>
+      </tr><tr>
+        <td>
+          20
+        </td>
+        <td>
+          497
+        </td>
+        <td>
+          441
+          -
+          1254
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          physicalResources &lt;- XML.traverse(physicalNode \\ &quot;Physical&quot;, XMLToDomain.getPhysicalResource)\r\n      physicalTypes = physicalResources.map(_.physical_type).distinct\r\n\r\n      tasksNode &lt;- XML.fromNode(xml, &quot;Tasks&quot;)\r\n      tasks &lt;- XML.traverse(tasksNode \\ &quot;Task&quot;, XMLToDomain.getTask(physicalTypes))\r\n\r\n      humanNode &lt;- XML.fromNode(xml, &quot;HumanResources&quot;)\r\n      humanResources &lt;- XML.traverse(humanNode \\ &quot;Human&quot;, XMLToDomain.getHumanResource(physicalTypes))\r\n\r\n      productsNode &lt;- XML.fromNode(xml, &quot;Products&quot;)\r\n      products &lt;- XML.traverse(productsNode \\ &quot;Product&quot;, XMLToDomain.getProduct(tasks))\r\n\r\n      ordersNode &lt;- XML.fromNode(xml, &quot;Orders&quot;)\r\n      orders &lt;- XML.traverse(ordersNode \\ &quot;Order&quot;, XMLToDomain.getOrder(products))\r\n    } yield (orders, products, tasks, humanResources, physicalResources)
+        </td>
+      </tr><tr>
+        <td>
+          20
+        </td>
+        <td>
+          500
+        </td>
+        <td>
+          475
+          -
+          500
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          \\
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          physicalNode \\ &quot;Physical&quot;
+        </td>
+      </tr><tr>
+        <td>
+          21
+        </td>
+        <td>
+          503
+        </td>
+        <td>
+          558
+          -
+          605
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          distinct
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          physicalResources.map(_.physical_type).distinct
+        </td>
+      </tr><tr>
+        <td>
+          21
+        </td>
+        <td>
+          502
+        </td>
+        <td>
+          558
+          -
+          596
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          physicalResources.map(_.physical_type)
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          505
+        </td>
+        <td>
+          628
+          -
+          654
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fromNode
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.fromNode(xml, &quot;Tasks&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          528
+        </td>
+        <td>
+          615
+          -
+          1254
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          tasksNode &lt;- XML.fromNode(xml, &quot;Tasks&quot;)\r\n      tasks &lt;- XML.traverse(tasksNode \\ &quot;Task&quot;, XMLToDomain.getTask(physicalTypes))\r\n\r\n      humanNode &lt;- XML.fromNode(xml, &quot;HumanResources&quot;)\r\n      humanResources &lt;- XML.traverse(humanNode \\ &quot;Human&quot;, XMLToDomain.getHumanResource(physicalTypes))\r\n\r\n      productsNode &lt;- XML.fromNode(xml, &quot;Products&quot;)\r\n      products &lt;- XML.traverse(productsNode \\ &quot;Product&quot;, XMLToDomain.getProduct(tasks))\r\n\r\n      ordersNode &lt;- XML.fromNode(xml, &quot;Orders&quot;)\r\n      orders &lt;- XML.traverse(ordersNode \\ &quot;Order&quot;, XMLToDomain.getOrder(products))\r\n    } yield (orders, products, tasks, humanResources, physicalResources)
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          504
+        </td>
+        <td>
+          615
+          -
+          1254
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          tasksNode &lt;- XML.fromNode(xml, &quot;Tasks&quot;)\r\n      tasks &lt;- XML.traverse(tasksNode \\ &quot;Task&quot;, XMLToDomain.getTask(physicalTypes))\r\n\r\n      humanNode &lt;- XML.fromNode(xml, &quot;HumanResources&quot;)\r\n      humanResources &lt;- XML.traverse(humanNode \\ &quot;Human&quot;, XMLToDomain.getHumanResource(physicalTypes))\r\n\r\n      productsNode &lt;- XML.fromNode(xml, &quot;Products&quot;)\r\n      products &lt;- XML.traverse(productsNode \\ &quot;Product&quot;, XMLToDomain.getProduct(tasks))\r\n\r\n      ordersNode &lt;- XML.fromNode(xml, &quot;Orders&quot;)\r\n      orders &lt;- XML.traverse(ordersNode \\ &quot;Order&quot;, XMLToDomain.getOrder(products))\r\n    } yield (orders, products, tasks, humanResources, physicalResources)
+        </td>
+      </tr><tr>
+        <td>
+          24
+        </td>
+        <td>
+          508
+        </td>
+        <td>
+          684
+          -
+          702
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          \\
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          tasksNode \\ &quot;Task&quot;
+        </td>
+      </tr><tr>
+        <td>
+          24
+        </td>
+        <td>
+          507
+        </td>
+        <td>
+          671
+          -
+          739
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          traverse
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.traverse(tasksNode \\ &quot;Task&quot;, XMLToDomain.getTask(physicalTypes))
+        </td>
+      </tr><tr>
+        <td>
+          24
+        </td>
+        <td>
+          506
+        </td>
+        <td>
+          662
+          -
+          1254
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          tasks &lt;- XML.traverse(tasksNode \\ &quot;Task&quot;, XMLToDomain.getTask(physicalTypes))\r\n\r\n      humanNode &lt;- XML.fromNode(xml, &quot;HumanResources&quot;)\r\n      humanResources &lt;- XML.traverse(humanNode \\ &quot;Human&quot;, XMLToDomain.getHumanResource(physicalTypes))\r\n\r\n      productsNode &lt;- XML.fromNode(xml, &quot;Products&quot;)\r\n      products &lt;- XML.traverse(productsNode \\ &quot;Product&quot;, XMLToDomain.getProduct(tasks))\r\n\r\n      ordersNode &lt;- XML.fromNode(xml, &quot;Orders&quot;)\r\n      orders &lt;- XML.traverse(ordersNode \\ &quot;Order&quot;, XMLToDomain.getOrder(products))\r\n    } yield (orders, products, tasks, humanResources, physicalResources)
+        </td>
+      </tr><tr>
+        <td>
+          24
+        </td>
+        <td>
+          509
+        </td>
+        <td>
+          704
+          -
+          738
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getTask
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XMLToDomain.getTask(physicalTypes)
+        </td>
+      </tr><tr>
+        <td>
+          26
+        </td>
+        <td>
+          510
+        </td>
+        <td>
+          749
+          -
+          1254
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          humanNode &lt;- XML.fromNode(xml, &quot;HumanResources&quot;)\r\n      humanResources &lt;- XML.traverse(humanNode \\ &quot;Human&quot;, XMLToDomain.getHumanResource(physicalTypes))\r\n\r\n      productsNode &lt;- XML.fromNode(xml, &quot;Products&quot;)\r\n      products &lt;- XML.traverse(productsNode \\ &quot;Product&quot;, XMLToDomain.getProduct(tasks))\r\n\r\n      ordersNode &lt;- XML.fromNode(xml, &quot;Orders&quot;)\r\n      orders &lt;- XML.traverse(ordersNode \\ &quot;Order&quot;, XMLToDomain.getOrder(products))\r\n    } yield (orders, products, tasks, humanResources, physicalResources)
+        </td>
+      </tr><tr>
+        <td>
+          26
+        </td>
+        <td>
+          511
+        </td>
+        <td>
+          762
+          -
+          797
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fromNode
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.fromNode(xml, &quot;HumanResources&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          27
+        </td>
+        <td>
+          514
+        </td>
+        <td>
+          836
+          -
+          855
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          \\
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          humanNode \\ &quot;Human&quot;
+        </td>
+      </tr><tr>
+        <td>
+          27
+        </td>
+        <td>
+          513
+        </td>
+        <td>
+          823
+          -
+          901
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          traverse
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.traverse(humanNode \\ &quot;Human&quot;, XMLToDomain.getHumanResource(physicalTypes))
+        </td>
+      </tr><tr>
+        <td>
+          27
+        </td>
+        <td>
+          512
+        </td>
+        <td>
+          805
+          -
+          1254
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          humanResources &lt;- XML.traverse(humanNode \\ &quot;Human&quot;, XMLToDomain.getHumanResource(physicalTypes))\r\n\r\n      productsNode &lt;- XML.fromNode(xml, &quot;Products&quot;)\r\n      products &lt;- XML.traverse(productsNode \\ &quot;Product&quot;, XMLToDomain.getProduct(tasks))\r\n\r\n      ordersNode &lt;- XML.fromNode(xml, &quot;Orders&quot;)\r\n      orders &lt;- XML.traverse(ordersNode \\ &quot;Order&quot;, XMLToDomain.getOrder(products))\r\n    } yield (orders, products, tasks, humanResources, physicalResources)
+        </td>
+      </tr><tr>
+        <td>
+          27
+        </td>
+        <td>
+          515
+        </td>
+        <td>
+          857
+          -
+          900
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getHumanResource
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XMLToDomain.getHumanResource(physicalTypes)
+        </td>
+      </tr><tr>
+        <td>
+          29
+        </td>
+        <td>
+          517
+        </td>
+        <td>
+          927
+          -
+          956
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fromNode
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.fromNode(xml, &quot;Products&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          29
+        </td>
+        <td>
+          516
+        </td>
+        <td>
+          911
+          -
+          1254
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          productsNode &lt;- XML.fromNode(xml, &quot;Products&quot;)\r\n      products &lt;- XML.traverse(productsNode \\ &quot;Product&quot;, XMLToDomain.getProduct(tasks))\r\n\r\n      ordersNode &lt;- XML.fromNode(xml, &quot;Orders&quot;)\r\n      orders &lt;- XML.traverse(ordersNode \\ &quot;Order&quot;, XMLToDomain.getOrder(products))\r\n    } yield (orders, products, tasks, humanResources, physicalResources)
+        </td>
+      </tr><tr>
+        <td>
+          30
+        </td>
+        <td>
+          519
+        </td>
+        <td>
+          976
+          -
+          1045
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          traverse
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.traverse(productsNode \\ &quot;Product&quot;, XMLToDomain.getProduct(tasks))
+        </td>
+      </tr><tr>
+        <td>
+          30
+        </td>
+        <td>
+          521
+        </td>
+        <td>
+          1015
+          -
+          1044
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getProduct
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XMLToDomain.getProduct(tasks)
+        </td>
+      </tr><tr>
+        <td>
+          30
+        </td>
+        <td>
+          518
+        </td>
+        <td>
+          964
+          -
+          1254
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          products &lt;- XML.traverse(productsNode \\ &quot;Product&quot;, XMLToDomain.getProduct(tasks))\r\n\r\n      ordersNode &lt;- XML.fromNode(xml, &quot;Orders&quot;)\r\n      orders &lt;- XML.traverse(ordersNode \\ &quot;Order&quot;, XMLToDomain.getOrder(products))\r\n    } yield (orders, products, tasks, humanResources, physicalResources)
+        </td>
+      </tr><tr>
+        <td>
+          30
+        </td>
+        <td>
+          520
+        </td>
+        <td>
+          989
+          -
+          1013
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          \\
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          productsNode \\ &quot;Product&quot;
+        </td>
+      </tr><tr>
+        <td>
+          32
+        </td>
+        <td>
+          523
+        </td>
+        <td>
+          1069
+          -
+          1096
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          fromNode
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.fromNode(xml, &quot;Orders&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          32
+        </td>
+        <td>
+          522
+        </td>
+        <td>
+          1055
+          -
+          1254
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ordersNode &lt;- XML.fromNode(xml, &quot;Orders&quot;)\r\n      orders &lt;- XML.traverse(ordersNode \\ &quot;Order&quot;, XMLToDomain.getOrder(products))\r\n    } yield (orders, products, tasks, humanResources, physicalResources)
+        </td>
+      </tr><tr>
+        <td>
+          33
+        </td>
+        <td>
+          525
+        </td>
+        <td>
+          1114
+          -
+          1180
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          traverse
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XML.traverse(ordersNode \\ &quot;Order&quot;, XMLToDomain.getOrder(products))
+        </td>
+      </tr><tr>
+        <td>
+          33
+        </td>
+        <td>
+          524
+        </td>
+        <td>
+          1104
+          -
+          1254
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          orders &lt;- XML.traverse(ordersNode \\ &quot;Order&quot;, XMLToDomain.getOrder(products))\r\n    } yield (orders, products, tasks, humanResources, physicalResources)
+        </td>
+      </tr><tr>
+        <td>
+          33
+        </td>
+        <td>
+          527
+        </td>
+        <td>
+          1149
+          -
+          1179
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getOrder
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          XMLToDomain.getOrder(products)
+        </td>
+      </tr><tr>
+        <td>
+          33
+        </td>
+        <td>
+          526
+        </td>
+        <td>
+          1127
+          -
+          1147
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          \\
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ordersNode \\ &quot;Order&quot;
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          535
+        </td>
+        <td>
+          1260
+          -
+          1288
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          getHumanNameById
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          private def getHumanNameById
+        </td>
+      </tr><tr>
+        <td>
+          40
+        </td>
+        <td>
+          532
+        </td>
+        <td>
+          1388
+          -
+          1424
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          find
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          humanResources.find(_.id == humanId)
+        </td>
+      </tr><tr>
+        <td>
+          40
+        </td>
+        <td>
+          534
+        </td>
+        <td>
+          1450
+          -
+          1460
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          humanId.to
+        </td>
+      </tr><tr>
+        <td>
+          40
+        </td>
+        <td>
+          531
+        </td>
+        <td>
+          1388
+          -
+          1439
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          humanResources.find(_.id == humanId).map(_.name.to)
+        </td>
+      </tr><tr>
+        <td>
+          40
+        </td>
+        <td>
+          530
+        </td>
+        <td>
+          1388
+          -
+          1461
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getOrElse
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          humanResources.find(_.id == humanId).map(_.name.to).getOrElse(humanId.to)
+        </td>
+      </tr><tr>
+        <td>
+          40
+        </td>
+        <td>
+          533
+        </td>
+        <td>
+          1429
+          -
+          1438
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          _.name.to
+        </td>
+      </tr><tr>
+        <td>
+          42
+        </td>
+        <td>
+          568
+        </td>
+        <td>
+          1467
+          -
+          1476
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          toXml
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def toXml
+        </td>
+      </tr><tr>
+        <td>
+          43
+        </td>
+        <td>
+          538
+        </td>
+        <td>
+          1559
+          -
+          2477
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Schedule xmlns=&quot;http://www.dei.isep.ipp.pt/tap-2025&quot;\r\n              xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;\r\n              xsi:schemaLocation=&quot;http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd &quot;&gt;\r\n      {schedules.sortBy(_.start.to).map { sched =&gt;\r\n      &lt;TaskSchedule order={sched.orderId.to}\r\n                    productNumber={sched.productNumber.to.toString}\r\n                    task={sched.taskId.to}\r\n                    start={sched.start.to.toString}\r\n                    end={sched.end.to.toString}&gt;\r\n        &lt;PhysicalResources&gt;\r\n          {sched.physicalResourceIds.map(id =&gt;\r\n            &lt;Physical id={id.to}/&gt;\r\n        )}\r\n        &lt;/PhysicalResources&gt;\r\n        &lt;HumanResources&gt;\r\n          {sched.humanResourceIds.map(humanId =&gt;\r\n            &lt;Human name={getHumanNameById(humanId, humanResources)}/&gt;\r\n        )}\r\n        &lt;/HumanResources&gt;\r\n      &lt;/TaskSchedule&gt;\r\n    }}\r\n    &lt;/Schedule&gt;\r
+        </td>
+      </tr><tr>
+        <td>
+          45
+        </td>
+        <td>
+          537
+        </td>
+        <td>
+          1696
+          -
+          1772
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          xsi:schemaLocation=&quot;http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd &quot;
+        </td>
+      </tr><tr>
+        <td>
+          45
+        </td>
+        <td>
+          536
+        </td>
+        <td>
+          1696
+          -
+          1772
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          xsi:schemaLocation=&quot;http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd &quot;
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          541
+        </td>
+        <td>
+          1782
+          -
+          1810
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          sortBy
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          schedules.sortBy(_.start.to)
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          540
+        </td>
+        <td>
+          1782
+          -
+          2458
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          schedules.sortBy(_.start.to).map { sched =&gt;\r\n      &lt;TaskSchedule order={sched.orderId.to}\r\n                    productNumber={sched.productNumber.to.toString}\r\n                    task={sched.taskId.to}\r\n                    start={sched.start.to.toString}\r\n                    end={sched.end.to.toString}&gt;\r\n        &lt;PhysicalResources&gt;\r\n          {sched.physicalResourceIds.map(id =&gt;\r\n            &lt;Physical id={id.to}/&gt;\r\n        )}\r\n        &lt;/PhysicalResources&gt;\r\n        &lt;HumanResources&gt;\r\n          {sched.humanResourceIds.map(humanId =&gt;\r\n            &lt;Human name={getHumanNameById(humanId, humanResources)}/&gt;\r\n        )}\r\n        &lt;/HumanResources&gt;\r\n      &lt;/TaskSchedule&gt;\r\n    }
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          539
+        </td>
+        <td>
+          1782
+          -
+          2458
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &amp;+
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          schedules.sortBy(_.start.to).map { sched =&gt;\r\n      &lt;TaskSchedule order={sched.orderId.to}\r\n                    productNumber={sched.productNumber.to.toString}\r\n                    task={sched.taskId.to}\r\n                    start={sched.start.to.toString}\r\n                    end={sched.end.to.toString}&gt;\r\n        &lt;PhysicalResources&gt;\r\n          {sched.physicalResourceIds.map(id =&gt;\r\n            &lt;Physical id={id.to}/&gt;\r\n        )}\r\n        &lt;/PhysicalResources&gt;\r\n        &lt;HumanResources&gt;\r\n          {sched.humanResourceIds.map(humanId =&gt;\r\n            &lt;Human name={getHumanNameById(humanId, humanResources)}/&gt;\r\n        )}\r\n        &lt;/HumanResources&gt;\r\n      &lt;/TaskSchedule&gt;\r\n    }
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          542
+        </td>
+        <td>
+          1799
+          -
+          1809
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          _.start.to
+        </td>
+      </tr><tr>
+        <td>
+          47
+        </td>
+        <td>
+          552
+        </td>
+        <td>
+          1854
+          -
+          1870
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.orderId.to
+        </td>
+      </tr><tr>
+        <td>
+          47
+        </td>
+        <td>
+          551
+        </td>
+        <td>
+          1854
+          -
+          1870
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.orderId.to
+        </td>
+      </tr><tr>
+        <td>
+          47
+        </td>
+        <td>
+          553
+        </td>
+        <td>
+          1834
+          -
+          2452
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          TaskSchedule order={sched.orderId.to}\r\n                    productNumber={sched.productNumber.to.toString}\r\n                    task={sched.taskId.to}\r\n                    start={sched.start.to.toString}\r\n                    end={sched.end.to.toString}&gt;\r\n        &lt;PhysicalResources&gt;\r\n          {sched.physicalResourceIds.map(id =&gt;\r\n            &lt;Physical id={id.to}/&gt;\r\n        )}\r\n        &lt;/PhysicalResources&gt;\r\n        &lt;HumanResources&gt;\r\n          {sched.humanResourceIds.map(humanId =&gt;\r\n            &lt;Human name={getHumanNameById(humanId, humanResources)}/&gt;\r\n        )}\r\n        &lt;/HumanResources&gt;\r\n      &lt;/TaskSchedule&gt;\r
+        </td>
+      </tr><tr>
+        <td>
+          48
+        </td>
+        <td>
+          550
+        </td>
+        <td>
+          1908
+          -
+          1930
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.productNumber.to
+        </td>
+      </tr><tr>
+        <td>
+          48
+        </td>
+        <td>
+          549
+        </td>
+        <td>
+          1908
+          -
+          1939
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.productNumber.to.toString
+        </td>
+      </tr><tr>
+        <td>
+          49
+        </td>
+        <td>
+          548
+        </td>
+        <td>
+          1968
+          -
+          1983
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.taskId.to
+        </td>
+      </tr><tr>
+        <td>
+          49
+        </td>
+        <td>
+          547
+        </td>
+        <td>
+          1968
+          -
+          1983
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.taskId.to
+        </td>
+      </tr><tr>
+        <td>
+          50
+        </td>
+        <td>
+          546
+        </td>
+        <td>
+          2013
+          -
+          2027
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.start.to
+        </td>
+      </tr><tr>
+        <td>
+          50
+        </td>
+        <td>
+          545
+        </td>
+        <td>
+          2013
+          -
+          2036
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.start.to.toString
+        </td>
+      </tr><tr>
+        <td>
+          51
+        </td>
+        <td>
+          543
+        </td>
+        <td>
+          2064
+          -
+          2085
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.end.to.toString
+        </td>
+      </tr><tr>
+        <td>
+          51
+        </td>
+        <td>
+          544
+        </td>
+        <td>
+          2064
+          -
+          2076
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.end.to
+        </td>
+      </tr><tr>
+        <td>
+          52
+        </td>
+        <td>
+          555
+        </td>
+        <td>
+          2098
+          -
+          2243
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          PhysicalResources&gt;\r\n          {sched.physicalResourceIds.map(id =&gt;\r\n            &lt;Physical id={id.to}/&gt;\r\n        )}\r\n        &lt;/PhysicalResources&gt;\r
+        </td>
+      </tr><tr>
+        <td>
+          52
+        </td>
+        <td>
+          554
+        </td>
+        <td>
+          2098
+          -
+          2243
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &amp;+
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          PhysicalResources&gt;\r\n          {sched.physicalResourceIds.map(id =&gt;\r\n            &lt;Physical id={id.to}/&gt;\r\n        )}\r\n        &lt;/PhysicalResources&gt;\r
+        </td>
+      </tr><tr>
+        <td>
+          53
+        </td>
+        <td>
+          557
+        </td>
+        <td>
+          2129
+          -
+          2211
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.physicalResourceIds.map(id =&gt;\r\n            &lt;Physical id={id.to}/&gt;\r\n        )
+        </td>
+      </tr><tr>
+        <td>
+          53
+        </td>
+        <td>
+          556
+        </td>
+        <td>
+          2129
+          -
+          2211
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &amp;+
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.physicalResourceIds.map(id =&gt;\r\n            &lt;Physical id={id.to}/&gt;\r\n        )
+        </td>
+      </tr><tr>
+        <td>
+          54
+        </td>
+        <td>
+          559
+        </td>
+        <td>
+          2192
+          -
+          2197
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          to
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          id.to
+        </td>
+      </tr><tr>
+        <td>
+          54
+        </td>
+        <td>
+          558
+        </td>
+        <td>
+          2192
+          -
+          2197
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          id.to
+        </td>
+      </tr><tr>
+        <td>
+          54
+        </td>
+        <td>
+          560
+        </td>
+        <td>
+          2179
+          -
+          2201
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Physical id={id.to}/&gt;\r
+        </td>
+      </tr><tr>
+        <td>
+          57
+        </td>
+        <td>
+          561
+        </td>
+        <td>
+          2253
+          -
+          2429
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &amp;+
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          HumanResources&gt;\r\n          {sched.humanResourceIds.map(humanId =&gt;\r\n            &lt;Human name={getHumanNameById(humanId, humanResources)}/&gt;\r\n        )}\r\n        &lt;/HumanResources&gt;\r
+        </td>
+      </tr><tr>
+        <td>
+          57
+        </td>
+        <td>
+          562
+        </td>
+        <td>
+          2253
+          -
+          2429
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          HumanResources&gt;\r\n          {sched.humanResourceIds.map(humanId =&gt;\r\n            &lt;Human name={getHumanNameById(humanId, humanResources)}/&gt;\r\n        )}\r\n        &lt;/HumanResources&gt;\r
+        </td>
+      </tr><tr>
+        <td>
+          58
+        </td>
+        <td>
+          564
+        </td>
+        <td>
+          2281
+          -
+          2400
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.humanResourceIds.map(humanId =&gt;\r\n            &lt;Human name={getHumanNameById(humanId, humanResources)}/&gt;\r\n        )
+        </td>
+      </tr><tr>
+        <td>
+          58
+        </td>
+        <td>
+          563
+        </td>
+        <td>
+          2281
+          -
+          2400
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &amp;+
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          sched.humanResourceIds.map(humanId =&gt;\r\n            &lt;Human name={getHumanNameById(humanId, humanResources)}/&gt;\r\n        )
+        </td>
+      </tr><tr>
+        <td>
+          59
+        </td>
+        <td>
+          567
+        </td>
+        <td>
+          2333
+          -
+          2390
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Human name={getHumanNameById(humanId, humanResources)}/&gt;\r
+        </td>
+      </tr><tr>
+        <td>
+          59
+        </td>
+        <td>
+          566
+        </td>
+        <td>
+          2345
+          -
+          2386
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getHumanNameById
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          getHumanNameById(humanId, humanResources)
+        </td>
+      </tr><tr>
+        <td>
+          59
+        </td>
+        <td>
+          565
+        </td>
+        <td>
+          2345
+          -
+          2386
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          getHumanNameById(humanId, humanResources)
+        </td>
+      </tr>
+    </table>
+          </div>
+        </div>
+      </body>
+    </html>
