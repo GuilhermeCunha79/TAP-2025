@@ -248,3 +248,27 @@ class TypesTest extends AnyFunSuite:
       yield t1.equal(t2)
 
     assert(result.contains(false))
+
+  test("EarliestStartTime.from with negative number returns Left"):
+    val result = EarliestStartTime.from(-1)
+    assert(result == Left(InvalidEarliestStartTime("-1")))
+
+  test("EarliestStartTime.from with zero returns Right"):
+    val result = EarliestStartTime.from(0)
+    assert(result.fold(_ => false, _.to == 0))
+
+  test("EarliestStartTime.from with positive number returns Right"):
+    val result = EarliestStartTime.from(5)
+    assert(result.fold(_ => false, _.to == 5))
+
+  test("ProductTaskIndex.from with negative number returns Left"):
+    val result = ProductTaskIndex.from(-1)
+    assert(result == Left(InvalidProductTaskIndex("-1")))
+
+  test("ProductTaskIndex.from with zero returns Right"):
+    val result = ProductTaskIndex.from(0)
+    assert(result.fold(_ => false, _.to == 0))
+
+  test("ProductTaskIndex.from with positive number returns Right"):
+    val result = ProductTaskIndex.from(3)
+    assert(result.fold(_ => false, _.to == 3))
