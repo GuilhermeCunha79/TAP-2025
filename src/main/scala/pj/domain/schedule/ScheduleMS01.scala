@@ -122,13 +122,6 @@ object ScheduleMS01 extends Schedule:
   } yield
     (TaskSchedule(orderId, productNum, task.id, start, end, physical, humans), end.to)
 
-
-  private def getHumanNameById(
-                                humanId: HumanResourceId,
-                                humanResources: List[HumanResource]
-                              ): String =
-    humanResources.find(_.id == humanId).map(_.name.to).getOrElse(humanId.to)
-
   def create(xml: Elem): Result[Elem] =
     for {
       (orders, products, tasks, humanResources, physicalResources) <- Shared.scheduleDataRetriever(xml)
