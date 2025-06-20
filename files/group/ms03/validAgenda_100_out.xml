@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<Schedule 
+xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.dei.isep.ipp.pt/tap-2025">
+    <TaskSchedule order="ORD_01" productNumber="1" task="TSK_01" start="0" end="5">
+        <PhysicalResources>
+            <Physical id="PRS_01"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="Worker A"/>
+        </HumanResources>
+    </TaskSchedule>
+    <TaskSchedule order="ORD_01" productNumber="2" task="TSK_01" start="5" end="10">
+        <PhysicalResources>
+            <Physical id="PRS_01"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="Worker A"/>
+        </HumanResources>
+    </TaskSchedule>
+    <TaskSchedule order="ORD_01" productNumber="1" task="TSK_02" start="5" end="8">
+        <PhysicalResources>
+            <Physical id="PRS_02"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="Worker B"/>
+        </HumanResources>
+    </TaskSchedule>
+    <TaskSchedule order="ORD_01" productNumber="2" task="TSK_02" start="10" end="13">
+        <PhysicalResources>
+            <Physical id="PRS_02"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="Worker B"/>
+        </HumanResources>
+    </TaskSchedule>
+</Schedule>
+

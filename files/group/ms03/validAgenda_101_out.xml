@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<Schedule 
+xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../schedule.xsd " xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.dei.isep.ipp.pt/tap-2025">
+    <TaskSchedule order="ORD_01" productNumber="1" task="TSK_01" start="0" end="15">
+        <PhysicalResources>
+            <Physical id="PRS_01"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="Machine Operator 1"/>
+        </HumanResources>
+    </TaskSchedule>
+    <TaskSchedule order="ORD_01" productNumber="2" task="TSK_01" start="0" end="15">
+        <PhysicalResources>
+            <Physical id="PRS_02"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="Machine Operator 2"/>
+        </HumanResources>
+    </TaskSchedule>
+    <TaskSchedule order="ORD_01" productNumber="3" task="TSK_01" start="15" end="30">
+        <PhysicalResources>
+            <Physical id="PRS_01"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="Machine Operator 1"/>
+        </HumanResources>
+    </TaskSchedule>
+    <TaskSchedule order="ORD_02" productNumber="1" task="TSK_02" start="15" end="23">
+        <PhysicalResources>
+            <Physical id="PRS_02"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="Machine Operator 2"/>
+        </HumanResources>
+    </TaskSchedule>
+    <TaskSchedule order="ORD_01" productNumber="1" task="TSK_03" start="15" end="20">
+        <PhysicalResources>
+            <Physical id="PRS_03"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="Assembly Worker"/>
+        </HumanResources>
+    </TaskSchedule>
+    <TaskSchedule order="ORD_01" productNumber="2" task="TSK_03" start="20" end="25">
+        <PhysicalResources>
+            <Physical id="PRS_03"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="Assembly Worker"/>
+        </HumanResources>
+    </TaskSchedule>
+    <TaskSchedule order="ORD_02" productNumber="2" task="TSK_02" start="23" end="31">
+        <PhysicalResources>
+            <Physical id="PRS_02"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="Machine Operator 2"/>
+        </HumanResources>
+    </TaskSchedule>
+    <TaskSchedule order="ORD_02" productNumber="1" task="TSK_03" start="25" end="30">
+        <PhysicalResources>
+            <Physical id="PRS_03"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="Assembly Worker"/>
+        </HumanResources>
+    </TaskSchedule>
+    <TaskSchedule order="ORD_01" productNumber="3" task="TSK_03" start="30" end="35">
+        <PhysicalResources>
+            <Physical id="PRS_03"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="Assembly Worker"/>
+        </HumanResources>
+    </TaskSchedule>
+    <TaskSchedule order="ORD_02" productNumber="2" task="TSK_03" start="35" end="40">
+        <PhysicalResources>
+            <Physical id="PRS_03"/>
+        </PhysicalResources>
+        <HumanResources>
+            <Human name="Assembly Worker"/>
+        </HumanResources>
+    </TaskSchedule>
+</Schedule>
+

@@ -1,0 +1,54 @@
+<Production
+        xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../production.xsd "
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.dei.isep.ipp.pt/tap-2025">
+    <PhysicalResources>
+        <Physical id="PRS_01" type="PRST_PREP"/>
+        <Physical id="PRS_02" type="PRST_PREP"/>
+        <Physical id="PRS_03" type="PRST_PREP"/>
+        <Physical id="PRS_04" type="PRST_SPECIAL"/>
+        <Physical id="PRS_05" type="PRST_FINISH"/>
+        <Physical id="PRS_06" type="PRST_FINISH"/>
+    </PhysicalResources>
+    <Tasks>
+        <Task id="TSK_01" time="3">
+            <PhysicalResource type="PRST_PREP"/>
+        </Task>
+        <Task id="TSK_02" time="20">
+            <PhysicalResource type="PRST_SPECIAL"/>
+        </Task>
+        <Task id="TSK_03" time="2">
+            <PhysicalResource type="PRST_FINISH"/>
+        </Task>
+    </Tasks>
+    <HumanResources>
+        <Human id="HRS_01" name="Prep Worker 1">
+            <Handles type="PRST_PREP"/>
+        </Human>
+        <Human id="HRS_02" name="Prep Worker 2">
+            <Handles type="PRST_PREP"/>
+        </Human>
+        <Human id="HRS_03" name="Prep Worker 3">
+            <Handles type="PRST_PREP"/>
+        </Human>
+        <Human id="HRS_04" name="Specialist">
+            <Handles type="PRST_SPECIAL"/>
+        </Human>
+        <Human id="HRS_05" name="Finisher 1">
+            <Handles type="PRST_FINISH"/>
+        </Human>
+        <Human id="HRS_06" name="Finisher 2">
+            <Handles type="PRST_FINISH"/>
+        </Human>
+    </HumanResources>
+    <Products>
+        <Product id="PRD_01" name="Bottleneck Product">
+            <Process tskref="TSK_01"/>
+            <Process tskref="TSK_02"/>
+            <Process tskref="TSK_03"/>
+        </Product>
+    </Products>
+    <Orders>
+        <Order id="ORD_01" prdref="PRD_01" quantity="6"/>
+    </Orders>
+</Production>

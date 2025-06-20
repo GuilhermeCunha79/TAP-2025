@@ -1,0 +1,40 @@
+<Production
+        xsi:schemaLocation="http://www.dei.isep.ipp.pt/tap-2025 ../../production.xsd "
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.dei.isep.ipp.pt/tap-2025">
+    <PhysicalResources>
+        <Physical id="PRS_01" type="PRST_SINGLE"/>
+        <Physical id="PRS_02" type="PRST_MULTI"/>
+    </PhysicalResources>
+    <Tasks>
+        <Task id="TSK_01" time="1">
+            <PhysicalResource type="PRST_SINGLE"/>
+        </Task>
+        <Task id="TSK_02" time="25">
+            <PhysicalResource type="PRST_MULTI"/>
+        </Task>
+    </Tasks>
+    <HumanResources>
+        <Human id="HRS_01" name="Universal Worker">
+            <Handles type="PRST_SINGLE"/>
+            <Handles type="PRST_MULTI"/>
+        </Human>
+    </HumanResources>
+    <Products>
+        <Product id="PRD_01" name="Quick Product">
+            <Process tskref="TSK_01"/>
+        </Product>
+        <Product id="PRD_02" name="Long Product">
+            <Process tskref="TSK_02"/>
+        </Product>
+        <Product id="PRD_03" name="Sequential Product">
+            <Process tskref="TSK_01"/>
+            <Process tskref="TSK_02"/>
+        </Product>
+    </Products>
+    <Orders>
+        <Order id="ORD_01" prdref="PRD_01" quantity="1"/>
+        <Order id="ORD_02" prdref="PRD_02" quantity="1"/>
+        <Order id="ORD_03" prdref="PRD_03" quantity="1"/>
+    </Orders>
+</Production>
