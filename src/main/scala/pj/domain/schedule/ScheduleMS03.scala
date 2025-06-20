@@ -34,7 +34,7 @@ object ScheduleMS03 extends Schedule:
   /**
    * Creates the initial scheduling state with ready tasks and resource availability
    */
-  private def createInitialState(
+  def createInitialState(
     allProductInstances: List[TaskInfo],
     physicalResources: List[PhysicalResource],
     humanResources: List[HumanResource]
@@ -55,7 +55,7 @@ object ScheduleMS03 extends Schedule:
   /**
    * Validates if all required resources for tasks are available in sufficient quantities
    */
-  private def validateResourceRequirements(
+  def validateResourceRequirements(
     tasks: List[Task],
     physicalResources: List[PhysicalResource],
     humanResources: List[HumanResource]
@@ -70,7 +70,7 @@ object ScheduleMS03 extends Schedule:
   /**
    * Validates requirements for a single task against available resources
    */
-  private def validateTask(
+  def validateTask(
     task: Task,
     physicalResourceCounts: Map[PhysicalResourceType, Int],
     humanResourceTypes: Set[PhysicalResourceType]
@@ -91,7 +91,7 @@ object ScheduleMS03 extends Schedule:
   /**
    * Creates all product instances for all orders, expanding by quantity and task sequence
    */
-  private def createAllProductInstances(
+  def createAllProductInstances(
     orders: List[Order],
     productTaskMap: Map[ProductId, List[TaskId]],
     taskMap: Map[TaskId, Task]
@@ -110,7 +110,7 @@ object ScheduleMS03 extends Schedule:
   /**
    * Recursively schedules all tasks until no more tasks are ready or schedulable
    */
-  private def scheduleAllTasks(
+  def scheduleAllTasks(
     state: SchedulingState,
     allTasks: List[TaskInfo],
     physicalResources: List[PhysicalResource],
@@ -130,7 +130,7 @@ object ScheduleMS03 extends Schedule:
   /**
    * Advances time when no tasks can be scheduled at current time and retries scheduling
    */
-  private def advanceTimeAndRetry(
+  def advanceTimeAndRetry(
     state: SchedulingState,
     physicalResources: List[PhysicalResource],
     humanResources: List[HumanResource],
@@ -153,7 +153,7 @@ object ScheduleMS03 extends Schedule:
   /**
    * Schedules the next batch of tasks that can be executed at the current time
    */
-  private def scheduleNextBatch(
+  def scheduleNextBatch(
      state: SchedulingState,
      physicalResources: List[PhysicalResource],
      humanResources: List[HumanResource]
@@ -173,7 +173,7 @@ object ScheduleMS03 extends Schedule:
   /**
    * Prioritizes tasks by duration (longest first) and resource rarity
    */
-  private def prioritizeTasks(tasks: List[TaskInfo]): List[TaskInfo] =
+  def prioritizeTasks(tasks: List[TaskInfo]): List[TaskInfo] =
     val rarityMap = tasks
       .flatMap(_.task.physicalResourceTypes)
       .groupBy(identity)
@@ -259,7 +259,7 @@ object ScheduleMS03 extends Schedule:
   /**
    * Attempts to allocate resources for a specific task
    */
-  private def tryScheduleTask(
+  def tryScheduleTask(
    taskInfo: TaskInfo,
    currentTime: Int,
    availablePhysical: List[PhysicalResource],
@@ -275,7 +275,7 @@ object ScheduleMS03 extends Schedule:
   /**
    * Checks if two tasks are identical (same order, product number, and task ID)
    */
-  private def isMatchingTask(t1: TaskInfo, t2: TaskInfo): Boolean =
+  def isMatchingTask(t1: TaskInfo, t2: TaskInfo): Boolean =
     t1.orderId == t2.orderId && t1.productNumber == t2.productNumber && t1.taskId == t2.taskId
 
   /**
@@ -352,7 +352,7 @@ object ScheduleMS03 extends Schedule:
   /**
    * Creates a TaskSchedule from task information and allocated resources
    */
-  private def createTaskSchedule(
+  def createTaskSchedule(
     taskInfo: TaskInfo,
     startTime: Int,
     physicalIds: List[PhysicalResourceId],
@@ -449,7 +449,7 @@ object ScheduleMS03 extends Schedule:
   /**
    * Updates resource availability map after scheduling a task
    */
-  private def updateResourceAvailability(
+  def updateResourceAvailability(
     availability: Map[String, Int],
     schedule: TaskSchedule,
     endTime: Int
