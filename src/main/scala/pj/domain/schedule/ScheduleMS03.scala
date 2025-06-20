@@ -35,8 +35,8 @@ object ScheduleMS03 extends Schedule:
   ): SchedulingState =
     val initialReadyTasks = allProductInstances.filter(_.productTaskIndex.to == 0)
     val initialResourceAvailability = (
-      physicalResources.map(r => s"PHYS_${r.id.to}" -> 0) ++
-        humanResources.map(r => s"HUMAN_${r.id.to}" -> 0)
+      physicalResources.map(r => {r.id.to} -> 0) ++
+        humanResources.map(r => {r.id.to} -> 0)
       ).toMap
 
     SchedulingState(
@@ -180,10 +180,10 @@ object ScheduleMS03 extends Schedule:
      currentTime: Int
    ): (List[PhysicalResource], List[HumanResource]) =
     val availablePhysical = physicalResources.filter { res =>
-      availability.getOrElse(s"PHYS_${res.id.to}", 0) <= currentTime
+      availability.getOrElse({res.id.to}, 0) <= currentTime
     }
     val availableHuman = humanResources.filter { res =>
-      availability.getOrElse(s"HUMAN_${res.name.to}", 0) <= currentTime
+      availability.getOrElse({res.name.to}, 0) <= currentTime
     }
     (availablePhysical, availableHuman)
 
@@ -247,6 +247,7 @@ object ScheduleMS03 extends Schedule:
       availableResources.count(res => matchesType(res, t) && !usedIds.contains(extractId(res)))
     ), availableResources, List.empty, usedIds, extractId, matchesType)
 
+  @tailrec
   private def allocateResourcesLoop[T, R](
     remaining: List[PhysicalResourceType],
     availableResources: List[T],
@@ -381,8 +382,8 @@ object ScheduleMS03 extends Schedule:
     schedule: TaskSchedule,
     endTime: Int
   ): Map[String, Int] =
-    val allUpdates = schedule.physicalResourceIds.map(id => s"PHYS_${id.to}" -> endTime) ++
-      schedule.humanResourceIds.map(name => s"HUMAN_${name.to}" -> endTime)
+    val allUpdates = schedule.physicalResourceIds.map(id => {id.to} -> endTime) ++
+      schedule.humanResourceIds.map(name => {name.to} -> endTime)
     availability ++ allUpdates
 
   def create(xml: Elem): Result[Elem] =
