@@ -537,7 +537,7 @@ class ScheduleMS03Test extends AnyFunSuite:
       pti <- ProductTaskIndex.from(0).toOption
       prs1 <- PhysicalResourceId.from("PRS_1").toOption
       hrs1 <- HumanResourceId.from("HRS_1").toOption
-      hrName <- HumanResourceName.from("Alice").toOption
+      hrName <- HumanResourceName.from("NM_1").toOption
     } yield
       val task = Task(tskId, taskTime, List(pr))
       val taskInfo = TaskInfo(orderId, prodNum, tskId, task, est, pti)
