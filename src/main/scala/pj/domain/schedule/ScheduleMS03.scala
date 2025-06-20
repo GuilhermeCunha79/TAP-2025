@@ -206,7 +206,7 @@ object ScheduleMS03 extends Schedule:
   /**
    * Gets resources (physical and human) that are available at the specified time
    */
-  private def getAvailableResourcesAtTime(
+  def getAvailableResourcesAtTime(
      physicalResources: List[PhysicalResource],
      humanResources: List[HumanResource],
      availability: Map[String, Int],
@@ -374,7 +374,7 @@ object ScheduleMS03 extends Schedule:
   /**
    * Filters tasks that are eligible for execution at the current time
    */
-  private def filterEligibleTasksForTime(
+  def filterEligibleTasksForTime(
     candidateTasks: List[TaskInfo],
     state: SchedulingState,
     currentTime: Int
@@ -391,7 +391,7 @@ object ScheduleMS03 extends Schedule:
   /**
    * Checks if a product is currently being processed (has a task in execution)
    */
-  private def isProductCurrentlyBeingProcessed(
+  def isProductCurrentlyBeingProcessed(
     orderId: OrderId,
     productNumber: ProductNumber,
     state: SchedulingState,
@@ -407,7 +407,7 @@ object ScheduleMS03 extends Schedule:
   /**
    * Updates the ready tasks list by adding newly eligible tasks
    */
-  private def updateReadyTasks(state: SchedulingState, allTasks: List[TaskInfo]): SchedulingState =
+  def updateReadyTasks(state: SchedulingState, allTasks: List[TaskInfo]): SchedulingState =
     val scheduledTaskKeys = state.schedules.map(s => (s.orderId, s.productNumber, s.taskId)).toSet
     val readyTaskKeys = state.readyTasks.map(rt => (rt.orderId, rt.productNumber, rt.taskId)).toSet
 
@@ -426,7 +426,7 @@ object ScheduleMS03 extends Schedule:
   /**
    * Updates the scheduling state after successfully scheduling a task
    */
-  private def updateStateAfterScheduling(
+  def updateStateAfterScheduling(
     state: SchedulingState,
     scheduledTask: TaskInfo,
     schedule: TaskSchedule,

@@ -5,6 +5,7 @@ import pj.domain.{DomainError, Result}
 import pj.domain.resources.Types.{EarliestStartTime, HumanResourceId, HumanResourceName, OrderId, OrderQuantity, PhysicalResourceId, PhysicalResourceType, ProductId, ProductName, ProductNumber, ProductTaskIndex, TaskId, TaskScheduleTime, TaskTime}
 import pj.domain.resources.{HumanResource, Order, PhysicalResource, Product, SchedulingState, Task, TaskInfo, TaskSchedule}
 import pj.domain.schedule.ScheduleMS03.{advanceTimeAndRetry, createAllProductInstances, createTaskSchedule, generateSchedule, isMatchingTask, prioritizeTasks, scheduleAllTasks, scheduleBatchRecursively, scheduleMaximumTasksAtTime, tryScheduleTask, updateResourceAvailability, validateResourceRequirements}
+import pj.domain.schedule.ScheduleMS03.{createAllProductInstances, createTaskSchedule, generateSchedule, isMatchingTask, prioritizeTasks, tryScheduleTask, updateResourceAvailability, validateResourceRequirements}
 
 import scala.xml.XML
 
@@ -562,3 +563,218 @@ class ScheduleMS03Test extends AnyFunSuite:
 
 
 
+
+
+  test("getAvailableResourcesAtTime should return only resources available at current time"):
+    val result = for {
+      prs1 <- PhysicalResourceId.from("PRS_1")
+      prs2 <- PhysicalResourceId.from("PRS_2")
+      prs3 <- PhysicalResourceId.from("PRS_3")
+      prt1 <- PhysicalResourceType.from("printer")
+      prt2 <- PhysicalResourceType.from("scanner")
+      physicalResources = List(
+        PhysicalResource(prs1, prt1),
+        PhysicalResource(prs2, prt2),
+        PhysicalResource(prs3, prt1)
+      )
+
+      hrs1 <- HumanResourceId.from("HRS_1")
+      hrs2 <- HumanResourceId.from("HRS_2")
+      hrs3 <- HumanResourceId.from("HRS_3")
+      hrName1 <- HumanResourceName.from("Alice")
+      hrName2 <- HumanResourceName.from("Bob")
+      hrName3 <- HumanResourceName.from("Charlie")
+      humanResources = List(
+        HumanResource(hrs1, hrName1, List(prt1)),
+        HumanResource(hrs2, hrName2, List(prt2)),
+        HumanResource(hrs3, hrName3, List(prt1, prt2))
+      )
+
+      availability = Map(
+        "PRS_1" -> 0, "PRS_2" -> 10, "PRS_3" -> 5,
+        "HRS_1" -> 0, "HRS_2" -> 8, "HRS_3" -> 15
+      )
+
+      (availablePhysical, availableHuman) = ScheduleMS03.getAvailableResourcesAtTime(
+        physicalResources, humanResources, availability, currentTime = 5
+      )
+    } yield (availablePhysical, availableHuman, physicalResources, humanResources)
+
+    result match
+      case Right((availablePhysical, availableHuman, allPhysical, allHuman)) =>
+        assert(availablePhysical.map(_.id.to).toSet == Set("PRS_1", "PRS_3"))
+        assert(availableHuman.map(_.id.to).toSet == Set("HRS_1"))
+      case Left(error) =>
+        fail(s"Failed to create test data: $error")
+
+
+  test("getAvailableResourcesAtTime should return all resources when all are available"):
+    val result = for {
+      prs1 <- PhysicalResourceId.from("PRS_1")
+      prs2 <- PhysicalResourceId.from("PRS_2")
+      prt1 <- PhysicalResourceType.from("printer")
+      physicalResources = List(
+        PhysicalResource(prs1, prt1),
+        PhysicalResource(prs2, prt1)
+      )
+
+      hrs1 <- HumanResourceId.from("HRS_1")
+      hrName1 <- HumanResourceName.from("Alice")
+      humanResources = List(HumanResource(hrs1, hrName1, List(prt1)))
+
+      availability = Map("PRS_1" -> 0, "PRS_2" -> 0, "HRS_1" -> 0)
+
+      (availablePhysical, availableHuman) = ScheduleMS03.getAvailableResourcesAtTime(
+        physicalResources, humanResources, availability, currentTime = 10
+      )
+    } yield (availablePhysical, availableHuman)
+
+    result match
+      case Right((availablePhysical, availableHuman)) =>
+        assert(availablePhysical.lengthIs == 2)
+        assert(availableHuman.lengthIs == 1)
+      case Left(error) =>
+        fail(s"Failed to create test data: $error")
+
+  test("isProductCurrentlyBeingProcessed should return true when product has active task"):
+    val result = for {
+      ord1 <- OrderId.from("ORD_1")
+      ord2 <- OrderId.from("ORD_2")
+      pn1 <- ProductNumber.from(1)
+      tsk1 <- TaskId.from("TSK_1")
+
+      start5 <- TaskScheduleTime.from(5)
+      end15 <- TaskScheduleTime.from(15)
+      prs1 <- PhysicalResourceId.from("PRS_1")
+      hrs1 <- HumanResourceId.from("HRS_1")
+
+      activeSchedule = TaskSchedule(ord1, pn1, tsk1, start5, end15, List(prs1), List(hrs1))
+
+      state = SchedulingState(
+        readyTasks = List.empty,
+        resourceAvailability = Map.empty,
+        schedules = List(activeSchedule),
+        productProgress = Map.empty
+      )
+
+      isProcessing = ScheduleMS03.isProductCurrentlyBeingProcessed(ord1, pn1, state, currentTime = 10)
+      isNotProcessing = ScheduleMS03.isProductCurrentlyBeingProcessed(ord2, pn1, state, currentTime = 10)
+    } yield (isProcessing, isNotProcessing)
+
+    result match
+      case Right((isProcessing, isNotProcessing)) =>
+        assert(isProcessing)
+        assert(!isNotProcessing)
+      case Left(error) =>
+
+  test("filterEligibleTasksForTime should return tasks eligible at current time and not being processed"):
+    val result = for {
+      ord1 <- OrderId.from("ORD_1")
+      pn1 <- ProductNumber.from(1)
+      tsk1 <- TaskId.from("TSK_1")
+      tsk2 <- TaskId.from("TSK_2")
+      time <- TaskTime.from("10")
+      prt1 <- PhysicalResourceType.from("printer")
+      task1 = Task(tsk1, time, List(prt1))
+      task2 = Task(tsk2, time, List(prt1))
+      est <- EarliestStartTime.from(0)
+      pti0 <- ProductTaskIndex.from(0)
+      pti1 <- ProductTaskIndex.from(1)
+
+      start <- TaskScheduleTime.from(0)
+      end <- TaskScheduleTime.from(10)
+      scheduled = TaskSchedule(ord1, pn1, tsk1, start, end, List(), List())
+
+      taskInfo1 = TaskInfo(ord1, pn1, tsk1, task1, est, pti0)
+      taskInfo2 = TaskInfo(ord1, pn1, tsk2, task2, est, pti1)
+
+      state = SchedulingState(
+        readyTasks = List(taskInfo2),
+        resourceAvailability = Map.empty,
+        schedules = List(scheduled),
+        productProgress = Map((ord1, pn1) -> 1)
+      )
+
+      filtered = ScheduleMS03.filterEligibleTasksForTime(List(taskInfo2), state, currentTime = 10)
+    } yield filtered
+
+    result match
+      case Right(filtered) =>
+        filtered.headOption match
+          case Some(task) => assert(task.taskId.to == "TSK_2")
+          case None => fail("Expected at least one eligible task, but got none")
+      case Left(error) =>
+        fail(s"Failed to test eligible tasks: $error")
+
+  test("updateReadyTasks should add next task after one is completed"):
+    val result = for {
+      ord1 <- OrderId.from("ORD_1")
+      pn1 <- ProductNumber.from(1)
+      tsk1 <- TaskId.from("TSK_1")
+      tsk2 <- TaskId.from("TSK_2")
+      time <- TaskTime.from("10")
+      prt <- PhysicalResourceType.from("printer")
+      task1 = Task(tsk1, time, List(prt))
+      task2 = Task(tsk2, time, List(prt))
+      est <- EarliestStartTime.from(0)
+      pti0 <- ProductTaskIndex.from(0)
+      pti1 <- ProductTaskIndex.from(1)
+      start <- TaskScheduleTime.from(0)
+      end <- TaskScheduleTime.from(10)
+
+      scheduled = TaskSchedule(ord1, pn1, tsk1, start, end, List(), List())
+      taskInfo1 = TaskInfo(ord1, pn1, tsk1, task1, est, pti0)
+      taskInfo2 = TaskInfo(ord1, pn1, tsk2, task2, est, pti1)
+
+      state = SchedulingState(
+        readyTasks = List(),
+        resourceAvailability = Map(),
+        schedules = List(scheduled),
+        productProgress = Map((ord1, pn1) -> 1)
+      )
+
+      updated = ScheduleMS03.updateReadyTasks(state, List(taskInfo1, taskInfo2))
+    } yield updated
+
+    result match
+      case Right(updated) =>
+        val readyIds = updated.readyTasks.map(_.taskId.to)
+        assert(readyIds == List("TSK_2"))
+      case Left(error) =>
+        fail(s"Failed to test updateReadyTasks: $error")
+
+
+  test("updateStateAfterScheduling should update progress, availability and schedules"):
+    val result = for {
+      ord1 <- OrderId.from("ORD_1")
+      pn1 <- ProductNumber.from(1)
+      tsk1 <- TaskId.from("TSK_1")
+      time <- TaskTime.from("10")
+      prt1 <- PhysicalResourceType.from("printer")
+      task = Task(tsk1, time, List(prt1))
+      est <- EarliestStartTime.from(0)
+      pti <- ProductTaskIndex.from(0)
+      taskInfo = TaskInfo(ord1, pn1, tsk1, task, est, pti)
+      prs1 <- PhysicalResourceId.from("PRS_1")
+      hrs1 <- HumanResourceId.from("HRS_1")
+
+      schedule <- ScheduleMS03.createTaskSchedule(taskInfo, 5, List(prs1), List(hrs1))
+    } yield
+      val state = SchedulingState(
+        readyTasks = List(taskInfo),
+        resourceAvailability = Map("PRS_1" -> 0, "HRS_1" -> 0),
+        schedules = List(),
+        productProgress = Map()
+      )
+
+      val newState = ScheduleMS03.updateStateAfterScheduling(state, taskInfo, schedule, currentTime = 5)
+
+      assert(newState.schedules.nonEmpty)
+      assert(newState.resourceAvailability("PRS_1") == 15)
+      assert(newState.resourceAvailability("HRS_1") == 15)
+      assert(newState.productProgress((ord1, pn1)) == 1)
+      assert(!newState.readyTasks.exists(_.taskId == tsk1))
+
+    result match
+      case Right(_) => succeed
+      case Left(error) => fail(s"Failed to test updateStateAfterScheduling: $error")
