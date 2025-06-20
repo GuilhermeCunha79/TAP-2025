@@ -10,6 +10,9 @@ import scala.xml.Elem
 
 object ScheduleMS03 extends Schedule:
 
+  /**
+   * Generates a complete schedule for all tasks based on orders, products, and available resources
+   */
   def generateSchedule(
     orders: List[Order],
     products: List[Product],
@@ -28,6 +31,9 @@ object ScheduleMS03 extends Schedule:
 
     } yield result.schedules.reverse
 
+  /**
+   * Creates the initial scheduling state with ready tasks and resource availability
+   */
   private def createInitialState(
     allProductInstances: List[TaskInfo],
     physicalResources: List[PhysicalResource],
@@ -46,6 +52,9 @@ object ScheduleMS03 extends Schedule:
       productProgress = Map.empty
     )
 
+  /**
+   * Validates if all required resources for tasks are available in sufficient quantities
+   */
   private def validateResourceRequirements(
     tasks: List[Task],
     physicalResources: List[PhysicalResource],
@@ -58,6 +67,9 @@ object ScheduleMS03 extends Schedule:
       acc.flatMap(_ => validateTask(task, physicalResourceCounts, humanResourceTypes))
     }
 
+  /**
+   * Validates requirements for a single task against available resources
+   */
   private def validateTask(
     task: Task,
     physicalResourceCounts: Map[PhysicalResourceType, Int],
@@ -76,6 +88,9 @@ object ScheduleMS03 extends Schedule:
         }
     }
 
+  /**
+   * Creates all product instances for all orders, expanding by quantity and task sequence
+   */
   private def createAllProductInstances(
     orders: List[Order],
     productTaskMap: Map[ProductId, List[TaskId]],
@@ -92,6 +107,9 @@ object ScheduleMS03 extends Schedule:
       productTaskIndex <- ProductTaskIndex.from(taskIndex).toOption
     } yield TaskInfo(order.id, productNum, taskId, task, earliest, productTaskIndex)
 
+  /**
+   * Recursively schedules all tasks until no more tasks are ready or schedulable
+   */
   private def scheduleAllTasks(
     state: SchedulingState,
     allTasks: List[TaskInfo],
@@ -109,6 +127,9 @@ object ScheduleMS03 extends Schedule:
             case false => advanceTimeAndRetry(state, physicalResources, humanResources, allTasks)
         } yield finalState
 
+  /**
+   * Advances time when no tasks can be scheduled at current time and retries scheduling
+   */
   private def advanceTimeAndRetry(
     state: SchedulingState,
     physicalResources: List[PhysicalResource],
@@ -129,6 +150,9 @@ object ScheduleMS03 extends Schedule:
       scheduleAllTasks(advancedState, allTasks, physicalResources, humanResources)
     }
 
+  /**
+   * Schedules the next batch of tasks that can be executed at the current time
+   */
   private def scheduleNextBatch(
      state: SchedulingState,
      physicalResources: List[PhysicalResource],
@@ -146,6 +170,9 @@ object ScheduleMS03 extends Schedule:
       scheduleMaximumTasksAtTime(state, availableAtCurrentTime, currentTime, physicalResources, humanResources)
     }
 
+  /**
+   * Prioritizes tasks by duration (longest first) and resource rarity
+   */
   private def prioritizeTasks(tasks: List[TaskInfo]): List[TaskInfo] =
     val rarityMap = tasks
       .flatMap(_.task.physicalResourceTypes)
@@ -157,7 +184,10 @@ object ScheduleMS03 extends Schedule:
     tasks.sortBy(task =>
       (-task.task.time.to, task.task.physicalResourceTypes.map(rarityMap.getOrElse(_, 0)).sum)
     )
-  
+
+  /**
+   * Schedules the maximum number of tasks possible at the specified time
+   */
   private def scheduleMaximumTasksAtTime(
     state: SchedulingState,
     candidateTasks: List[TaskInfo],
@@ -173,6 +203,9 @@ object ScheduleMS03 extends Schedule:
 
     scheduleBatchRecursively(state, prioritizedTasks, currentTime, availablePhysical, availableHuman, Set.empty, Set.empty)
 
+  /**
+   * Gets resources (physical and human) that are available at the specified time
+   */
   private def getAvailableResourcesAtTime(
      physicalResources: List[PhysicalResource],
      humanResources: List[HumanResource],
@@ -187,6 +220,9 @@ object ScheduleMS03 extends Schedule:
     }
     (availablePhysical, availableHuman)
 
+  /**
+   * Recursively schedules a batch of tasks, attempting each one sequentially
+   */
   private def scheduleBatchRecursively(
     state: SchedulingState,
     tasks: List[TaskInfo],
@@ -220,6 +256,9 @@ object ScheduleMS03 extends Schedule:
             }
           )
 
+  /**
+   * Attempts to allocate resources for a specific task
+   */
   private def tryScheduleTask(
    taskInfo: TaskInfo,
    currentTime: Int,
@@ -233,9 +272,15 @@ object ScheduleMS03 extends Schedule:
       humanNames <- allocateHumans(taskInfo.task.physicalResourceTypes, availableHuman, usedHumanNames)
     } yield (physicalIds, humanNames)
 
+  /**
+   * Checks if two tasks are identical (same order, product number, and task ID)
+   */
   private def isMatchingTask(t1: TaskInfo, t2: TaskInfo): Boolean =
     t1.orderId == t2.orderId && t1.productNumber == t2.productNumber && t1.taskId == t2.taskId
 
+  /**
+   * Generic function to allocate resources based on specific criteria
+   */
   private def allocateResources[T, R](
     requiredTypes: List[PhysicalResourceType],
     availableResources: List[T],
@@ -247,6 +292,9 @@ object ScheduleMS03 extends Schedule:
       availableResources.count(res => matchesType(res, t) && !usedIds.contains(extractId(res)))
     ), availableResources, List.empty, usedIds, extractId, matchesType)
 
+  /**
+   * Generic recursive loop for sequential resource allocation
+   */
   @tailrec
   private def allocateResourcesLoop[T, R](
     remaining: List[PhysicalResourceType],
@@ -269,6 +317,9 @@ object ScheduleMS03 extends Schedule:
           Left(DomainError.ImpossibleSchedule)
 
 
+  /**
+   * Allocates physical resources for a task
+   */
   private def allocateResources(
    requiredTypes: List[PhysicalResourceType],
    availablePhysical: List[PhysicalResource],
@@ -282,6 +333,9 @@ object ScheduleMS03 extends Schedule:
       (res: PhysicalResource, reqType: PhysicalResourceType) => res.physical_type == reqType
     )
 
+  /**
+   * Allocates human resources for a task
+   */
   private def allocateHumans(
     requiredTypes: List[PhysicalResourceType],
     availableHuman: List[HumanResource],
@@ -295,6 +349,9 @@ object ScheduleMS03 extends Schedule:
       (res: HumanResource, reqType: PhysicalResourceType) => res.physicalResourceTypes.contains(reqType)
     )
 
+  /**
+   * Creates a TaskSchedule from task information and allocated resources
+   */
   private def createTaskSchedule(
     taskInfo: TaskInfo,
     startTime: Int,
@@ -314,6 +371,9 @@ object ScheduleMS03 extends Schedule:
       humanNames
     )
 
+  /**
+   * Filters tasks that are eligible for execution at the current time
+   */
   private def filterEligibleTasksForTime(
     candidateTasks: List[TaskInfo],
     state: SchedulingState,
@@ -328,6 +388,9 @@ object ScheduleMS03 extends Schedule:
         !isProductCurrentlyBeingProcessed(task.orderId, task.productNumber, state, currentTime)
     }
 
+  /**
+   * Checks if a product is currently being processed (has a task in execution)
+   */
   private def isProductCurrentlyBeingProcessed(
     orderId: OrderId,
     productNumber: ProductNumber,
@@ -341,6 +404,9 @@ object ScheduleMS03 extends Schedule:
         schedule.end.to > currentTime
     }
 
+  /**
+   * Updates the ready tasks list by adding newly eligible tasks
+   */
   private def updateReadyTasks(state: SchedulingState, allTasks: List[TaskInfo]): SchedulingState =
     val scheduledTaskKeys = state.schedules.map(s => (s.orderId, s.productNumber, s.taskId)).toSet
     val readyTaskKeys = state.readyTasks.map(rt => (rt.orderId, rt.productNumber, rt.taskId)).toSet
@@ -357,6 +423,9 @@ object ScheduleMS03 extends Schedule:
 
     state.copy(readyTasks = state.readyTasks ++ newReadyTasks)
 
+  /**
+   * Updates the scheduling state after successfully scheduling a task
+   */
   private def updateStateAfterScheduling(
     state: SchedulingState,
     scheduledTask: TaskInfo,
@@ -377,6 +446,9 @@ object ScheduleMS03 extends Schedule:
       productProgress = updatedProgress
     )
 
+  /**
+   * Updates resource availability map after scheduling a task
+   */
   private def updateResourceAvailability(
     availability: Map[String, Int],
     schedule: TaskSchedule,
@@ -386,12 +458,14 @@ object ScheduleMS03 extends Schedule:
       schedule.humanResourceIds.map(name => {name.to} -> endTime)
     availability ++ allUpdates
 
+  /**
+   * Creates XML output from schedule data
+   */
   def create(xml: Elem): Result[Elem] =
     for {
       (orders, products, tasks, humanResources, physicalResources) <- Shared.scheduleDataRetriever(xml)
       schedules <- generateSchedule(orders, products, tasks, humanResources, physicalResources)
       outputXml = Shared.toXml(schedules, humanResources)
-      _ = FileIO.save("output.xml", outputXml)
     } yield outputXml
 
   def create(xml: Elem, fileName: String): Result[Elem] =
