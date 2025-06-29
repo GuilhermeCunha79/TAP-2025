@@ -1,4 +1,4 @@
-# pj-2025
+# Task Scheduler
 
 [Build Status](https://github.com/GuilhermeCunha79/pj-2025/actions/workflows/ci.yml/badge.svg)
 [Scala 3](https://www.scala-lang.org/) | [MIT License](LICENSE)
