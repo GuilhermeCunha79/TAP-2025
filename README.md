@@ -61,7 +61,3 @@ pj-2025/
 1. Open an issue to suggest improvements or report bugs.
 2. Submit a pull request with clear changes and accompanying tests.
 3. Follow the existing code style (WartRemover, Scalafmt).
-
-## License
-
-This project is licensed under the **MIT License**. See [LICENSE](LICENSE) for details.
